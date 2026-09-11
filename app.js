@@ -8,14 +8,27 @@ const bodyEl = document.body;
 const filteredProductHeaderEl = document.querySelector(
   ".filtered-product-header",
 );
-//SHOW CART
-// Prevent scrolling event handler
-function preventScroll(e) {
-  // Allow scrolling ONLY if the gesture/wheel is happening inside the cart element
-  if (cartEl.contains(e.target)) {
-    return;
+
+document.querySelectorAll('body *').forEach(el => {
+  if (el.scrollWidth > document.documentElement.clientWidth) {
+    console.log(el, el.scrollWidth, el.className);
   }
-  e.preventDefault();
+});
+//SHOW CART
+let scrollY = 0;
+
+function lockScroll() {
+  scrollY = window.scrollY;
+  document.body.style.position = "fixed";
+  document.body.style.top = `-${scrollY}px`;
+  document.body.style.width = "100%";
+}
+
+function unlockScroll() {
+  document.body.style.position = "";
+  document.body.style.top = "";
+  document.body.style.width = "";
+  window.scrollTo(0, scrollY);
 }
 
 function showCart() {
@@ -31,31 +44,9 @@ function showCart() {
   const isActive = cartEl.classList.contains("active");
 
   if (isActive) {
-    // Add non-passive event listeners to block page scroll entirely
-    window.addEventListener("wheel", preventScroll, { passive: false });
-    window.addEventListener("touchmove", preventScroll, { passive: false });
-    window.addEventListener("keydown", preventKeyScroll, { passive: false });
+    lockScroll();
   } else {
-    // Remove event listeners when cart is closed
-    window.removeEventListener("wheel", preventScroll);
-    window.removeEventListener("touchmove", preventScroll);
-    window.removeEventListener("keydown", preventKeyScroll);
-  }
-}
-
-// Block arrow keys, spacebar, page up/down from scrolling page
-function preventKeyScroll(e) {
-  const keys = [
-    "ArrowUp",
-    "ArrowDown",
-    "Space",
-    "PageUp",
-    "PageDown",
-    "Home",
-    "End",
-  ];
-  if (keys.includes(e.code) && !cartEl.contains(document.activeElement)) {
-    e.preventDefault();
+    unlockScroll();
   }
 }
 
