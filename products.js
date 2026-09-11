@@ -1,0 +1,78 @@
+const products = [
+  {
+    id: 0,
+    name: "Classic Handbag - Ash",
+    price: 800000,
+    instock: 5,
+    description: "Classic Keeps Loudder handbag.",
+    category: "Handbags",
+    imgSrc: "./img/kl1.webp",
+  },
+  {
+    id: 1,
+    name: "Cross Body Bag - Black",
+    price: 600000,
+    instock: 10,
+    description:
+      "Spacious cross body bag with ample storage and a casual look for everyday activities",
+    category: "Crossbody",
+    imgSrc: "./img/kl2.webp",
+  },
+  {
+    id: 2,
+    name: "Business Card Holder - Blue Stripes",
+    price: 100000,
+    instock: 10,
+    description:
+      "Stylish holder for those who need a place to store their business cards",
+    category: "Accessories",
+    imgSrc: "./img/kl3.webp",
+  },
+  {
+    id: 3,
+    name: "Coaster",
+    price: 45000,
+    instock: 10,
+    description: "Handmade coaster sourced with local Lao fabric",
+    category: "Home Decor",
+    imgSrc: "./img/kl4.webp",
+  },
+  //   {
+  //   id: 4,
+  //   name: "Classic Handbag - Ash",
+  //   price: 800000,
+  //   instock: 5,
+  //   description: "Classic Keeps Loudder handbag.",
+  //   category: "Handbags",
+  //   imgSrc: "./img/kl1.webp",
+  // },
+  // {
+  //   id: 5,
+  //   name: "Cross Body Bag - Black",
+  //   price: 600000,
+  //   instock: 10,
+  //   description:
+  //     "Spacious cross body bag with ample storage and a casual look for everyday activities",
+  //   category: "Crossbody",
+  //   imgSrc: "./img/kl2.webp",
+  // },
+  // {
+  //   id: 6,
+  //   name: "Business Card Holder - Blue Stripes",
+  //   price: 100000,
+  //   instock: 10,
+  //   description:
+  //     "Stylish holder for those who need a place to store their business cards",
+  //   category: "Accessories",
+  //   imgSrc: "./img/kl3.webp",
+  // },
+  // {
+  //   id: 7,
+  //   name: "Coaster",
+  //   price: 45000,
+  //   instock: 10,
+  //   description: "Handmade coaster sourced with local Lao fabric",
+  //   category: "Home Decor",
+  //   imgSrc: "./img/kl4.webp",
+  // },
+];

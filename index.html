@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="#">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart JS</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="nav-style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script src="https://kit.fontawesome.com/8efc22d7af.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <nav class="blurred-background">
+        <div class="logo-container">
+            <div class="logo-container-left">
+                <a href="/"> <img src="img/logo.png" alt="KL Logo"></a>
+            </div>
+            <div class="logo-container-btns">
+                <a href="#contact" class="cart-mobile" onClick="showCart()"><i class="fa-solid fa-cart-shopping"></i></a>
+                <div class="hamburger" id="hamburger">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+        <div class="links-container">
+            <span class="nav-link" onclick="filterProducts('All')">All</span>
+            <span class="nav-link" onclick="filterProducts('Handbags')">Handbags</span>
+            <span class="nav-link" onclick="filterProducts('Crossbody')">Crossbody</span>
+            <span class="nav-link" onclick="filterProducts('Home Decor')">Home Decor</span>
+            <span class="nav-link" onclick="filterProducts('Accessories')">Accessories</span>
+        </div>
+        <div class="btn-container">
+            <a href="#contact" class="nav-link btn-style" onClick="showCart()"><i class="fa-solid fa-cart-shopping"></i></a>
+        </div>
+    </nav>
+    <main>
+        <div class="products-wrapper">
+            <h1 class="filtered-product-header">All Products</h1>
+            <div class="products">
+                <!-- RENDER PRODUCTS HERE -->
+            </div>
+        </div>
+    </main>
+    <!-- CART CONTAINER -->
+    <div class="cart">
+        <div class="cart-header">
+            <div class="column1">Item</div>
+            <div class="column2">Unit price</div>
+            <div class="column3">Units</div>
+            <div class="column4">Remove</div>
+        </div>
+        <div class="cart-items">
+            <!-- RENDER CART ITEMS HERE -->
+        </div>
+        <div class="cart-footer">
+            <div class="subtotal">
+                Subtotal (0 items): $0
+            </div>
+            <div class="checkout">
+                Proceed to checkout
+            </div>
+        </div>
+    </div>
+    <script>
+        const porductsListEl = document.querySelector(".products-list");
+        const seeMoreBtn = document.querySelector(".see-more-btn");
+
+        seeMoreBtn.addEventListener('click', () => {
+            porductsListEl.scrollIntoView({ behavior: "smooth" })
+        })
+    </script>
+
+    <script src="./products.js"></script>
+    <script src="./app.js"></script>
+    <script src="./nav.js"></script>
+</body>
+
+</html>
