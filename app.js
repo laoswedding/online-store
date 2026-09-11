@@ -8,46 +8,20 @@ const bodyEl = document.body;
 const filteredProductHeaderEl = document.querySelector(
   ".filtered-product-header",
 );
+const itemAddedEl = document.querySelector(".item-added");
+const itemRemovedEl = document.querySelector(".item-removed");
 
-document.querySelectorAll('body *').forEach(el => {
+document.querySelectorAll("body *").forEach((el) => {
   if (el.scrollWidth > document.documentElement.clientWidth) {
     console.log(el, el.scrollWidth, el.className);
   }
 });
+
 //SHOW CART
-let scrollY = 0;
-
-function lockScroll() {
-  scrollY = window.scrollY;
-  document.body.style.position = "fixed";
-  document.body.style.top = `-${scrollY}px`;
-  document.body.style.width = "100%";
-}
-
-function unlockScroll() {
-  document.body.style.position = "";
-  document.body.style.top = "";
-  document.body.style.width = "";
-  window.scrollTo(0, scrollY);
-}
-
 function showCart() {
-  const scrollPosition = window.scrollY;
-
-  if (scrollPosition === 0) {
-    cartEl.style.top = "90px";
-  } else {
-    cartEl.style.top = `calc(${scrollPosition}px + 90px)`;
-  }
-
   cartEl.classList.toggle("active");
   const isActive = cartEl.classList.contains("active");
-
-  if (isActive) {
-    lockScroll();
-  } else {
-    unlockScroll();
-  }
+  document.documentElement.style.overflowY = isActive ? "hidden" : "";
 }
 
 //FILTER PRODUCTS
@@ -61,7 +35,7 @@ function filterProductsByCategory(category) {
     renderProducts(products);
   } else {
     const filtered = products.filter(
-      (product) => product.category === category
+      (product) => product.category === category,
     );
     renderProducts(filtered);
   }
@@ -107,7 +81,7 @@ updateCart();
 
 // ADD TO CART
 function addToCart(id) {
-  // check if prodcut already exist in cart
+  // check if product already exist in cart
   if (cart.some((item) => item.id === id)) {
     changeNumberOfUnits("plus", id);
   } else {
@@ -118,7 +92,12 @@ function addToCart(id) {
       numberOfUnits: 1,
     });
 
-    // cartEl.classList.add("active");
+    // Show the modal
+    itemAddedEl.style.opacity = "1";
+
+    setTimeout(() => {
+      itemAddedEl.style.opacity = "0";
+    }, 1000);
   }
 
   updateCart();
@@ -176,6 +155,13 @@ function renderCartItems() {
 // remove item from cart
 function removeItemFromCart(id) {
   cart = cart.filter((item) => item.id !== id);
+
+  // Show the modal
+  itemRemovedEl.style.opacity = "1";
+
+  setTimeout(() => {
+    itemRemovedEl.style.opacity = "0";
+  }, 1000);
 
   updateCart();
 }

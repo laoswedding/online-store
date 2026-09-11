@@ -134,6 +134,7 @@ main {
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 2rem;
 }
 
 /* RENDERD PRODUCTS */
@@ -210,7 +211,7 @@ main {
   background-color: rgba(var(--right-side-bg-color), 0.7);
   color: #fff;
   width: 50%;
-  padding: .5rem;
+  padding: 0.5rem;
   font-size: 1.1rem;
   text-align: center;
 }
@@ -237,7 +238,10 @@ main {
   visibility: hidden;
   opacity: 0;
   transform: translateX(20px); /* small, just for a nice slide-in feel */
-  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, visibility 0.3s;
+  transition:
+    transform 0.3s ease-in-out,
+    opacity 0.3s ease-in-out,
+    visibility 0.3s;
 }
 
 .cart.active {
@@ -279,9 +283,9 @@ main {
   width: 25%;
 }
 /* item info */
-.cart-item .item-info {
+.item-info {
   flex: 1;
-  background-color: rgba(255, 255, 255, 0.6);
+  /* background-color: rgba(255, 255, 255, 0.6); */
   border-radius: 0 10px 10px 0;
   padding: 10px;
   gap: 10px;
@@ -289,6 +293,7 @@ main {
 
 .cart-item .item-info img {
   width: 75px;
+  border-radius: 1rem;
 }
 /* unit price */
 .cart-item .unit-price {
@@ -301,9 +306,9 @@ main {
 }
 .cart-item .units .number {
   margin: 0 10px;
-
   font-size: 1.2rem;
 }
+
 .cart-item .units .btn {
   width: 30px;
   height: 30px;
@@ -346,10 +351,39 @@ main {
   cursor: pointer;
 }
 
-@media (max-width: 768px) {
-html {
-  overflow-x: hidden;
+/* MODAL STYLES */
+.cart-modal {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: fixed;
+  z-index: 9999;
+  font-size: 1.4rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  color: #fff;
 }
+
+.item-added {
+  background-color: rgb(123, 194, 123);
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+.item-removed {
+  background-color: rgb(241, 162, 162);
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+@media (max-width: 768px) {
+  html {
+    overflow-x: hidden;
+  }
 
   main {
     position: relative;
@@ -369,8 +403,22 @@ html {
     position: relative;
   }
 
+  .item-info {
+    display: flex;
+    flex-direction: column;
+  flex: 1;
+  background-color: none !important;
+  border-radius: 0 10px 10px 0;
+  padding: 10px;
+  gap: 10px;
+}
+
   .cart {
     width: 100%;
     height: calc(100dvh - 90px);
+  }
+
+  .cart-modal {
+    font-size: 1rem;
   }
 }

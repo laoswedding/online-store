@@ -20,7 +20,8 @@
                 <a href="/"> <img src="img/logo.png" alt="KL Logo"></a>
             </div>
             <div class="logo-container-btns">
-                <a href="#contact" class="cart-mobile" onClick="showCart()"><i class="fa-solid fa-cart-shopping"></i></a>
+                <a class="cart-mobile" onClick="showCart()"><i
+                        class="fa-solid fa-cart-shopping"></i></a>
                 <div class="hamburger" id="hamburger">
                     <div></div>
                     <div></div>
@@ -66,6 +67,12 @@
                 Proceed to checkout
             </div>
         </div>
+    </div>
+    <div class="cart-modal item-added">
+        <p class="card-modal-text">Item Added</p><i class="fa-solid fa-plus"></i>
+    </div>
+       <div class="cart-modal item-removed">
+        <p class="card-modal-text">Item Removed</p><i class="fa-solid fa-xmark"></i>
     </div>
     <script>
         const porductsListEl = document.querySelector(".products-list");
