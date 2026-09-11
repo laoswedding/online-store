@@ -148,7 +148,7 @@ main {
   width: 100%;
 }
 
-.products .item {
+.item {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -156,20 +156,23 @@ main {
   width: 25%;
   position: relative;
 }
-.products .item .item-container {
+
+.item-container {
   background-color: #e6e6e6;
   box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.347),
     0 1px 3px rgba(0, 0, 0, 0.05);
   flex: 1;
 }
-.products .item .item-container .item-img {
+
+.item-img {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.products .item .item-container .desc {
+
+.desc {
   width: 100%;
   color: #000;
   padding: 10px;
@@ -182,20 +185,33 @@ main {
   font-weight: 900;
 }
 
-.price {
-  font-size: 1rem;
+.product-description {
+  color: #343434;
 }
-.products .item .item-container .add-to-cart {
-  background-color: rgba(var(--right-side-bg-color), 0.7);
+
+.price {
+  font-size: 1.6rem;
+}
+
+.product-btns {
+  width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  padding: 5px;
-  border-radius: 50%;
-  cursor: pointer;
+}
+
+.learn-more {
+  color: #424141;
+  margin-right: 2rem;
+}
+
+.add-to-cart {
+  background-color: rgba(var(--right-side-bg-color), 0.7);
+  color: #fff;
+  width: 50%;
+  padding: .5rem;
+  font-size: 1.1rem;
+  text-align: center;
 }
 
 .products .item .item-container .add-to-cart img {

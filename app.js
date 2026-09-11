@@ -5,7 +5,9 @@ const subtotalEl = document.querySelector(".subtotal");
 const totalItemsInCartEl = document.querySelector(".total-items-in-cart");
 const cartEl = document.querySelector(".cart");
 const bodyEl = document.body;
-const filteredProductHeaderEl = document.querySelector(".filtered-product-header")
+const filteredProductHeaderEl = document.querySelector(
+  ".filtered-product-header",
+);
 //SHOW CART
 // Prevent scrolling event handler
 function preventScroll(e) {
@@ -43,7 +45,15 @@ function showCart() {
 
 // Block arrow keys, spacebar, page up/down from scrolling page
 function preventKeyScroll(e) {
-  const keys = ['ArrowUp', 'ArrowDown', 'Space', 'PageUp', 'PageDown', 'Home', 'End'];
+  const keys = [
+    "ArrowUp",
+    "ArrowDown",
+    "Space",
+    "PageUp",
+    "PageDown",
+    "Home",
+    "End",
+  ];
   if (keys.includes(e.code) && !cartEl.contains(document.activeElement)) {
     e.preventDefault();
   }
@@ -78,14 +88,19 @@ function renderProducts(productList = products) {
               </div>
               <div class="desc">
                   <h2 class="product-name">${product.name}</h2>
-                  <h2 class="price">${product.price} LAK</h2>
-                  <p>
+                  <p class="product-description">
                       ${product.description}
                   </p>
+                  <h2 class="price">₭${product.price} LAK</h2>
+                  <div class="product-btns">
+                   <div class="add-to-cart" onclick="addToCart(${product.id})">
+                  Add To Cart
+                  </div>
+                  <a href="${product.learnMore}" class="learn-more">Learn More</a>
+                  </div>
+                 
               </div>
-              <div class="add-to-cart" onclick="addToCart(${product.id})">
-                  <img src="./icons/bag-plus.png" alt="add to cart">
-              </div>
+
           </div>
       </div>
     `;
@@ -158,7 +173,7 @@ function renderCartItems() {
                 <div class="btn plus" onclick="changeNumberOfUnits('plus', ${item.id})">+</div>           
             </div>
             <div class="remove">
-               <div onclick="removeItemFromCart(${item.id})">Trash</div>
+               <div onclick="removeItemFromCart(${item.id})"><i class="fa-solid fa-trash"></i></div>
             </div>
         </div>
       `;

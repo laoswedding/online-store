@@ -4,9 +4,10 @@ const products = [
     name: "Classic Handbag - Ash",
     price: 800000,
     instock: 5,
-    description: "Classic Keeps Loudder handbag.",
+    description: "Classic Keeps Loudder handbag suitable for any occasion. Stylish, modern with plenty of storage space. Color: Ash",
     category: "Handbags",
     imgSrc: "./img/kl1.webp",
+    learnMore: "classic-handbag",
   },
   {
     id: 1,
@@ -17,6 +18,7 @@ const products = [
       "Spacious cross body bag with ample storage and a casual look for everyday activities",
     category: "Crossbody",
     imgSrc: "./img/kl2.webp",
+    learnMore: "crossbody-bag",
   },
   {
     id: 2,
@@ -27,6 +29,7 @@ const products = [
       "Stylish holder for those who need a place to store their business cards",
     category: "Accessories",
     imgSrc: "./img/kl3.webp",
+    learnMore: "business-card-holder",
   },
   {
     id: 3,
@@ -36,6 +39,7 @@ const products = [
     description: "Handmade coaster sourced with local Lao fabric",
     category: "Home Decor",
     imgSrc: "./img/kl4.webp",
+    learnMore: "coaster",
   },
   //   {
   //   id: 4,
