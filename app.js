@@ -61,17 +61,19 @@ function preventKeyScroll(e) {
 
 //FILTER PRODUCTS
 function filterProducts(category) {
-  if (category === "All") {
-    renderProducts(products);
-  } else {
-    filteredProductHeaderEl.innerHTML = category;
-    filterProductsByCategory(category);
-  }
+  filteredProductHeaderEl.innerHTML = category;
+  filterProductsByCategory(category);
 }
 
 function filterProductsByCategory(category) {
-  const filtered = products.filter((product) => product.category === category);
-  renderProducts(filtered);
+  if (category === "All Products") {
+    renderProducts(products);
+  } else {
+    const filtered = products.filter(
+      (product) => product.category === category
+    );
+    renderProducts(filtered);
+  }
 }
 
 // RENDER PRODUCTS
