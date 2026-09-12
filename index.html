@@ -30,11 +30,11 @@
             </div>
         </div>
         <div class="links-container">
-            <span class="nav-link" onclick="filterProducts('All Products')">All Products</span>
-            <span class="nav-link" onclick="filterProducts('Handbags')">Handbags</span>
-            <span class="nav-link" onclick="filterProducts('Crossbody')">Crossbody</span>
-            <span class="nav-link" onclick="filterProducts('Home Decor')">Home Decor</span>
-            <span class="nav-link" onclick="filterProducts('Accessories')">Accessories</span>
+            <span class="nav-link active" onclick="filterProducts('All Products', this)">All</span>
+            <span class="nav-link" onclick="filterProducts('Handbags', this)">Handbags</span>
+            <span class="nav-link" onclick="filterProducts('Crossbody', this)">Crossbody</span>
+            <span class="nav-link" onclick="filterProducts('Home Decor', this)">Home Decor</span>
+            <span class="nav-link" onclick="filterProducts('Accessories', this)">Accessories</span>
         </div>
         <div class="btn-container">
             <a class="nav-link btn-style" onClick="showCart()"><i class="fa-solid fa-cart-shopping"></i></a>

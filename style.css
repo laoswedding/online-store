@@ -5,7 +5,6 @@
   --bg-color: #fff;
   --link-color: #000;
   --link-size: 1.1rem;
-  --right-side-bg-color: 81, 187, 254;
 }
 
 /* General CSS */
@@ -208,12 +207,13 @@ main {
 }
 
 .add-to-cart {
-  background-color: rgba(var(--right-side-bg-color), 0.7);
+  background-color: rgb(58, 193, 255);
   color: #fff;
   width: 50%;
   padding: 0.5rem;
   font-size: 1.1rem;
   text-align: center;
+  cursor: pointer;
 }
 
 .products .item .item-container .add-to-cart img {
@@ -349,6 +349,15 @@ main {
 .cart-footer .checkout {
   background-color: rgb(22, 165, 67);
   cursor: pointer;
+}
+
+.fa-trash {
+  cursor: pointer;
+  transition: all .3s ease-in-out;
+}
+.fa-trash:hover {
+  color: rgb(217, 93, 93);
+
 }
 
 /* MODAL STYLES */

@@ -2,7 +2,7 @@
 const productsEl = document.querySelector(".products");
 const cartItemsEl = document.querySelector(".cart-items");
 const subtotalEl = document.querySelector(".subtotal");
-const totalItemsInCartEl = document.querySelector(".total-items-in-cart");
+// const totalItemsInCartEl = document.querySelector(".total-items-in-cart");
 const cartEl = document.querySelector(".cart");
 const bodyEl = document.body;
 const filteredProductHeaderEl = document.querySelector(
@@ -11,11 +11,37 @@ const filteredProductHeaderEl = document.querySelector(
 const itemAddedEl = document.querySelector(".item-added");
 const itemRemovedEl = document.querySelector(".item-removed");
 
-document.querySelectorAll("body *").forEach((el) => {
-  if (el.scrollWidth > document.documentElement.clientWidth) {
-    console.log(el, el.scrollWidth, el.className);
+//GET REQUEST
+const API_URL = "https://script.google.com/macros/s/AKfycbyYVEtaRIzzPsfCi8rsNdo6mZCNmFJzwDPKe1kHeLV8HuRTHP6oZT4CPLQYc42DZici/exec";
+
+let products = [];
+
+async function getInventory() {
+  try {
+    const response = await fetch(API_URL);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status}`);
+    }
+
+        products = (await response.json()).map(product => ({
+            ...product,
+            id: Number(product.id),
+            price: Number(product.price),
+            instock: Number(product.instock)
+        }));
+
+    // console.log("Products loaded:", products);
+
+    // Only render AFTER Google Sheets data arrives
+    renderProducts();
+
+  } catch (error) {
+    console.error("Error loading inventory:", error);
   }
-});
+}
+
+getInventory();
 
 //SHOW CART
 function showCart() {
@@ -25,9 +51,17 @@ function showCart() {
 }
 
 //FILTER PRODUCTS
-function filterProducts(category) {
+function filterProducts(category, clickedEl) {
   filteredProductHeaderEl.innerHTML = category;
   filterProductsByCategory(category);
+  setActiveNavLink(clickedEl);
+}
+
+function setActiveNavLink(clickedEl) {
+  document.querySelectorAll(".nav-link").forEach((link) => {
+    link.classList.remove("active");
+  });
+  clickedEl.classList.add("active");
 }
 
 function filterProductsByCategory(category) {
@@ -123,7 +157,7 @@ function renderSubtotal() {
   });
 
   subtotalEl.innerHTML = `Subtotal (${totalItems} items): ${totalPrice.toFixed(2)} LAK`;
-  totalItemsInCartEl.innerHTML = totalItems;
+  // totalItemsInCartEl.innerHTML = totalItems;
 }
 
 // render cart items
@@ -174,7 +208,7 @@ function changeNumberOfUnits(action, id) {
     if (item.id === id) {
       if (action === "minus" && numberOfUnits > 1) {
         numberOfUnits--;
-      } else if (action === "plus" && numberOfUnits < item.instock) {
+      } else if (action === "plus" && numberOfUnits < item.inStock) {
         numberOfUnits++;
       }
     }

@@ -31,6 +31,13 @@ nav.blurred-background {
   transition: background-color 0.3s ease-in-out;
 }
 
+.nav-link.active {
+    text-shadow:
+    0 0 8px rgba(94, 207, 255, 0.9),
+    /* tight core glow */ 0 0 20px rgba(94, 207, 255, 0.6),
+    /* mid spread */ 0 0 40px rgba(0, 153, 204, 0.3); /* soft outer bloom */
+}
+
 .logo-container {
   display: flex;
   justify-content: center;
