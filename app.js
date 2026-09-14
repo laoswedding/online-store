@@ -10,6 +10,7 @@ const filteredProductHeaderEl = document.querySelector(
 );
 const itemAddedEl = document.querySelector(".item-added");
 const itemRemovedEl = document.querySelector(".item-removed");
+const emptyCartEl = document.querySelector(".empty-cart");
 const loadingWrapperEl = document.querySelector(".loading-wrapper");
 const productsWrapperEl = document.querySelector(".products-wrapper");
 //GET REQUEST
@@ -189,6 +190,9 @@ function renderCartItems() {
   });
 }
 
+
+
+
 // remove item from cart
 function removeItemFromCart(id) {
   cart = cart.filter((item) => item.id !== id);
@@ -223,4 +227,20 @@ function changeNumberOfUnits(action, id) {
   });
 
   updateCart();
+}
+
+//go to checkout page
+function goToCheckout() {
+  // Use cart.length for Arrays, or cart.size for Set/Map
+  const isCartEmpty = Array.isArray(cart) ? cart.length === 0 : cart.size === 0;
+
+  if (isCartEmpty) {
+    emptyCartEl.style.opacity = "1";
+
+    setTimeout(() => {
+      emptyCartEl.style.opacity = "0";
+    }, 2000);
+  } else {
+    window.location.href = "/checkout";
+  }
 }

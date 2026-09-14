@@ -39,14 +39,17 @@
                     <label for="phone">Phone Number <span class="asterisk">*</span></label>
                     <input type="text" required placeholder="020 xxxxxxxx">
                 </div>
+                <label for="phone">Choose Shipping Company <span class="asterisk">*</span></label>
                 <div class="checkout-form-inner shipping-company">
-                    <div class="shipping-company-container" data-name="anousith">
+                    <div class="shipping-company-container" data-name="anousith"
+                        onclick="clickShippingCompany('anousith', this)">
                         <img src="../img/shipping/anousith.webp" alt="Anousith Logo">
                     </div>
-                    <div class="shipping-company-container" data-name="mixay">
+                    <div class="shipping-company-container" data-name="mixay"
+                        onclick="clickShippingCompany('mixay', this)">
                         <img src="../img/shipping/mixay.webp" alt="Mixay Logo">
                     </div>
-                    <div class="shipping-company-container" data-name="hal">
+                    <div class="shipping-company-container" data-name="hal" onclick="clickShippingCompany('hal', this)">
                         <img src="../img/shipping/hal.webp" alt="HAL Logo">
                     </div>
                 </div>
@@ -89,10 +92,16 @@
                     <input type="text" required placeholder="Example: Ban Phontong">
                 </div>
             </form>
+            <div class="order-summary">
+                <h2>Order Summary</h2>
+                <div class="order-items">
+                    <!-- RENDER ORDER SUMMARY HERE -->
+                </div>
+            </div>
         </div>
+
     </main>
-    <script src="../app.js"></script>
-    <script src="../nav.js"></script>
+    <script src="checkout.js"></script>
 </body>
 
 </html>

@@ -121,7 +121,7 @@ main {
 /* LOADING WRAPPER */
 .loading-wrapper {
   width: 100%;
-  height: calc(110vh - 90px);
+  height: calc(100vh - 90px);
   position: absolute;
   top: 0;
   left: 0;
@@ -278,7 +278,7 @@ main {
   width: 40%;
   background-color: rgb(64, 64, 64);
   color: #fff;
-
+  padding: 0 1rem;
   visibility: hidden;
   opacity: 0;
   transform: translateX(20px); /* small, just for a nice slide-in feel */
@@ -432,7 +432,13 @@ main {
 }
 
 .item-removed {
-  background-color: rgb(241, 162, 162);
+  background-color: rgb(255, 111, 111);
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+.empty-cart {
+  background-color: rgb(255, 111, 111);
   opacity: 0;
   transition: opacity 0.5s ease-out;
 }

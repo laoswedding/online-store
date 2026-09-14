@@ -66,7 +66,7 @@
             <div class="subtotal">
                 Subtotal (0 items): $0
             </div>
-            <a class="checkout" href="/checkout">
+            <a class="checkout" onclick="goToCheckout()">
                 Proceed to checkout
             </a>
         </div>
@@ -77,13 +77,16 @@
     <div class="cart-modal item-removed">
         <p class="card-modal-text">Item Removed</p><i class="fa-solid fa-xmark"></i>
     </div>
+        <div class="cart-modal empty-cart">
+        <p class="card-modal-text"><i class="fa-solid fa-triangle-exclamation"></i> Your Cart Is Empty</p></i>
+    </div>
     <script>
         const porductsListEl = document.querySelector(".products-list");
-        const seeMoreBtn = document.querySelector(".see-more-btn");
+        // const seeMoreBtn = document.querySelector(".see-more-btn");
 
-        seeMoreBtn.addEventListener('click', () => {
-            porductsListEl.scrollIntoView({ behavior: "smooth" })
-        })
+        // seeMoreBtn.addEventListener('click', () => {
+        //     porductsListEl.scrollIntoView({ behavior: "smooth" })
+        // })
     </script>
 
     <script src="./app.js"></script>
