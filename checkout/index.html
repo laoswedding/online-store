@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="#">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Keeps Loudder </title>
+    <link rel="shortcut icon" href="../img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../nav-style.css">
+    <link rel="stylesheet" href="../checkout/checkout.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script src="https://kit.fontawesome.com/8efc22d7af.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <nav class="blurred-background">
+        <div class="logo-container">
+            <div class="logo-container-left">
+                <a href="/"> <img src="../img/logo.png" alt="KL Logo"></a>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <div class="checkout-wrapper">
+            <h1>Checkout</h1>
+            <form action="" class="checkout-form">
+                <div class="checkout-form-inner">
+                    <label for="name">Name <span class="asterisk">*</span></label>
+                    <input type="text" required placeholder="Please enter your name.">
+                </div>
+                <div class="checkout-form-inner">
+                    <label for="email">Email <span class="asterisk">*</span></label>
+                    <input type="email" required placeholder="email@email.com">
+                </div>
+                <div class="checkout-form-inner">
+                    <label for="phone">Phone Number <span class="asterisk">*</span></label>
+                    <input type="text" required placeholder="020 xxxxxxxx">
+                </div>
+                <div class="checkout-form-inner shipping-company">
+                    <div class="shipping-company-container" data-name="anousith">
+                        <img src="../img/shipping/anousith.webp" alt="Anousith Logo">
+                    </div>
+                    <div class="shipping-company-container" data-name="mixay">
+                        <img src="../img/shipping/mixay.webp" alt="Mixay Logo">
+                    </div>
+                    <div class="shipping-company-container" data-name="hal">
+                        <img src="../img/shipping/hal.webp" alt="HAL Logo">
+                    </div>
+                </div>
+                <div class="checkout-form-inner">
+                    <label for="branch">Shipping Branch: <span class="asterisk">*</span></label>
+                    <input type="text" required placeholder="Example: Itecc Mall">
+                </div>
+                <div class="checkout-form-inner">
+                    <label for="province">Province: <span class="asterisk">*</span></label>
+                    <select name="laos_provinces" id="laos-provinces">
+                        <option value="" disabled selected>Select a province</option>
+                        <option value="attapeu">Attapeu</option>
+                        <option value="bokeo">Bokeo</option>
+                        <option value="bolikhamsai">Bolikhamsai</option>
+                        <option value="champasak">Champasak</option>
+                        <option value="huaaphanh">Houaphanh</option>
+                        <option value="khammouane">Khammouane</option>
+                        <option value="luang_namtha">Luang Namtha</option>
+                        <option value="luang_prabang">Luang Prabang</option>
+                        <option value="oudomxay">Oudomxay</option>
+                        <option value="phongsaly">Phongsaly</option>
+                        <option value="salavan">Salavan</option>
+                        <option value="savannakhet">Savannakhet</option>
+                        <option value="sekong">Sekong</option>
+                        <option value="vientiane_pref">Vientiane Prefecture</option>
+                        <option value="vientiane_prov">Vientiane Province</option>
+                        <option value="sainyabuli">Sainyabuli</option>
+                        <option value="xaisomboun">Xaisomboun</option>
+                        <option value="xiangkhoang">Xiangkhoang</option>
+                    </select>
+                </div>
+                <div class="checkout-form-inner">
+                    <label for="name">City <span class="asterisk">*</span></label>
+                    <select name="city" id="city">
+                        <!-- RENDER CITY HERE -->
+                    </select>
+                </div>
+                <div class="checkout-form-inner">
+                    <label for="name">Village <span class="asterisk">*</span></label>
+                    <input type="text" required placeholder="Example: Ban Phontong">
+                </div>
+            </form>
+        </div>
+    </main>
+    <script src="../app.js"></script>
+    <script src="../nav.js"></script>
+</body>
+
+</html>
