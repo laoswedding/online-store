@@ -20,8 +20,7 @@
                 <a href="/"> <img src="img/logo.png" alt="KL Logo"></a>
             </div>
             <div class="logo-container-btns">
-                <a class="cart-mobile" onClick="showCart()"><i
-                        class="fa-solid fa-cart-shopping"></i></a>
+                <a class="cart-mobile" onClick="showCart()"><i class="fa-solid fa-cart-shopping"></i></a>
                 <div class="hamburger" id="hamburger">
                     <div></div>
                     <div></div>
@@ -41,6 +40,9 @@
         </div>
     </nav>
     <main>
+        <div class="loading-wrapper">
+            Loading...
+        </div>
         <div class="products-wrapper">
             <h1 class="filtered-product-header">All Products</h1>
             <div class="products">
@@ -63,15 +65,15 @@
             <div class="subtotal">
                 Subtotal (0 items): $0
             </div>
-            <div class="checkout">
+            <a class="checkout" href="/checkout">
                 Proceed to checkout
-            </div>
+            </a>
         </div>
     </div>
     <div class="cart-modal item-added">
         <p class="card-modal-text">Item Added</p><i class="fa-solid fa-plus"></i>
     </div>
-       <div class="cart-modal item-removed">
+    <div class="cart-modal item-removed">
         <p class="card-modal-text">Item Removed</p><i class="fa-solid fa-xmark"></i>
     </div>
     <script>

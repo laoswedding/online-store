@@ -10,34 +10,37 @@ const filteredProductHeaderEl = document.querySelector(
 );
 const itemAddedEl = document.querySelector(".item-added");
 const itemRemovedEl = document.querySelector(".item-removed");
-
+const loadingWrapperEl = document.querySelector(".loading-wrapper");
+const productsWrapperEl = document.querySelector(".products-wrapper");
 //GET REQUEST
-const API_URL = "https://script.google.com/macros/s/AKfycbyYVEtaRIzzPsfCi8rsNdo6mZCNmFJzwDPKe1kHeLV8HuRTHP6oZT4CPLQYc42DZici/exec";
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbyYVEtaRIzzPsfCi8rsNdo6mZCNmFJzwDPKe1kHeLV8HuRTHP6oZT4CPLQYc42DZici/exec";
 
 let products = [];
 
 async function getInventory() {
   try {
     const response = await fetch(API_URL);
-
     if (!response.ok) {
       throw new Error(`HTTP error: ${response.status}`);
     }
 
-        products = (await response.json()).map(product => ({
-            ...product,
-            id: Number(product.id),
-            price: Number(product.price),
-            instock: Number(product.instock)
-        }));
+    products = (await response.json()).map((product) => ({
+      ...product,
+      id: Number(product.id),
+      price: Number(product.price),
+      instock: Number(product.instock),
+    }));
 
     // console.log("Products loaded:", products);
 
     // Only render AFTER Google Sheets data arrives
     renderProducts();
-
+    loadingWrapperEl.style.visibility = "hidden";
+    productsWrapperEl.style.visibility = "visible";
   } catch (error) {
     console.error("Error loading inventory:", error);
+    loadingWrapperEl.textContent = "Oh no! There was an error.";
   }
 }
 
