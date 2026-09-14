@@ -19,7 +19,7 @@
 }
 
 .checkout-wrapper form {
-  background-color: #e6e6e6;
+  background-color: #f6f6f6;
   box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.347),
     0 1px 3px rgba(0, 0, 0, 0.05);
@@ -69,7 +69,8 @@
 
 /* Order Summary */
 .order-summary,
-.qr-scan {
+.qr-scan,
+.transfer-slip {
   padding: 1rem;
   width: 30%;
   box-shadow:
@@ -140,7 +141,8 @@
   color: var(--order-total);
 }
 
-.qr-scan {
+.qr-scan,
+.transfer-slip {
   display: flex;
   flex-direction: column;
   align-items: start;
@@ -167,14 +169,25 @@
   font-size: 0.8rem;
 }
 
-.qr-download-btn {
+.qr-download-btn,
+.checkoutBtn {
   padding: 0.5rem 1rem;
   font-size: 1.3rem;
   color: #fff;
   background-color: var(--order-total);
   border: none;
+  cursor: pointer;
+}
+
+.qr-download-btn:hover,
+.checkoutBtn:hover {
+  filter: brightness(85%);
 }
 
 .qr-download-btn i {
   margin-right: 1rem;
+}
+
+.checkoutBtn {
+  width: 30%;
 }

@@ -30,17 +30,17 @@
             <form action="" class="checkout-form">
                 <div class="checkout-form-inner">
                     <label for="name">Name <span class="asterisk">*</span></label>
-                    <input type="text" required placeholder="Please enter your name.">
+                    <input type="text" id="name" required placeholder="Please enter your name.">
                 </div>
                 <div class="checkout-form-inner">
                     <label for="email">Email <span class="asterisk">*</span></label>
-                    <input type="email" required placeholder="email@email.com">
+                    <input type="email" id="email" required placeholder="email@email.com">
                 </div>
                 <div class="checkout-form-inner">
                     <label for="phone">Phone Number <span class="asterisk">*</span></label>
-                    <input type="text" required placeholder="020 xxxxxxxx">
+                    <input type="text" id="phone" required placeholder="020 xxxxxxxx">
                 </div>
-                <label for="phone">Choose Shipping Company <span class="asterisk">*</span></label>
+                <label for="shipping" id="shipping">Choose Shipping Company <span class="asterisk">*</span></label>
                 <div class="checkout-form-inner shipping-company">
                     <div class="shipping-company-container" data-name="anousith"
                         onclick="clickShippingCompany('anousith', this)">
@@ -56,7 +56,7 @@
                 </div>
                 <div class="checkout-form-inner">
                     <label for="branch">Shipping Branch: <span class="asterisk">*</span></label>
-                    <input type="text" required placeholder="Example: Itecc Mall">
+                    <input type="text" id="branch" required placeholder="Example: Itecc Mall">
                 </div>
                 <div class="checkout-form-inner">
                     <label for="province">Province: <span class="asterisk">*</span></label>
@@ -90,7 +90,7 @@
                 </div>
                 <div class="checkout-form-inner">
                     <label for="name">Village <span class="asterisk">*</span></label>
-                    <input type="text" required placeholder="Example: Ban Phontong">
+                    <input type="text" id="village" required placeholder="Example: Ban Phontong">
                 </div>
             </form>
             <!-- ORDER SUMMARY -->
@@ -119,11 +119,20 @@
                     <p class="payment-amount"></p>
                     <p class="qr-download-text">Take a screenshot or download the QR code here.</p>
                     <a href="../img/qr/kl-qr-download.jpeg" download="kl-qr-download.jpeg">
-                        <button type="button" class="qr-download-btn"><i class="fa-solid fa-download"></i>Download QR</button>
+                        <button type="button" class="qr-download-btn"><i class="fa-solid fa-download"></i>Download
+                            QR</button>
                     </a>
                 </div>
             </div>
+            <div class="transfer-slip">
+                <h2><i class="fa-solid fa-image"></i> Upload transfer slip *</h2>
+                <p>Transfer money using the QR code above and take or select a picture of the receipt — you must attach
+                    it before you can confirm your order.</p>
+                <input type="file" accept="image/*" id="imageUpload" />
+            </div>
+            <button class="checkoutBtn" id="checkoutBtn">Place Order</button>
         </div>
+
 
     </main>
     <script src="checkout.js"></script>

@@ -242,5 +242,6 @@ function goToCheckout() {
     }, 2000);
   } else {
     window.location.href = "/online-store/checkout";
+    // window.location.href = "/checkout";
   }
 }
