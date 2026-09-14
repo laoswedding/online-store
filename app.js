@@ -96,7 +96,7 @@ function renderProducts(productList = products) {
                   <p class="product-description">
                       ${product.description}
                   </p>
-                  <h2 class="price">₭${product.price} LAK</h2>
+                  <h2 class="price">₭${product.price.toLocaleString('en-US')} LAK</h2>
                   <div class="product-btns">
                    <div class="add-to-cart" onclick="addToCart(${product.id})">
                   Add To Cart
@@ -160,7 +160,10 @@ function renderSubtotal() {
     totalItems += item.numberOfUnits;
   });
 
-  subtotalEl.innerHTML = `Subtotal (${totalItems} items): ${totalPrice.toFixed(2)} LAK`;
+  subtotalEl.innerHTML = `Subtotal (${totalItems} items): ${totalPrice.toLocaleString('lo-LA', {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
+})} LAK`;
   // totalItemsInCartEl.innerHTML = totalItems;
 }
 
@@ -175,7 +178,7 @@ function renderCartItems() {
                 <h4>${item.name}</h4>
             </div>
             <div class="unit-price">
-                ${item.price} LAK
+                ${item.price.toLocaleString('lo-LA')} LAK
             </div>
             <div class="units">
                 <div class="btn minus" onclick="changeNumberOfUnits('minus', ${item.id})">-</div>
@@ -189,9 +192,6 @@ function renderCartItems() {
       `;
   });
 }
-
-
-
 
 // remove item from cart
 function removeItemFromCart(id) {
@@ -241,6 +241,6 @@ function goToCheckout() {
       emptyCartEl.style.opacity = "0";
     }, 2000);
   } else {
-    window.location.href = "/checkout";
+    window.location.href = "/online-store/checkout";
   }
 }
