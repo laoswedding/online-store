@@ -26,6 +26,7 @@
     <main>
         <div class="checkout-wrapper">
             <h1>Checkout</h1>
+            <!-- CHECKOUT FORM -->
             <form action="" class="checkout-form">
                 <div class="checkout-form-inner">
                     <label for="name">Name <span class="asterisk">*</span></label>
@@ -84,7 +85,7 @@
                 <div class="checkout-form-inner">
                     <label for="name">City <span class="asterisk">*</span></label>
                     <select name="city" id="city">
-                        <!-- RENDER CITY HERE -->
+                        <!-- RENDER CITIES HERE -->
                     </select>
                 </div>
                 <div class="checkout-form-inner">
@@ -92,10 +93,34 @@
                     <input type="text" required placeholder="Example: Ban Phontong">
                 </div>
             </form>
+            <!-- ORDER SUMMARY -->
             <div class="order-summary">
                 <h2>Order Summary</h2>
                 <div class="order-items">
                     <!-- RENDER ORDER SUMMARY HERE -->
+                </div>
+                <hr>
+                <div class="order-items-total-container">
+                    <p class="total-items-text">Total Items</p>
+                    <p><span class="order-items-total"></span></p>
+                </div>
+                <div class="order-total-container">
+                    <p class="total-text">Total</p>
+                    <p><span class="order-total"></span> LAK</p>
+                </div>
+            </div>
+            <div class="qr-scan">
+                <h2>Scan QR to pay</h2>
+                <p>Please scan the QR with the BCEL One app and transfer the total amount below. Don't forget to take a
+                    photo of the transfer slip.</p>
+                <div class="qr-inner">
+                    <img src="../img/qr/kl-qr.jpg" alt="QR Code">
+                    <p>Amount to be paid</p>
+                    <p class="payment-amount"></p>
+                    <p class="qr-download-text">Take a screenshot or download the QR code here.</p>
+                    <a href="../img/qr/kl-qr-download.jpeg" download="kl-qr-download.jpeg">
+                        <button type="button" class="qr-download-btn"><i class="fa-solid fa-download"></i>Download QR</button>
+                    </a>
                 </div>
             </div>
         </div>
