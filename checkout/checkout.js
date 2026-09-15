@@ -5,11 +5,16 @@ const orderItemsEl = document.querySelector(".order-items");
 const orderTotalEl = document.querySelector(".order-total");
 const orderItemsTotalEl = document.querySelector(".order-items-total");
 const paymentAmountEl = document.querySelector(".payment-amount");
+const processingOrderModalEl = document.querySelector(
+  ".processing-order-modal",
+);
 let cart = JSON.parse(localStorage.getItem("CART")) || [];
 let totalPrice = 0;
 let totalItems = 0;
 let selectedShippingCompany = null;
 let photoUrl = ""; // filled in after upload completes
+const processingMsg = document.querySelector(".processing-msg");
+const refreshMsg = document.querySelector(".refresh-msg");
 
 //render order summary
 document.addEventListener("DOMContentLoaded", () => {
@@ -112,8 +117,8 @@ async function buildCheckoutData() {
 
   //Build object
   const data = {
-    name: document.getElementById("name").value.trim().toUpperCase(),
-    email: document.getElementById("email").value.trim().toUpperCase(),
+    firstName: document.getElementById("firstName").value.trim().toUpperCase(),
+    lastName: document.getElementById("lastName").value.trim().toUpperCase(),
     phone: document.getElementById("phone").value.trim(),
     shippingCompany: selectedShippingCompany,
     branch: document.getElementById("branch").value.trim().toUpperCase(),
@@ -129,32 +134,11 @@ async function buildCheckoutData() {
     orderTotalItems: totalItems,
   };
 
+  // 4. STORE USER'S DATA IN LOCAL STORAGE
+  localStorage.setItem("USER", JSON.stringify(data));
+
   return data;
 }
-// async function buildCheckoutData() {
-//   const fileInput = document.getElementById("imageUpload");
-//   let fileData = null;
-
-//   if (fileInput.files.length > 0) {
-//     fileData = await uploadFile(fileInput.files[0]);
-//   }
-
-//   const data = {
-//     name: document.getElementById("name").value.trim().toUpperCase(),
-//     email: document.getElementById("email").value.trim().toUpperCase(),
-//     phone: document.getElementById("phone").value.trim(),
-//     shippingCompany: selectedShippingCompany,
-//     branch: document.getElementById("branch").value.trim().toUpperCase(),
-//     province: document.getElementById("laos-provinces").value.toUpperCase(),
-//     city: document.getElementById("city").value.toUpperCase(),
-//     village: document.getElementById("village").value.trim().toUpperCase(),
-
-//     // CHANGED: This must be 'fileData' to match your Apps Script formData.fileData check
-//     fileData: fileData,
-//   };
-
-//   return data;
-// }
 
 // Add 'async' here
 document.getElementById("checkoutBtn").addEventListener("click", async () => {
@@ -163,31 +147,20 @@ document.getElementById("checkoutBtn").addEventListener("click", async () => {
 
   // console.log("is shipping company null?");
   // console.log(checkoutData);
-  // if (!checkoutData.shippingCompany) {
-  //   alert("Please choose a shipping company.");
-  //   return;
-  // }
+  if (!checkoutData.shippingCompany) {
+    alert("Please choose a shipping company.");
+    return;
+  }
 
   postToAppsScript(checkoutData);
 });
 
-// function postToAppsScript(data) {
-//   console.log("This is the data");
-//   console.log(data);
-//   fetch(API_URL, {
-//     method: "POST",
-//     mode: "cors",
-//     headers: {
-//       "Content-Type": "text/plain;charset=utf-8", // Avoids triggering OPTIONS preflight
-//     },
-//     body: JSON.stringify(data),
-//   })
-//     .then((res) => res.json())
-//     .then((data) => console.log(data));
-// }
 function postToAppsScript(data) {
-  console.log("This is the data");
-  console.log(data);
+  // console.log("This is the data sent to Apps Script:");
+  // console.log(data);
+
+  //Make the processing order modal appear
+  processingOrderModalEl.style.opacity = "1";
 
   fetch(API_URL, {
     method: "POST",
@@ -199,8 +172,11 @@ function postToAppsScript(data) {
   })
     .then((res) => {
       // With no-cors, we can't read the JSON payload (res is "opaque").
-      // But if the promise resolves, we know the request was sent successfully!
-      console.log("Order submitted successfully!");
+      //set "Do not refresh page" to empty string
+      refreshMsg.style.display = "none";
+
+      //set "Processing order" to "Order Success!"
+      processingMsg.innerHTML = "Order Success!";
 
       // Add your success logic here!
       // e.g., clear the cart, show a success modal, or redirect the user:
@@ -208,5 +184,10 @@ function postToAppsScript(data) {
     })
     .catch((error) => {
       console.error("Fetch error:", error);
+      //set "Do not refresh page" to empty string
+      refreshMsg.innerHTML = "";
+
+      //set "Processing order" to "An error occurred."
+      processingMsg.innerHTML = "An error occurred.";
     });
 }

@@ -29,12 +29,12 @@
             <!-- CHECKOUT FORM -->
             <form action="" class="checkout-form">
                 <div class="checkout-form-inner">
-                    <label for="name">Name <span class="asterisk">*</span></label>
-                    <input type="text" id="name" required placeholder="Please enter your name." autocomplete="off">
+                    <label for="name">First Name <span class="asterisk">*</span></label>
+                    <input type="text" id="firstName" required placeholder="First name" autocomplete="off">
                 </div>
                 <div class="checkout-form-inner">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="email@email.com" autocomplete="off">
+                    <label for="name">Last Name <span class="asterisk">*</span></label>
+                    <input type="text" id="lastName" required placeholder="Last name" autocomplete="off">
                 </div>
                 <div class="checkout-form-inner">
                     <label for="phone">Phone Number <span class="asterisk">*</span></label>
@@ -42,12 +42,10 @@
                 </div>
                 <label for="shipping" id="shipping">Choose Shipping Company <span class="asterisk">*</span></label>
                 <div class="checkout-form-inner shipping-company">
-                    <div class="shipping-company-container"
-                        onclick="clickShippingCompany('ANOUSITH', this)">
+                    <div class="shipping-company-container" onclick="clickShippingCompany('ANOUSITH', this)">
                         <img src="../img/shipping/anousith.webp" alt="Anousith Logo">
                     </div>
-                    <div class="shipping-company-container"
-                        onclick="clickShippingCompany('MIXAY', this)">
+                    <div class="shipping-company-container" onclick="clickShippingCompany('MIXAY', this)">
                         <img src="../img/shipping/mixay.webp" alt="Mixay Logo">
                     </div>
                     <div class="shipping-company-container" onclick="clickShippingCompany('HAL', this)">
@@ -68,15 +66,15 @@
                         <option value="champasak">Champasak</option>
                         <option value="huaaphanh">Houaphanh</option>
                         <option value="khammouane">Khammouane</option>
-                        <option value="luang_namtha">Luang Namtha</option>
-                        <option value="luang_prabang">Luang Prabang</option>
+                        <option value="luang namtha">Luang Namtha</option>
+                        <option value="luang prabang">Luang Prabang</option>
                         <option value="oudomxay">Oudomxay</option>
                         <option value="phongsaly">Phongsaly</option>
                         <option value="salavan">Salavan</option>
                         <option value="savannakhet">Savannakhet</option>
                         <option value="sekong">Sekong</option>
-                        <option value="vientiane_pref">Vientiane Prefecture</option>
-                        <option value="vientiane_prov">Vientiane Province</option>
+                        <option value="vientiane prefecture">Vientiane Prefecture</option>
+                        <option value="vientiane province">Vientiane Province</option>
                         <option value="sainyabuli">Sainyabuli</option>
                         <option value="xaisomboun">Xaisomboun</option>
                         <option value="xiangkhoang">Xiangkhoang</option>
@@ -85,7 +83,7 @@
                 <div class="checkout-form-inner">
                     <label for="name">City <span class="asterisk">*</span></label>
                     <select name="city" id="city">
-                          <option value="vientiane">Vientiane</option>
+                        <option value="vientiane">Vientiane</option>
                     </select>
                 </div>
                 <div class="checkout-form-inner">
@@ -109,6 +107,7 @@
                     <p><span class="order-total"></span> LAK</p>
                 </div>
             </div>
+             <!-- QR SCAN -->
             <div class="qr-scan">
                 <h2>Scan QR to pay</h2>
                 <p>Please scan the QR with the BCEL One app and transfer the total amount below. Don't forget to take a
@@ -124,16 +123,21 @@
                     </a>
                 </div>
             </div>
+             <!-- TRANSFER SLIP UPLOAD -->
             <div class="transfer-slip">
                 <h2><i class="fa-solid fa-image"></i> Upload transfer slip *</h2>
                 <p>Transfer money using the QR code above and take or select a picture of the receipt — you must attach
                     it before you can confirm your order.</p>
-                <input type="file" accept="image/*" id="imageUpload" name="fileName"/>
+                <input type="file" accept="image/*" id="imageUpload" name="fileName" />
             </div>
+             <!-- PLACE ORDER -->
             <button class="checkoutBtn" id="checkoutBtn">Place Order</button>
+             <!-- PLACE ORDER MODAL -->
+            <div class="processing-order-modal">
+                <p class="processing-msg">Processing order<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></p>
+                <p class="refresh-msg">Do not refresh page.</p>
+            </div>
         </div>
-
-
     </main>
     <script src="checkout.js"></script>
 </body>

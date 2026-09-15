@@ -91,24 +91,7 @@ header nav ul li.home a {
 header nav ul li.home a img {
   margin-right: 5px;
 }
-/* HEADER -> SHOOPING BAG */
-.shopping-bag {
-  padding: 10px 5px;
-}
-.shopping-bag a {
-  display: flex;
-  align-items: center;
-}
-.shopping-bag a img {
-  width: 32px;
-  height: 32px;
-}
-.shopping-bag .total-items-in-cart {
-  margin-left: 10px;
-  padding: 5px;
-  background-color: rgb(242, 255, 58);
-  border-radius: 5px;
-}
+
 /* MAIN */
 main {
   width: 100%;
@@ -129,6 +112,9 @@ main {
   align-items: center;
   justify-content: center;
   font-size: 4rem;
+  background-image: url("img/loading-bkgd.webp");
+  background-size: cover;
+  background-position: center;
 }
 
 .loading-wrapper .dot {

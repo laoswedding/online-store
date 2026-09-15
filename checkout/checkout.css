@@ -191,3 +191,42 @@
 .checkoutBtn {
   width: 30%;
 }
+
+.processing-order-modal {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  gap: 1rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: fixed;
+  z-index: 9999;
+  font-size: 1.4rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  color: #fff;
+  background-color: rgb(34, 34, 34);
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+.processing-order-modal .dot {
+  font-size: 2rem;
+  display: inline-block;
+  opacity: 0.2;
+  transform: translateY(0);
+  animation: dotWave 1.2s infinite ease-in-out;
+}
+
+/* Stagger the timing for each dot */
+.processing-order-modal .dot:nth-child(1) {
+  animation-delay: 0s;
+}
+.processing-order-modal .dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.processing-order-modal .dot:nth-child(3) {
+  animation-delay: 0.4s;
+}

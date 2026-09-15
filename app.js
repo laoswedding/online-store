@@ -13,6 +13,7 @@ const itemRemovedEl = document.querySelector(".item-removed");
 const emptyCartEl = document.querySelector(".empty-cart");
 const loadingWrapperEl = document.querySelector(".loading-wrapper");
 const productsWrapperEl = document.querySelector(".products-wrapper");
+
 //GET REQUEST
 const API_URL =
   "https://script.google.com/macros/s/AKfycbysoXLUB0O0f3ixqqgpYTKMkdAX9gAGNOEtvYst-BgOXCI8yxzQQq7J8Tioey_NgKLfkw/exec";
@@ -21,7 +22,9 @@ let products = [];
 
 async function getInventory() {
   try {
-    const response = await fetch(API_URL);
+    const response = await fetch(`${API_URL}?t=${Date.now()}`, {
+      cache: "no-store",
+    });
     if (!response.ok) {
       throw new Error(`HTTP error: ${response.status}`);
     }
@@ -61,6 +64,7 @@ function filterProducts(category, clickedEl) {
   setActiveNavLink(clickedEl);
 }
 
+//SET ACTIVE NAV LINK
 function setActiveNavLink(clickedEl) {
   document.querySelectorAll(".nav-link").forEach((link) => {
     link.classList.remove("active");
@@ -68,6 +72,7 @@ function setActiveNavLink(clickedEl) {
   clickedEl.classList.add("active");
 }
 
+//FILTER PRODUCTS
 function filterProductsByCategory(category) {
   if (category === "All Products") {
     renderProducts(products);
@@ -96,7 +101,7 @@ function renderProducts(productList = products) {
                   <p class="product-description">
                       ${product.description}
                   </p>
-                  <h2 class="price">₭${product.price.toLocaleString('en-US')} LAK</h2>
+                  <h2 class="price">₭${product.price.toLocaleString("en-US")} LAK</h2>
                   <div class="product-btns">
                    <div class="add-to-cart" onclick="addToCart(${product.id})">
                   Add To Cart
@@ -113,7 +118,7 @@ function renderProducts(productList = products) {
 }
 renderProducts();
 
-// cart array
+// CART ARRAY
 let cart = JSON.parse(localStorage.getItem("CART")) || [];
 updateCart();
 
@@ -141,7 +146,7 @@ function addToCart(id) {
   updateCart();
 }
 
-// update cart
+//UPDATE CART
 function updateCart() {
   renderCartItems();
   renderSubtotal();
@@ -150,7 +155,7 @@ function updateCart() {
   localStorage.setItem("CART", JSON.stringify(cart));
 }
 
-// calculate and render subtotal
+//CALCULATE AND RENDER SUBTOTAL
 function renderSubtotal() {
   let totalPrice = 0,
     totalItems = 0;
@@ -160,14 +165,17 @@ function renderSubtotal() {
     totalItems += item.numberOfUnits;
   });
 
-  subtotalEl.innerHTML = `Subtotal (${totalItems} items): ${totalPrice.toLocaleString('lo-LA', {
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2
-})} LAK`;
+  subtotalEl.innerHTML = `Subtotal (${totalItems} items): ${totalPrice.toLocaleString(
+    "lo-LA",
+    {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    },
+  )} LAK`;
   // totalItemsInCartEl.innerHTML = totalItems;
 }
 
-// render cart items
+//RENDER CART ITEMS
 function renderCartItems() {
   cartItemsEl.innerHTML = ""; // clear cart element
   cart.forEach((item) => {
@@ -178,7 +186,7 @@ function renderCartItems() {
                 <h4>${item.name}</h4>
             </div>
             <div class="unit-price">
-                ${item.price.toLocaleString('lo-LA')} LAK
+                ${item.price.toLocaleString("lo-LA")} LAK
             </div>
             <div class="units">
                 <div class="btn minus" onclick="changeNumberOfUnits('minus', ${item.id})">-</div>
@@ -193,7 +201,7 @@ function renderCartItems() {
   });
 }
 
-// remove item from cart
+//REMOVE ITEM FROM CART
 function removeItemFromCart(id) {
   cart = cart.filter((item) => item.id !== id);
 
@@ -207,7 +215,7 @@ function removeItemFromCart(id) {
   updateCart();
 }
 
-// change number of units for an item
+//CHANGE NUMBER OF UNITS FOR AN ITEM
 function changeNumberOfUnits(action, id) {
   cart = cart.map((item) => {
     let numberOfUnits = item.numberOfUnits;
@@ -229,7 +237,7 @@ function changeNumberOfUnits(action, id) {
   updateCart();
 }
 
-//go to checkout page
+//GO TO CHECKOUT PAGE
 function goToCheckout() {
   // Use cart.length for Arrays, or cart.size for Set/Map
   const isCartEmpty = Array.isArray(cart) ? cart.length === 0 : cart.size === 0;
@@ -241,7 +249,7 @@ function goToCheckout() {
       emptyCartEl.style.opacity = "0";
     }, 2000);
   } else {
-    window.location.href = "/online-store/checkout";
-    // window.location.href = "/checkout";
+    // window.location.href = "/online-store/checkout";
+    window.location.href = "/checkout";
   }
 }
