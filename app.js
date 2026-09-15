@@ -15,7 +15,7 @@ const loadingWrapperEl = document.querySelector(".loading-wrapper");
 const productsWrapperEl = document.querySelector(".products-wrapper");
 //GET REQUEST
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbyYVEtaRIzzPsfCi8rsNdo6mZCNmFJzwDPKe1kHeLV8HuRTHP6oZT4CPLQYc42DZici/exec";
+  "https://script.google.com/macros/s/AKfycbysoXLUB0O0f3ixqqgpYTKMkdAX9gAGNOEtvYst-BgOXCI8yxzQQq7J8Tioey_NgKLfkw/exec";
 
 let products = [];
 
@@ -241,7 +241,7 @@ function goToCheckout() {
       emptyCartEl.style.opacity = "0";
     }, 2000);
   } else {
-    window.location.href = "/online-store/checkout";
-    // window.location.href = "/checkout";
+    // window.location.href = "/online-store/checkout";
+    window.location.href = "/checkout";
   }
 }
