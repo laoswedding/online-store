@@ -241,7 +241,7 @@ function goToCheckout() {
       emptyCartEl.style.opacity = "0";
     }, 2000);
   } else {
-    // window.location.href = "/online-store/checkout";
-    window.location.href = "/checkout";
+    window.location.href = "/online-store/checkout";
+    // window.location.href = "/checkout";
   }
 }
