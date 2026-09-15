@@ -1,0 +1,99 @@
+let user = JSON.parse(localStorage.getItem("USER")) || {};
+let orderId = JSON.parse(localStorage.getItem("USER")).orderId || "";
+const orderDetailsEl = document.querySelector(".order-details");
+let orderItems = "";
+document.addEventListener("DOMContentLoaded", () => {
+  renderOrderDetails();
+});
+
+function renderOrderDetails() {
+const now = new Date();
+
+const year = now.getFullYear();
+const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+const day = String(now.getDate()).padStart(2, '0');
+
+const hours = String(now.getHours()).padStart(2, '0');
+const minutes = String(now.getMinutes()).padStart(2, '0');
+const seconds = String(now.getSeconds()).padStart(2, '0');
+
+  if (!orderDetailsEl) return;
+
+  if (!user || Object.keys(user).length === 0) {
+    orderDetailsEl.innerHTML = `<p>No order details found.</p>`;
+    return;
+  }
+
+  orderItems = user.orderItems.split("\n").join("<br>");
+
+  orderDetailsEl.innerHTML = `
+    <div class="order-details-inner">
+        <img src="img/logo-white.webp">
+        <p class="receipt-center-text">ORDER RECEIPT</p>
+        <p class="receipt-center-text">${year}-${month}-${day} ${hours}:${minutes}:${seconds}</p>
+    </div>
+    <div class="order-details-inner">
+      <p class="detail-label">Name:</p>
+      <p>${user.firstName ?? ""} ${user.lastName ?? ""}</p>
+    </div>
+    <div class="order-details-inner">
+      <p class="detail-label">Phone:</p>
+      <p>${user.phone ?? ""}</p>
+    </div>
+    <div class="order-details-inner">
+      <p class="detail-label">Order Id:</p>
+      <p>${user.orderId ?? ""}</p>
+    </div>
+    <div class="order-details-inner">
+      <p class="detail-label">Shipping Company:</p>
+      <p>${user.shippingCompany ?? ""}</p>
+    </div>
+    <div class="order-details-inner">
+      <p class="detail-label">Shipping Company - Branch:</p>
+      <p>${user.branch ?? ""}</p>
+    </div>
+    <div class="order-details-inner">
+      <p class="detail-label">Province:</p>
+      <p>${user.province ?? ""}</p>
+    </div>
+    <div class="order-details-inner">
+      <p class="detail-label">City:</p>
+      <p>${user.city ?? ""}</p>
+    </div>
+    <div class="order-details-inner">
+      <p class="detail-label">Village:</p>
+      <p>${user.village ?? ""}</p>
+    </div>
+    <hr>
+    <div class="order-details-inner">
+      <p class="detail-label">Order Items:</p>
+      <p>${orderItems}</p>
+    </div>
+    <div class="order-details-inner">
+      <p class="detail-label">Total Items:</p>
+      <p>${user.orderTotalItems ?? ""}</p>
+    </div>
+    <div class="order-details-inner">
+      <p class="detail-label">Total:</p>
+      <p>₭${user.orderTotal ?? ""} LAK</p>
+    </div>`;
+}
+
+//DOWNLOAD RECEIPT BUTTON
+document
+  .getElementById("download-receipt")
+  .addEventListener("click", async () => {
+    const receipt = document.getElementById("receipt");
+
+    const canvas = await html2canvas(receipt, {
+      scale: 2,
+      backgroundColor: "#ffffff",
+    });
+
+    const link = document.createElement("a");
+
+    link.download = `${orderId}.png`;
+    link.href = canvas.toDataURL("image/png");
+
+    link.click();
+  });

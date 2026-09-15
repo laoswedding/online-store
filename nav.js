@@ -6,7 +6,7 @@ const navLinks = document.querySelectorAll(".nav-link");
 mobileNavBtn.addEventListener("click", () => {
   navMenu.classList.toggle("active");
   mobileNavBtn.classList.toggle("active");
-  body.classList.toggle("no-scroll");
+  // body.classList.toggle("no-scroll");
 });
 
 navLinks.forEach((link) => {

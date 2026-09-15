@@ -1,5 +1,5 @@
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbysoXLUB0O0f3ixqqgpYTKMkdAX9gAGNOEtvYst-BgOXCI8yxzQQq7J8Tioey_NgKLfkw/exec";
+  "https://script.google.com/macros/s/AKfycbxR1dbsGsAQIUfu9IxkUPfgX07lLgQ3Hsjv8f62nbBbA-eFS1MEKYXSvK2GNMinPUqOEw/exec";
 
 const orderItemsEl = document.querySelector(".order-items");
 const orderTotalEl = document.querySelector(".order-total");
@@ -180,14 +180,24 @@ function postToAppsScript(data) {
 
       // Add your success logic here!
       // e.g., clear the cart, show a success modal, or redirect the user:
-      // window.location.href = "/thank-you.html";
+      localStorage.setItem("CART", []);
+
+      //COMMENT OUT FOR LOCAL PRODUCTION ENVIRONMENT
+      window.location.href = "/online-store/order-details";
+
+      //COMMENT OUT FOR DEPLOYED GITHUB VERSION
+      // window.location.href = "/order-details";
     })
     .catch((error) => {
       console.error("Fetch error:", error);
       //set "Do not refresh page" to empty string
-      refreshMsg.innerHTML = "";
+      refreshMsg.style.display = "none";
 
       //set "Processing order" to "An error occurred."
       processingMsg.innerHTML = "An error occurred.";
+
+      setTimeout(() => {
+        processingOrderModalEl.style.opacity = "0";
+      }, 1000);
     });
 }

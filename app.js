@@ -16,16 +16,21 @@ const productsWrapperEl = document.querySelector(".products-wrapper");
 
 //GET REQUEST
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbysoXLUB0O0f3ixqqgpYTKMkdAX9gAGNOEtvYst-BgOXCI8yxzQQq7J8Tioey_NgKLfkw/exec";
+  "https://script.google.com/macros/s/AKfycbxR1dbsGsAQIUfu9IxkUPfgX07lLgQ3Hsjv8f62nbBbA-eFS1MEKYXSvK2GNMinPUqOEw/exec";
 
 let products = [];
 
-async function getInventory() {
+async function getInventory(retries = 2) {
   try {
     const response = await fetch(`${API_URL}?t=${Date.now()}`, {
       cache: "no-store",
     });
+
     if (!response.ok) {
+      if (retries > 0) {
+        console.warn(`Retrying inventory fetch... (${retries} left)`);
+        return getInventory(retries - 1);
+      }
       throw new Error(`HTTP error: ${response.status}`);
     }
 
@@ -36,9 +41,6 @@ async function getInventory() {
       instock: Number(product.instock),
     }));
 
-    // console.log("Products loaded:", products);
-
-    // Only render AFTER Google Sheets data arrives
     renderProducts();
     loadingWrapperEl.style.visibility = "hidden";
     productsWrapperEl.style.visibility = "visible";
@@ -249,7 +251,10 @@ function goToCheckout() {
       emptyCartEl.style.opacity = "0";
     }, 2000);
   } else {
-    // window.location.href = "/online-store/checkout";
-    window.location.href = "/checkout";
+    //COMMENT OUT FOR LOCAL PRODUCTION ENVIRONMENT
+    window.location.href = "/online-store/checkout";
+
+    //COMMENT OUT FOR DEPLOYED GITHUB VERSION
+    // window.location.href = "/checkout";
   }
 }

@@ -1,0 +1,87 @@
+:root {
+  --order-total: rgb(58, 193, 255);
+}
+
+.order-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 2rem;
+  padding-bottom: 2rem;
+}
+
+.order-wrapper h1 {
+  font-size: 4rem;
+  padding-top: 2rem;
+}
+
+.order-details,
+.order-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  width: 30%;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.347),
+    0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.order-details-inner img {
+  display: block;
+  margin: 2rem auto;
+  width: 300px;
+}
+
+.receipt-center-text {
+  text-align: center;
+}
+
+.detail-label {
+  color: #666;
+}
+
+.note-text {
+  color: red;
+}
+
+.back-to-store-btn,
+.download-receipt {
+  padding: 0.5rem 1rem;
+  font-size: 1.3rem;
+  color: #fff;
+  background-color: var(--order-total);
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.download-receipt {
+  color: #000;
+  background-color: #f6f6f6;
+}
+
+.back-to-store-btn:hover,
+.website-link img:hover {
+  filter: brightness(85%);
+}
+
+.website-link {
+  display: flex;
+  flex-direction: column;
+  color: #000;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.website-link img {
+  width: 200px;
+  border: 1px solid black;
+  border-radius: 50%;
+  transition: all 0.3s ease-in-out;
+}
