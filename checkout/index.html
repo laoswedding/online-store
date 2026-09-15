@@ -30,33 +30,33 @@
             <form action="" class="checkout-form">
                 <div class="checkout-form-inner">
                     <label for="name">Name <span class="asterisk">*</span></label>
-                    <input type="text" id="name" required placeholder="Please enter your name.">
+                    <input type="text" id="name" required placeholder="Please enter your name." autocomplete="off">
                 </div>
                 <div class="checkout-form-inner">
-                    <label for="email">Email <span class="asterisk">*</span></label>
-                    <input type="email" id="email" required placeholder="email@email.com">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="email@email.com" autocomplete="off">
                 </div>
                 <div class="checkout-form-inner">
                     <label for="phone">Phone Number <span class="asterisk">*</span></label>
-                    <input type="text" id="phone" required placeholder="020 xxxxxxxx">
+                    <input type="text" id="phone" required placeholder="020 xxxxxxxx" autocomplete="off">
                 </div>
                 <label for="shipping" id="shipping">Choose Shipping Company <span class="asterisk">*</span></label>
                 <div class="checkout-form-inner shipping-company">
-                    <div class="shipping-company-container" data-name="anousith"
-                        onclick="clickShippingCompany('anousith', this)">
+                    <div class="shipping-company-container"
+                        onclick="clickShippingCompany('ANOUSITH', this)">
                         <img src="../img/shipping/anousith.webp" alt="Anousith Logo">
                     </div>
-                    <div class="shipping-company-container" data-name="mixay"
-                        onclick="clickShippingCompany('mixay', this)">
+                    <div class="shipping-company-container"
+                        onclick="clickShippingCompany('MIXAY', this)">
                         <img src="../img/shipping/mixay.webp" alt="Mixay Logo">
                     </div>
-                    <div class="shipping-company-container" data-name="hal" onclick="clickShippingCompany('hal', this)">
+                    <div class="shipping-company-container" onclick="clickShippingCompany('HAL', this)">
                         <img src="../img/shipping/hal.webp" alt="HAL Logo">
                     </div>
                 </div>
                 <div class="checkout-form-inner">
                     <label for="branch">Shipping Branch: <span class="asterisk">*</span></label>
-                    <input type="text" id="branch" required placeholder="Example: Itecc Mall">
+                    <input type="text" id="branch" required placeholder="Example: Itecc Mall" autocomplete="off">
                 </div>
                 <div class="checkout-form-inner">
                     <label for="province">Province: <span class="asterisk">*</span></label>
@@ -85,12 +85,12 @@
                 <div class="checkout-form-inner">
                     <label for="name">City <span class="asterisk">*</span></label>
                     <select name="city" id="city">
-                        <!-- RENDER CITIES HERE -->
+                          <option value="vientiane">Vientiane</option>
                     </select>
                 </div>
                 <div class="checkout-form-inner">
                     <label for="name">Village <span class="asterisk">*</span></label>
-                    <input type="text" id="village" required placeholder="Example: Ban Phontong">
+                    <input type="text" id="village" required placeholder="Example: Ban Phontong" autocomplete="off">
                 </div>
             </form>
             <!-- ORDER SUMMARY -->
@@ -128,7 +128,7 @@
                 <h2><i class="fa-solid fa-image"></i> Upload transfer slip *</h2>
                 <p>Transfer money using the QR code above and take or select a picture of the receipt — you must attach
                     it before you can confirm your order.</p>
-                <input type="file" accept="image/*" id="imageUpload" />
+                <input type="file" accept="image/*" id="imageUpload" name="fileName"/>
             </div>
             <button class="checkoutBtn" id="checkoutBtn">Place Order</button>
         </div>
