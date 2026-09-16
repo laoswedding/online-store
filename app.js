@@ -12,6 +12,7 @@ const itemAddedEl = document.querySelector(".item-added");
 const itemRemovedEl = document.querySelector(".item-removed");
 const emptyCartEl = document.querySelector(".empty-cart");
 const loadingWrapperEl = document.querySelector(".loading-wrapper");
+const loadingTextEl = document.querySelector(".loading-text");
 const productsWrapperEl = document.querySelector(".products-wrapper");
 
 //GET REQUEST
@@ -21,6 +22,11 @@ const API_URL =
 let products = [];
 
 async function getInventory(retries = 2) {
+  const timers = [
+    setTimeout(() => { loadingTextEl.innerHTML = 'Almost there'; }, 5000),
+    setTimeout(() => { loadingTextEl.innerHTML = 'Getting closer'; }, 10000),
+  ];
+
   try {
     const response = await fetch(`${API_URL}?t=${Date.now()}`, {
       cache: "no-store",
@@ -47,6 +53,8 @@ async function getInventory(retries = 2) {
   } catch (error) {
     console.error("Error loading inventory:", error);
     loadingWrapperEl.textContent = "Oh no! There was an error.";
+  } finally {
+    timers.forEach(clearTimeout);
   }
 }
 

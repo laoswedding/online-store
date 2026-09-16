@@ -8,6 +8,7 @@ const paymentAmountEl = document.querySelector(".payment-amount");
 const processingOrderModalEl = document.querySelector(
   ".processing-order-modal",
 );
+const processingOrderTextEl = document.querySelector(".processing-order-text");
 let cart = JSON.parse(localStorage.getItem("CART")) || [];
 let totalPrice = 0;
 let totalItems = 0;
@@ -160,11 +161,17 @@ document.getElementById("checkoutBtn").addEventListener("click", async () => {
 });
 
 function postToAppsScript(data) {
-  // console.log("This is the data sent to Apps Script:");
-  // console.log(data);
-
   //Make the processing order modal appear
   processingOrderModalEl.style.opacity = "1";
+
+  const timers = [
+    setTimeout(() => {
+      processingOrderTextEl.innerHTML = "Almost there";
+    }, 5000),
+    setTimeout(() => {
+      processingOrderTextEl.innerHTML = "Getting closer";
+    }, 10000),
+  ];
 
   fetch(API_URL, {
     method: "POST",
@@ -176,14 +183,9 @@ function postToAppsScript(data) {
   })
     .then((res) => {
       // With no-cors, we can't read the JSON payload (res is "opaque").
-      //set "Do not refresh page" to empty string
       refreshMsg.style.display = "none";
-
-      //set "Processing order" to "Order Success!"
       processingMsg.innerHTML = "Order Success!";
 
-      // Add your success logic here!
-      // e.g., clear the cart, show a success modal, or redirect the user:
       localStorage.setItem("CART", []);
 
       //COMMENT OUT FOR LOCAL PRODUCTION ENVIRONMENT
@@ -194,14 +196,14 @@ function postToAppsScript(data) {
     })
     .catch((error) => {
       console.error("Fetch error:", error);
-      //set "Do not refresh page" to empty string
       refreshMsg.style.display = "none";
-
-      //set "Processing order" to "An error occurred."
       processingMsg.innerHTML = "An error occurred.";
 
       setTimeout(() => {
         processingOrderModalEl.style.opacity = "0";
       }, 1000);
+    })
+    .finally(() => {
+      timers.forEach(clearTimeout);
     });
 }

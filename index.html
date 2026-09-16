@@ -42,7 +42,11 @@
     </nav>
     <main>
         <div class="loading-wrapper">
-            Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
+            <video disableremoteplayback="" x-webkit-airplay="deny" src="1mb.mp4" class="rm-hidden" autoplay="" loop=""
+                playsinline="" muted="" aria-hidden="true" contenteditable="false" poster=""></video>
+            <div class="gradient-overlay"></div>
+            <div class="loading-group"><span class="loading-text">Loading</span><span class="dot">.</span><span
+                    class="dot">.</span><span class="dot">.</span></div>
         </div>
         <div class="products-wrapper">
             <h1 class="filtered-product-header">All Products</h1>
@@ -80,14 +84,6 @@
     <div class="cart-modal empty-cart">
         <p class="card-modal-text"><i class="fa-solid fa-triangle-exclamation"></i> Your Cart Is Empty</p></i>
     </div>
-    <script>
-        const porductsListEl = document.querySelector(".products-list");
-        // const seeMoreBtn = document.querySelector(".see-more-btn");
-
-        // seeMoreBtn.addEventListener('click', () => {
-        //     porductsListEl.scrollIntoView({ behavior: "smooth" })
-        // })
-    </script>
     <script src="./products.js"></script>
     <script src="./app.js"></script>
     <script src="./nav.js"></script>
