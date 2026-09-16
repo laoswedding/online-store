@@ -17,7 +17,7 @@ const productsWrapperEl = document.querySelector(".products-wrapper");
 
 //GET REQUEST
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbxR1dbsGsAQIUfu9IxkUPfgX07lLgQ3Hsjv8f62nbBbA-eFS1MEKYXSvK2GNMinPUqOEw/exec";
+  "https://sheetdb.io/api/v1/xfivr1rt6im4k?sheet=Inventory";
 
 let products = [];
 
@@ -28,7 +28,7 @@ async function getInventory(retries = 2) {
   ];
 
   try {
-    const response = await fetch(`${API_URL}?t=${Date.now()}`, {
+    const response = await fetch(`${API_URL}`, {
       cache: "no-store",
     });
 
@@ -145,7 +145,6 @@ function addToCart(id) {
     changeNumberOfUnits("plus", id);
   } else {
     const item = products.find((product) => product.id === id);
-
     cart.push({
       ...item,
       numberOfUnits: 1,
