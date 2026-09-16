@@ -111,7 +111,7 @@ async function buildCheckoutData() {
   const formattedOrderItems = cartItems
     .map((item) => {
       // Adjust 'qty', 'name', and 'price' to match your actual cart object properties
-      return `${item.numberOfUnits}x ${item.name} - $${item.price}`;
+      return `x${item.numberOfUnits} ${item.name} - ${item.price.toLocaleString("lo-LA")} LAK`;
     })
     .join("\n"); // '\n' creates a line break inside the Google Sheet cell
 
