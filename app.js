@@ -1,3 +1,6 @@
+// CART ARRAY
+let cart = JSON.parse(localStorage.getItem("CART")) || [];
+
 // SELECT ELEMENTS
 const productsEl = document.querySelector(".products");
 const cartItemsEl = document.querySelector(".cart-items");
@@ -120,8 +123,7 @@ function renderProducts(productList = products) {
 }
 renderProducts();
 
-// CART ARRAY
-let cart = JSON.parse(localStorage.getItem("CART")) || [];
+
 updateCart();
 
 // ADD TO CART
