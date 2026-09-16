@@ -121,7 +121,13 @@ function renderProducts(productList = products) {
 renderProducts();
 
 // CART ARRAY
-let cart = JSON.parse(localStorage.getItem("CART")) || [];
+let cart;
+try {
+  cart = JSON.parse(localStorage.getItem("CART")) || [];
+} catch (e) {
+  console.warn("Corrupted CART data, resetting.", e);
+  cart = [];
+}
 updateCart();
 
 // ADD TO CART
