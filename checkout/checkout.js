@@ -145,6 +145,10 @@ document.getElementById("checkoutBtn").addEventListener("click", async () => {
   // Add 'await' here to wait for the Promise to resolve into actual data
   const checkoutData = await buildCheckoutData();
 
+  if (!hasFile) {
+    alert("Please upload transfer slip.");
+    return;
+  }
   // console.log("is shipping company null?");
   // console.log(checkoutData);
   if (!checkoutData.shippingCompany) {
