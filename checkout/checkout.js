@@ -1,5 +1,5 @@
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbzqzV7cZih1vNwKpoa6BxhCt2_7j9buX04zcITPCYPQvMn8f740gfLI9cx7SSz5QY6JZg/exec";
+  "https://script.google.com/macros/s/AKfycbxuVW8C0DrsGMjSFocYWY9wFdfvbmtXTP6jp4VLjjccQiSEtwXlLycVuUCYW32VTlQuxg/exec";
 
 const orderItemsEl = document.querySelector(".order-items");
 const orderTotalEl = document.querySelector(".order-total");
