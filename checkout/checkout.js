@@ -133,6 +133,7 @@ async function buildCheckoutData() {
     orderId: generateOrderID(),
     orderTotal: totalPrice.toLocaleString("lo-LA"),
     orderTotalItems: totalItems,
+    orderStatus: "pending",
   };
 
   // 4. STORE USER'S DATA IN LOCAL STORAGE
@@ -188,10 +189,14 @@ function postToAppsScript(data) {
 
       localStorage.setItem("CART", "[]");
 
-      //COMMENT OUT FOR LOCAL PRODUCTION ENVIRONMENT
+      //*************************************************//
+      //**COMMENT OUT FOR LOCAL PRODUCTION ENVIRONMENT***//
+      //*************************************************//
       window.location.href = "/online-store/order-details";
 
-      //COMMENT OUT FOR DEPLOYED GITHUB VERSION
+      //*************************************************//
+      //*****COMMENT OUT FOR DEPLOYED GITHUB VERSION*****//
+      //*************************************************//
       // window.location.href = "/order-details";
     })
     .catch((error) => {

@@ -16,15 +16,18 @@ const loadingTextEl = document.querySelector(".loading-text");
 const productsWrapperEl = document.querySelector(".products-wrapper");
 
 //GET REQUEST
-const API_URL =
-  "https://sheetdb.io/api/v1/xfivr1rt6im4k?sheet=Inventory";
+const API_URL = "https://sheetdb.io/api/v1/xfivr1rt6im4k?sheet=Inventory";
 
 let products = [];
 
 async function getInventory(retries = 2) {
   const timers = [
-    setTimeout(() => { loadingTextEl.innerHTML = 'Almost there'; }, 5000),
-    setTimeout(() => { loadingTextEl.innerHTML = 'Getting closer'; }, 10000),
+    setTimeout(() => {
+      loadingTextEl.innerHTML = "Almost there";
+    }, 5000),
+    setTimeout(() => {
+      loadingTextEl.innerHTML = "Getting closer";
+    }, 10000),
   ];
 
   try {
@@ -264,10 +267,14 @@ function goToCheckout() {
       emptyCartEl.style.opacity = "0";
     }, 2000);
   } else {
-    //COMMENT OUT FOR LOCAL PRODUCTION ENVIRONMENT
+    //*************************************************//
+    //**COMMENT OUT FOR LOCAL PRODUCTION ENVIRONMENT***//
+    //*************************************************//
     window.location.href = "/online-store/checkout";
 
-    //COMMENT OUT FOR DEPLOYED GITHUB VERSION
+    //*************************************************//
+    //*****COMMENT OUT FOR DEPLOYED GITHUB VERSION*****//
+    //*************************************************//
     // window.location.href = "/checkout";
   }
 }
