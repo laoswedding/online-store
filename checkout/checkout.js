@@ -1,5 +1,5 @@
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbxR1dbsGsAQIUfu9IxkUPfgX07lLgQ3Hsjv8f62nbBbA-eFS1MEKYXSvK2GNMinPUqOEw/exec";
+  "https://script.google.com/macros/s/AKfycbzqzV7cZih1vNwKpoa6BxhCt2_7j9buX04zcITPCYPQvMn8f740gfLI9cx7SSz5QY6JZg/exec";
 
 const orderItemsEl = document.querySelector(".order-items");
 const orderTotalEl = document.querySelector(".order-total");
@@ -186,7 +186,7 @@ function postToAppsScript(data) {
       refreshMsg.style.display = "none";
       processingMsg.innerHTML = "Order Success!";
 
-      localStorage.setItem("CART", []);
+      localStorage.setItem("CART", "[]");
 
       //COMMENT OUT FOR LOCAL PRODUCTION ENVIRONMENT
       window.location.href = "/online-store/order-details";
