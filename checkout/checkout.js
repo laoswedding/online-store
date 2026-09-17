@@ -116,6 +116,12 @@ async function buildCheckoutData() {
     })
     .join("\n"); // '\n' creates a line break inside the Google Sheet cell
 
+
+   const orderItemsImgSrc  = cartItems.map((item) => {
+      // Adjust 'qty', 'name', and 'price' to match your actual cart object properties
+      return `${item.imgSrc}`;
+    })
+    .join("\n"); // '\n' creates a line break inside the Google Sheet cell
   //Build object
   const data = {
     firstName: document.getElementById("firstName").value.trim().toUpperCase(),
@@ -134,6 +140,7 @@ async function buildCheckoutData() {
     orderTotal: totalPrice.toLocaleString("lo-LA"),
     orderTotalItems: totalItems,
     orderStatus: "pending",
+    orderItemsImgSrc: orderItemsImgSrc
   };
 
   // 4. STORE USER'S DATA IN LOCAL STORAGE

@@ -24,10 +24,27 @@ function renderOrderDetails() {
     return;
   }
 
-  orderItems = user.orderItems.split("\n").join("<br>");
+  const itemLines = user.orderItems
+    .split("\n")
+    .filter((line) => line.trim() !== "");
+  const imgLines = user.orderItemsImgSrc
+    .split("\n")
+    .filter((line) => line.trim() !== "");
+
+  const orderItemsHtml = itemLines
+    .map((line, i) => {
+      const imgSrc = imgLines[i] || ""; // fallback in case arrays mismatch
+      return `
+      <div class="order-line">
+        ${imgSrc ? `<img src="../${imgSrc}" alt="" class="order-line-icon">` : ""}
+        <p>${line}</p>
+      </div>
+    `;
+    })
+    .join("");
 
   orderDetailsEl.innerHTML = `
-    <div class="order-details-inner">
+    <div class="order-details-inner center">
         <img src="img/logo-white.webp">
         <p class="receipt-center-text">ORDER RECEIPT</p>
         <p class="receipt-center-text">${year}-${month}-${day} ${hours}:${minutes}:${seconds}</p>
@@ -67,8 +84,9 @@ function renderOrderDetails() {
     <hr>
     <div class="order-details-inner">
       <p class="detail-label">Order Items:</p>
-      <p>${orderItems}</p>
+      ${orderItemsHtml}
     </div>
+    <hr>
     <div class="order-details-inner">
       <p class="detail-label">Total Items:</p>
       <p>${user.orderTotalItems ?? ""}</p>
