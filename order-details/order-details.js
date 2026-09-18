@@ -100,6 +100,10 @@ function renderOrderDetails() {
 //CLEAR USER OBJECT IN STORE
 function clearUserObjectInStore() {
   localStorage.setItem("USER", null);
+
+  isLocalHost
+    ? (window.location.href = "/")
+    : (window.location.href = "/online-store");
 }
 
 //DOWNLOAD RECEIPT BUTTON

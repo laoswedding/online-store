@@ -1,5 +1,5 @@
-const API_URL =
-  "https://script.google.com/macros/s/AKfycbxuVW8C0DrsGMjSFocYWY9wFdfvbmtXTP6jp4VLjjccQiSEtwXlLycVuUCYW32VTlQuxg/exec";
+// const APPS_SCRIPT_API_URL =
+//   "https://script.google.com/macros/s/AKfycbxuVW8C0DrsGMjSFocYWY9wFdfvbmtXTP6jp4VLjjccQiSEtwXlLycVuUCYW32VTlQuxg/exec";
 
 const orderItemsEl = document.querySelector(".order-items");
 const orderTotalEl = document.querySelector(".order-total");
@@ -116,12 +116,17 @@ async function buildCheckoutData() {
     })
     .join("\n"); // '\n' creates a line break inside the Google Sheet cell
 
-
-   const orderItemsImgSrc  = cartItems.map((item) => {
+  const orderItemsImgSrc = cartItems
+    .map((item) => {
       // Adjust 'qty', 'name', and 'price' to match your actual cart object properties
       return `${item.imgSrc}`;
     })
     .join("\n"); // '\n' creates a line break inside the Google Sheet cell
+
+  const orderItemIdsAndNumberOfUnits = cartItems.map((item) => ({
+    id: item.id,
+    numberOfUnits: item.numberOfUnits,
+  }));
   //Build object
   const data = {
     firstName: document.getElementById("firstName").value.trim().toUpperCase(),
@@ -140,7 +145,8 @@ async function buildCheckoutData() {
     orderTotal: totalPrice.toLocaleString("lo-LA"),
     orderTotalItems: totalItems,
     orderStatus: "pending",
-    orderItemsImgSrc: orderItemsImgSrc
+    orderItemsImgSrc: orderItemsImgSrc,
+    orderItemIdsAndNumberOfUnits: JSON.stringify(orderItemIdsAndNumberOfUnits)
   };
 
   // 4. STORE USER'S DATA IN LOCAL STORAGE
@@ -168,6 +174,8 @@ document.getElementById("checkoutBtn").addEventListener("click", async () => {
   postToAppsScript(checkoutData);
 });
 
+// const isLocalHost = true;
+
 function postToAppsScript(data) {
   //Make the processing order modal appear
   processingOrderModalEl.style.opacity = "1";
@@ -181,7 +189,7 @@ function postToAppsScript(data) {
     }, 10000),
   ];
 
-  fetch(API_URL, {
+  fetch(APPS_SCRIPT_API_URL, {
     method: "POST",
     mode: "no-cors", // Tells the browser "Send this and don't worry about reading the response"
     headers: {
@@ -196,15 +204,9 @@ function postToAppsScript(data) {
 
       localStorage.setItem("CART", "[]");
 
-      //*************************************************//
-      //**COMMENT OUT FOR LOCAL PRODUCTION ENVIRONMENT***//
-      //*************************************************//
-      window.location.href = "/online-store/order-details";
-
-      //*************************************************//
-      //*****COMMENT OUT FOR DEPLOYED GITHUB VERSION*****//
-      //*************************************************//
-      // window.location.href = "/order-details";
+      isLocalHost
+        ? (window.location.href = "/order-details")
+        : (window.location.href = "/online-store/order-details");
     })
     .catch((error) => {
       console.error("Fetch error:", error);
@@ -218,4 +220,10 @@ function postToAppsScript(data) {
     .finally(() => {
       timers.forEach(clearTimeout);
     });
+}
+
+function goBackToStore() {
+  isLocalHost
+    ? (window.location.href = "/")
+    : (window.location.href = "/online-store");
 }

@@ -5,6 +5,7 @@
   --bg-color: #fff;
   --link-color: #000;
   --link-size: 1.1rem;
+  --order-total: rgb(58, 193, 255);
 }
 
 /* General CSS */
@@ -418,6 +419,7 @@ main {
   padding: 1rem;
   border-radius: 1rem;
   color: #fff;
+  pointer-events: none;
 }
 
 .item-added {
@@ -438,6 +440,23 @@ main {
   transition: opacity 0.5s ease-out;
 }
 
+/* .cart-mobile {
+  position: relative;
+} */
+
+.total-items-in-cart {
+  background-color: var(--order-total);
+  width: 20px;
+  position: absolute;
+  border-radius: 30px;
+  top: 2px;
+  right: 0;
+  transform: translateX(-100%);
+  color: #e6e6e6;
+  font-size: 1rem;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   html {
     overflow-x: hidden;
@@ -445,6 +464,18 @@ main {
 
   main {
     position: relative;
+  }
+
+  .total-items-in-cart {
+    background-color: var(--order-total);
+    width: 20px;
+    position: absolute;
+    border-radius: 30px;
+    top: 20px;
+    right: 30px;
+    transform: translateX(-100%);
+    color: #e6e6e6;
+    font-size: 1rem;
   }
 
   .loading-wrapper {

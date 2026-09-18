@@ -2,7 +2,7 @@
 const productsEl = document.querySelector(".products");
 const cartItemsEl = document.querySelector(".cart-items");
 const subtotalEl = document.querySelector(".subtotal");
-// const totalItemsInCartEl = document.querySelector(".total-items-in-cart");
+const totalItemsInCartEl = document.querySelectorAll(".total-items-in-cart");
 const cartEl = document.querySelector(".cart");
 const bodyEl = document.body;
 const filteredProductHeaderEl = document.querySelector(
@@ -16,7 +16,7 @@ const loadingTextEl = document.querySelector(".loading-text");
 const productsWrapperEl = document.querySelector(".products-wrapper");
 
 //GET REQUEST
-const API_URL = "https://sheetdb.io/api/v1/xfivr1rt6im4k?sheet=Inventory";
+// const SHEETS_DB_API_URL = "https://sheetdb.io/api/v1/xfivr1rt6im4k?sheet=Inventory";
 
 let products = [];
 
@@ -31,7 +31,7 @@ async function getInventory(retries = 2) {
   ];
 
   try {
-    const response = await fetch(`${API_URL}`, {
+    const response = await fetch(`${SHEETS_DB_API_URL}`, {
       cache: "no-store",
     });
 
@@ -99,6 +99,11 @@ function filterProductsByCategory(category) {
 
 // RENDER PRODUCTS
 function renderProducts(productList = products) {
+    // Iterate through all matched elements and update their innerHTML
+  totalItemsInCartEl.forEach((el) => {
+      el.style.display = "none";
+  });
+
   // Clear existing items before rendering new ones
   productsEl.innerHTML = "";
 
@@ -107,7 +112,7 @@ function renderProducts(productList = products) {
       <div class="item">
           <div class="item-container">
               <div class="item-img">
-                  <img src="${product.imgSrc}" alt="${product.name}">
+                  <img src="${product.imgSrc}" alt="${product.name}" loading="lazy">
               </div>
               <div class="desc">
                   <h2 class="product-name">${product.name}</h2>
@@ -190,7 +195,16 @@ function renderSubtotal() {
       maximumFractionDigits: 2,
     },
   )} LAK`;
-  // totalItemsInCartEl.innerHTML = totalItems;
+  
+  // Iterate through all matched elements and update their innerHTML
+  totalItemsInCartEl.forEach((el) => {
+    if ((totalItems === 0)) {
+      el.style.display = "none";
+    } else {
+      el.style.display = "block";
+      el.innerHTML = totalItems;
+    }
+  });
 }
 
 //RENDER CART ITEMS
@@ -267,14 +281,8 @@ function goToCheckout() {
       emptyCartEl.style.opacity = "0";
     }, 2000);
   } else {
-    //*************************************************//
-    //**COMMENT OUT FOR LOCAL PRODUCTION ENVIRONMENT***//
-    //*************************************************//
-    window.location.href = "/online-store/checkout";
-
-    //*************************************************//
-    //*****COMMENT OUT FOR DEPLOYED GITHUB VERSION*****//
-    //*************************************************//
-    // window.location.href = "/checkout";
+    isLocalHost
+      ? (window.location.href = "/checkout")
+      : (window.location.href = "/online-store/checkout");
   }
 }
