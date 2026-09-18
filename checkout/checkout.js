@@ -151,7 +151,8 @@ async function buildCheckoutData() {
     orderItemsImgSrc: orderItemsImgSrc,
     orderItemIdsAndNumberOfUnits: JSON.stringify(orderItemIdsAndNumberOfUnits),
     hasDiscountCode: "false",
-    discountCode: ""
+    discountCode: "",
+    action: "createOrder"
   };
 
   // 5. STORE USER'S DATA IN LOCAL STORAGE, WILL USE IN ORDER DETAILS PAGE
