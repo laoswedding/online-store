@@ -127,6 +127,35 @@ main {
   transform: translate(-50%, -50%);
 }
 
+/* "your image" loading circle */
+.puck {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background-image: url(img/favicon.png);
+  background-position: center;
+  background-size: contain;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.347),
+    0 1px 3px rgba(0, 0, 0, 0.05);
+}
+/* 3. pulse / breathe */
+.pulse .puck {
+  animation: pulse 1.3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.55;
+  }
+}
+
 .loading-wrapper .dot {
   display: inline-block;
   opacity: 0.2;

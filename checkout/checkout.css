@@ -258,3 +258,13 @@
 .processing-order-modal .dot:nth-child(3) {
   animation-delay: 0.4s;
 }
+
+@media (max-width: 768px) {
+  .checkout-form,
+  .order-summary,
+  .qr-scan,
+  .transfer-slip,
+  .checkoutBtn {
+    width: 90%;
+  }
+}

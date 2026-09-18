@@ -1,9 +1,13 @@
 let user = JSON.parse(localStorage.getItem("USER")) || {};
-let orderId = JSON.parse(localStorage.getItem("USER")).orderId || "";
+const orderId = user?.orderId || "";
 const orderDetailsEl = document.querySelector(".order-details");
 let orderItems = "";
 document.addEventListener("DOMContentLoaded", () => {
-  renderOrderDetails();
+  if (!user || !orderId) {
+    goBackToStore();
+  } else {
+    renderOrderDetails();
+  }
 });
 
 function renderOrderDetails() {
@@ -100,10 +104,12 @@ function renderOrderDetails() {
 //CLEAR USER OBJECT IN STORE
 function clearUserObjectInStore() {
   localStorage.setItem("USER", null);
+  goBackToStore();
+}
 
-  isLocalHost
-    ? (window.location.href = "/")
-    : (window.location.href = "/online-store");
+//GO BACK TO STORE
+function goBackToStore() {
+  window.location.href = isLocalHost ? "/" : "/online-store";
 }
 
 //DOWNLOAD RECEIPT BUTTON

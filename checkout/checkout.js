@@ -18,7 +18,11 @@ const refreshMsg = document.querySelector(".refresh-msg");
 
 //RENDER ORDER SUMMARY
 document.addEventListener("DOMContentLoaded", () => {
-  renderOrderItems();
+  if (cart.length === 0) {
+    goBackToStore();
+  } else {
+    renderOrderItems();
+  }
 });
 
 function renderOrderItems() {
@@ -146,7 +150,8 @@ async function buildCheckoutData() {
     orderStatus: "pending",
     orderItemsImgSrc: orderItemsImgSrc,
     orderItemIdsAndNumberOfUnits: JSON.stringify(orderItemIdsAndNumberOfUnits),
-    hasDiscountCode: false,
+    hasDiscountCode: "false",
+    discountCode: ""
   };
 
   // 5. STORE USER'S DATA IN LOCAL STORAGE, WILL USE IN ORDER DETAILS PAGE
@@ -236,9 +241,7 @@ function postToAppsScript(data) {
 
       localStorage.setItem("CART", "[]");
 
-      isLocalHost
-        ? (window.location.href = "/order-details")
-        : (window.location.href = "/online-store/order-details");
+      window.location.href = isLocalHost ? "/order-details" : "/online-store/order-details"
     })
     .catch((error) => {
       console.error("Fetch error:", error);
@@ -255,7 +258,5 @@ function postToAppsScript(data) {
 }
 
 function goBackToStore() {
-  isLocalHost
-    ? (window.location.href = "/")
-    : (window.location.href = "/online-store");
+  window.location.href = isLocalHost ? "/" : "/online-store";
 }
