@@ -1,6 +1,3 @@
-// const APPS_SCRIPT_API_URL =
-//   "https://script.google.com/macros/s/AKfycbxuVW8C0DrsGMjSFocYWY9wFdfvbmtXTP6jp4VLjjccQiSEtwXlLycVuUCYW32VTlQuxg/exec";
-
 const orderItemsEl = document.querySelector(".order-items");
 const orderTotalEl = document.querySelector(".order-total");
 const orderItemsTotalEl = document.querySelector(".order-items-total");
@@ -9,15 +6,17 @@ const processingOrderModalEl = document.querySelector(
   ".processing-order-modal",
 );
 const processingOrderTextEl = document.querySelector(".processing-order-text");
+const alertModalEl = document.querySelector(".alert-modal");
+const alertTextEl = document.querySelector(".alert-text");
 let cart = JSON.parse(localStorage.getItem("CART")) || [];
 let totalPrice = 0;
 let totalItems = 0;
 let selectedShippingCompany = null;
-let photoUrl = ""; // filled in after upload completes
+let photoUrl = ""; // filled in after upload completes from Apps Scripts
 const processingMsg = document.querySelector(".processing-msg");
 const refreshMsg = document.querySelector(".refresh-msg");
 
-//render order summary
+//RENDER ORDER SUMMARY
 document.addEventListener("DOMContentLoaded", () => {
   renderOrderItems();
 });
@@ -47,7 +46,7 @@ function renderOrderItems() {
   paymentAmountEl.innerHTML = totalPrice.toLocaleString("lo-LA");
 }
 
-// Choose shipping company
+//CHOOSE SHIPPING COMPANY
 function clickShippingCompany(shippingCompany, element) {
   // Optional: Clear border from all shipping containers first
   document.querySelectorAll(".shipping-company-container").forEach((el) => {
@@ -57,10 +56,9 @@ function clickShippingCompany(shippingCompany, element) {
   // Highlight the selected element
   element.style.border = "5px solid blue";
   selectedShippingCompany = shippingCompany;
-  console.log(selectedShippingCompany);
 }
 
-//boolean for file upload
+//BOOLEAN FOR FILE UPLOAD (USED FOR CHECK - NEED TO HAVE PICTURE UPLOADED BEFORE PLACING ORDER)
 let hasFile = false;
 
 document.getElementById("imageUpload").addEventListener("change", (e) => {
@@ -68,7 +66,7 @@ document.getElementById("imageUpload").addEventListener("change", (e) => {
   console.log(hasFile);
 });
 
-// Function to handle file upload
+// HANDLE FILE UPLOAD
 async function uploadFile(file) {
   return new Promise((resolve, reject) => {
     const fr = new FileReader();
@@ -116,6 +114,7 @@ async function buildCheckoutData() {
     })
     .join("\n"); // '\n' creates a line break inside the Google Sheet cell
 
+  // 3. FORMAT THE IMG SRC INTO A STRING TO RENDER THEM IN THE EMAIL - GETTING THEM FROM RAW GITHUB CONTENT
   const orderItemsImgSrc = cartItems
     .map((item) => {
       // Adjust 'qty', 'name', and 'price' to match your actual cart object properties
@@ -123,11 +122,13 @@ async function buildCheckoutData() {
     })
     .join("\n"); // '\n' creates a line break inside the Google Sheet cell
 
+  // 4. PUT ITEM ID'S AND NUMBER OF UNITS INTO AN OBJECT TO SUBSTRACT FROM INVENTORY ONCE ORDER IS SHIPPED
   const orderItemIdsAndNumberOfUnits = cartItems.map((item) => ({
     id: item.id,
     numberOfUnits: item.numberOfUnits,
   }));
-  //Build object
+
+  //BUILD OBJECT TO SEND IN POST REQUEST
   const data = {
     firstName: document.getElementById("firstName").value.trim().toUpperCase(),
     lastName: document.getElementById("lastName").value.trim().toUpperCase(),
@@ -137,8 +138,6 @@ async function buildCheckoutData() {
     province: document.getElementById("laos-provinces").value.toUpperCase(),
     city: document.getElementById("city").value.toUpperCase(),
     village: document.getElementById("village").value.trim().toUpperCase(),
-
-    // 3. ADD TO YOUR PAYLOAD
     fileData: fileData,
     orderItems: formattedOrderItems,
     orderId: generateOrderID(),
@@ -146,36 +145,69 @@ async function buildCheckoutData() {
     orderTotalItems: totalItems,
     orderStatus: "pending",
     orderItemsImgSrc: orderItemsImgSrc,
-    orderItemIdsAndNumberOfUnits: JSON.stringify(orderItemIdsAndNumberOfUnits)
+    orderItemIdsAndNumberOfUnits: JSON.stringify(orderItemIdsAndNumberOfUnits),
+    hasDiscountCode: false,
   };
 
-  // 4. STORE USER'S DATA IN LOCAL STORAGE
+  // 5. STORE USER'S DATA IN LOCAL STORAGE, WILL USE IN ORDER DETAILS PAGE
   localStorage.setItem("USER", JSON.stringify(data));
 
   return data;
 }
 
-// Add 'async' here
+// CLICKING ON THE PLACE ORDER BUTTON AT THE BOTTOM
 document.getElementById("checkoutBtn").addEventListener("click", async () => {
   // Add 'await' here to wait for the Promise to resolve into actual data
-  const checkoutData = await buildCheckoutData();
 
-  if (!hasFile) {
-    alert("Please upload transfer slip.");
+  //CHECKING IF ALL INPUT FIELDS ARE COMPLETED
+  const checkoutData = await buildCheckoutData();
+  if (
+    checkoutData.firstName === "" ||
+    checkoutData.lastName === "" ||
+    checkoutData.phone === "" ||
+    checkoutData.branch === "" ||
+    checkoutData.province === "" ||
+    checkoutData.city === "" ||
+    checkoutData.village === ""
+  ) {
+    showAndHideAlertModal("Please fill out all required fields (*).");
     return;
   }
-  // console.log("is shipping company null?");
-  // console.log(checkoutData);
+
+  //CHECK FOR FILE UPLOAD AND SHIPPING COMPANY
+  if (!hasFile && !checkoutData.shippingCompany) {
+    showAndHideAlertModal(
+      "Please choose a shipping company & upload transfer slip.",
+    );
+    return;
+  }
+
+  //CHECK FOR FILE UPLOAD
+  if (!hasFile) {
+    showAndHideAlertModal("Please upload transfer slip.");
+    return;
+  }
+
+  //CHECK SHIPPING COMPANY
   if (!checkoutData.shippingCompany) {
-    alert("Please choose a shipping company.");
+    showAndHideAlertModal("Please choose a shipping company.");
     return;
   }
 
   postToAppsScript(checkoutData);
 });
 
-// const isLocalHost = true;
+// SHOW AND HIDE ALERT MODAL
+function showAndHideAlertModal(alertModalText) {
+  alertTextEl.innerHTML = alertModalText;
+  alertModalEl.style.opacity = "1";
+  setTimeout(() => {
+    alertModalEl.style.opacity = "0";
+  }, 3000);
+  return;
+}
 
+//POST REQUEST TO GOOGLE APPS SCRIPT
 function postToAppsScript(data) {
   //Make the processing order modal appear
   processingOrderModalEl.style.opacity = "1";

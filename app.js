@@ -11,12 +11,10 @@ const filteredProductHeaderEl = document.querySelector(
 const itemAddedEl = document.querySelector(".item-added");
 const itemRemovedEl = document.querySelector(".item-removed");
 const emptyCartEl = document.querySelector(".empty-cart");
+const itemPlusOneEl = document.querySelector(".item-plus-one");
 const loadingWrapperEl = document.querySelector(".loading-wrapper");
 const loadingTextEl = document.querySelector(".loading-text");
 const productsWrapperEl = document.querySelector(".products-wrapper");
-
-//GET REQUEST
-// const SHEETS_DB_API_URL = "https://sheetdb.io/api/v1/xfivr1rt6im4k?sheet=Inventory";
 
 let products = [];
 
@@ -99,9 +97,9 @@ function filterProductsByCategory(category) {
 
 // RENDER PRODUCTS
 function renderProducts(productList = products) {
-    // Iterate through all matched elements and update their innerHTML
+  // Iterate through all matched elements and update their innerHTML
   totalItemsInCartEl.forEach((el) => {
-      el.style.display = "none";
+    el.style.display = "none";
   });
 
   // Clear existing items before rendering new ones
@@ -146,11 +144,22 @@ try {
 }
 updateCart();
 
+// SHOW AND HIDE MODAL
+function showAndHideModal(modalElement) {
+  modalElement.style.opacity = "1";
+
+  setTimeout(() => {
+    modalElement.style.opacity = "0";
+  }, 2000);
+}
+
 // ADD TO CART
 function addToCart(id) {
   // check if product already exist in cart
   if (cart.some((item) => item.id === id)) {
     changeNumberOfUnits("plus", id);
+
+    showAndHideModal(itemPlusOneEl);
   } else {
     const item = products.find((product) => product.id === id);
     cart.push({
@@ -158,12 +167,7 @@ function addToCart(id) {
       numberOfUnits: 1,
     });
 
-    // Show the modal
-    itemAddedEl.style.opacity = "1";
-
-    setTimeout(() => {
-      itemAddedEl.style.opacity = "0";
-    }, 1000);
+    showAndHideModal(itemAddedEl);
   }
 
   updateCart();
@@ -174,7 +178,7 @@ function updateCart() {
   renderCartItems();
   renderSubtotal();
 
-  // save cart to local storage
+  // SAVE CART TO LOCAL STORAGE
   localStorage.setItem("CART", JSON.stringify(cart));
 }
 
@@ -195,10 +199,10 @@ function renderSubtotal() {
       maximumFractionDigits: 2,
     },
   )} LAK`;
-  
+
   // Iterate through all matched elements and update their innerHTML
   totalItemsInCartEl.forEach((el) => {
-    if ((totalItems === 0)) {
+    if (totalItems === 0) {
       el.style.display = "none";
     } else {
       el.style.display = "block";
@@ -236,14 +240,7 @@ function renderCartItems() {
 //REMOVE ITEM FROM CART
 function removeItemFromCart(id) {
   cart = cart.filter((item) => item.id !== id);
-
-  // Show the modal
-  itemRemovedEl.style.opacity = "1";
-
-  setTimeout(() => {
-    itemRemovedEl.style.opacity = "0";
-  }, 1000);
-
+  showAndHideModal(itemRemovedEl);
   updateCart();
 }
 
@@ -275,11 +272,7 @@ function goToCheckout() {
   const isCartEmpty = Array.isArray(cart) ? cart.length === 0 : cart.size === 0;
 
   if (isCartEmpty) {
-    emptyCartEl.style.opacity = "1";
-
-    setTimeout(() => {
-      emptyCartEl.style.opacity = "0";
-    }, 2000);
+    showAndHideModal(emptyCartEl);
   } else {
     isLocalHost
       ? (window.location.href = "/checkout")

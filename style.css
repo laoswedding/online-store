@@ -420,29 +420,22 @@ main {
   border-radius: 1rem;
   color: #fff;
   pointer-events: none;
-}
-
-.item-added {
-  background-color: rgb(123, 194, 123);
   opacity: 0;
   transition: opacity 0.5s ease-out;
+}
+
+.item-added,
+.item-plus-one {
+  background-color: rgb(123, 194, 123);
 }
 
 .item-removed {
   background-color: rgb(255, 111, 111);
-  opacity: 0;
-  transition: opacity 0.5s ease-out;
 }
 
 .empty-cart {
   background-color: rgb(255, 111, 111);
-  opacity: 0;
-  transition: opacity 0.5s ease-out;
 }
-
-/* .cart-mobile {
-  position: relative;
-} */
 
 .total-items-in-cart {
   background-color: var(--order-total);

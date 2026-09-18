@@ -212,11 +212,12 @@
   cursor: pointer;
 }
 
-.go-back-to-store:hover{
+.go-back-to-store:hover {
   text-decoration: underline;
 }
 
-.processing-order-modal {
+.processing-order-modal,
+.alert-modal {
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -235,6 +236,8 @@
   opacity: 0;
   transition: opacity 0.5s ease-out;
   pointer-events: none;
+  text-align: center;
+  width: 300px;
 }
 
 .processing-order-modal .dot {
