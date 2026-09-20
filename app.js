@@ -279,3 +279,9 @@ function goToCheckout() {
       : (window.location.href = "/online-store/checkout");
   }
 }
+
+function goToCancelOrderPage() {
+  window.location.href = isLocalHost
+    ? "/cancel-order"
+    : "/online-store/cancel-order";
+}

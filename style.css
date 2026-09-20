@@ -471,9 +471,9 @@ main {
   width: 20px;
   position: absolute;
   border-radius: 30px;
-  top: 2px;
+  top: 25px;
   right: 0;
-  transform: translateX(-100%);
+  transform: translateX(-250%);
   color: #e6e6e6;
   font-size: 1rem;
   text-align: center;

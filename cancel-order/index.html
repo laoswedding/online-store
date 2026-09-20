@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="shortcut icon" href="#">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web App | Keeps Loudder </title>
+    <title>Cancel Order | Keeps Loudder </title>
     <link rel="shortcut icon" href="../img/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../nav-style.css">
@@ -27,21 +27,26 @@
     </nav>
     <main>
         <div class="order-wrapper">
-            <h1>Enter Order Id</h1>
+            <h1>Cancel Order Id</h1>
             <!-- ORDER DETAILS -->
             <div class="order-bottom">
                 <form id="orderForm">
-                    <input type="text" id="orderId" required placeholder="KL-DD4TGG6">
+                    <input type="text" id="orderId" required placeholder="Example: KL-DD4TGG6">
                     <button type="submit">Search</button>
                 </form>
 
                 <div id="result"></div>
             </div>
         </div>
-
+        <!-- ALERT MODAL -->
+        <div class="alert-modal">
+            <div class="processing-msg">
+                <span class="alert-text"></span>
+            </div>
+        </div>
     </main>
     <script src="../config.js"></script>
-    <script src="inventory-shipping.js">
+    <script src="cancel-order.js">
     </script>
 </body>
 

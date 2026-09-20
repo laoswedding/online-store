@@ -48,10 +48,12 @@ function renderOrderDetails() {
     .join("");
 
   orderDetailsEl.innerHTML = `
+  <div class="order-render">
     <div class="order-details-inner center">
         <img src="img/logo-white.webp">
         <p class="receipt-center-text">ORDER RECEIPT</p>
         <p class="receipt-center-text">${year}-${month}-${day} ${hours}:${minutes}:${seconds}</p>
+        <p class="receipt-center-text">Order Status: ${user.orderStatus}</p>
     </div>
     <div class="order-details-inner">
       <p class="detail-label">Name:</p>
@@ -98,6 +100,7 @@ function renderOrderDetails() {
     <div class="order-details-inner">
       <p class="detail-label">Total:</p>
       <p>₭${user.orderTotal ?? ""} LAK</p>
+    </div>
     </div>`;
 }
 

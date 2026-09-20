@@ -259,6 +259,34 @@
   animation-delay: 0.4s;
 }
 
+#orderForm {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+#orderForm input {
+  width: 65%;
+  padding: 0;
+  font-size: 1.4rem;
+}
+
+#orderForm button {
+  width: 25%;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.order-render {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.order-render button {
+  width: 100%;
+}
+
 @media (max-width: 768px) {
   .checkout-form,
   .order-summary,

@@ -1,3 +1,6 @@
+const alertModalEl = document.querySelector(".alert-modal");
+const alertTextEl = document.querySelector(".alert-text");
+
 document
   .getElementById("orderForm")
   .addEventListener("submit", async function (e) {
@@ -43,14 +46,15 @@ document
           .join("");
 
         // console.log(data[0]);
-        //GENERATE SHIP BUTTON IF ORDER HASN'T BEEN CANCELLED OR SHIPPED
-        const shipButtonHtml =
+
+        //IF ORDER STATUS IS PENDING, THEN GENERATE THE CANCEL BUTTON
+        const cancelButtonHtml =
           data[0].orderStatus.toLowerCase() === "pending"
-            ? `<button class="checkoutBtn" id="checkoutBtn" data-order-id="${data[0].orderId}">Ship Order</button>`
+            ? `<button class="checkoutBtn" id="checkoutBtn" data-order-id="${data[0].orderId}">Cancel Order</button>`
             : "";
 
         resultDiv.innerHTML = `
-        <div class="order-render">
+    <div class="order-render">
     <div class="order-details-inner center">
       <p>${data[0].orderId ?? ""}</p>
     </div>
@@ -100,7 +104,7 @@ document
       <p class="detail-label">Total:</p>
       <p>₭${data[0].orderTotal ?? ""} LAK</p>
     </div>
-    ${shipButtonHtml}
+    ${cancelButtonHtml}
     </div>`;
       }
     } catch (err) {
@@ -115,13 +119,13 @@ document.getElementById("result").addEventListener("click", async (e) => {
   const orderId = button.dataset.orderId;
 
   button.disabled = true;
-  button.textContent = "Shipping...";
+  button.textContent = "Cancelling...";
 
   try {
     const response = await fetch(APPS_SCRIPT_API_URL, {
       method: "POST",
       body: JSON.stringify({
-        action: "shipOrder",
+        action: "cancelOrder",
         orderId: orderId,
       }),
     });
@@ -129,17 +133,27 @@ document.getElementById("result").addEventListener("click", async (e) => {
     const result = await response.json();
 
     if (result.success) {
-      button.textContent = "Shipped ✓";
+      button.textContent = "Cancelled ✓";
       // maybe remove the row, update UI, etc.
     } else {
-      alert("Error: " + result.error);
+      showAndHideAlertModal(result.error);
       button.disabled = false;
-      button.textContent = "Mark as shipped";
+      button.textContent = "Cancel Order";
     }
   } catch (err) {
     console.error(err);
-    alert("Network error — please try again.");
+    showAndHideAlertModal("Network error — please try again.");
     button.disabled = false;
-    button.textContent = "Mark as shipped";
+    button.textContent = "Cancel Order";
   }
 });
+
+// SHOW AND HIDE ALERT MODAL
+function showAndHideAlertModal(alertModalText) {
+  alertTextEl.innerHTML = alertModalText;
+  alertModalEl.style.opacity = "1";
+  setTimeout(() => {
+    alertModalEl.style.opacity = "0";
+  }, 3000);
+  return;
+}
