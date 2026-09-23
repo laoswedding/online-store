@@ -29,7 +29,7 @@ async function getInventory(retries = 2) {
   ];
 
   try {
-    const response = await fetch(`${SHEETS_DB_API_URL}`, {
+    const response = await fetch(`${SHEETS_DB_API_URL_INVENTORY}`, {
       cache: "no-store",
     });
 

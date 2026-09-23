@@ -300,10 +300,10 @@ main {
   top: 90px;
   right: 0;
   height: calc(100dvh - 90px);
-  width: 40%;
+  width: 45%;
   background-color: rgb(64, 64, 64);
   color: #fff;
-  padding: 0 1rem;
+  padding: 0;
   visibility: hidden;
   opacity: 0;
   transform: translateX(20px); /* small, just for a nice slide-in feel */
@@ -311,6 +311,8 @@ main {
     transform 0.3s ease-in-out,
     opacity 0.3s ease-in-out,
     visibility 0.3s;
+  display: flex;
+  flex-direction: column;
 }
 
 .cart.active {
@@ -327,52 +329,52 @@ main {
 }
 /* cart items */
 .cart-items {
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
+  flex: 1;
+  min-height: 0;
 }
+
 /* cart item */
 .cart-item {
   display: flex;
-  justify-content: space-around;
-  padding: 10px 0;
+  justify-content: start;
+  width: 100%;
 }
 
-.column1,
-.column2,
-.column3,
-.column4 {
-  width: 25%;
+.column1 {
+  width: 40%;
   text-align: center;
 }
 
-.cart-item div {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 25%;
+.column2,
+.column3,
+.column4 {
+  width: 20%;
+  text-align: center;
 }
+
 /* item info */
 .item-info {
-  flex: 1;
-  /* background-color: rgba(255, 255, 255, 0.6); */
+  display: flex;
+  align-items: center;
   border-radius: 0 10px 10px 0;
   padding: 10px;
   gap: 10px;
+  font-size: 0.8rem;
+  width: 40%;
 }
 
 .cart-item .item-info img {
-  width: 75px;
+  width: 30%;
   border-radius: 1rem;
 }
+
 /* unit price */
 .cart-item .unit-price {
-  flex: 1;
   font-size: 1.2rem;
 }
-/* units */
-.cart-item .units {
-  flex: 1;
-}
+
 .cart-item .units .number {
   margin: 0 10px;
   font-size: 1.2rem;
@@ -388,11 +390,23 @@ main {
   -webkit-user-select: none; /* Chrome all / Safari all */
   -moz-user-select: none; /* Firefox all */
   -ms-user-select: none; /* IE 10+ */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .btn.minus,
 .btn.plus {
   font-size: 2rem;
+}
+
+.unit-price,
+.units,
+.remove {
+  width: 20% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* cart footer */
@@ -474,7 +488,7 @@ main {
   top: 25px;
   right: 0;
   transform: translateX(-250%);
-  color: #e6e6e6;
+  color: #000;
   font-size: 1rem;
   text-align: center;
 }

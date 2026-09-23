@@ -36,6 +36,7 @@
   flex-direction: column;
   justify-content: start;
   align-items: start;
+  margin-bottom: .6rem;
 }
 
 .center {
@@ -50,6 +51,13 @@
 
 .detail-label {
   color: #666;
+}
+
+.pending {
+  color:#000;
+  background-color: rgb(238, 238, 170);
+  padding: 0 .5rem;
+  border-radius: .5rem;
 }
 
 .note-text {
