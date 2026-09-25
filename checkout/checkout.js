@@ -36,18 +36,15 @@ function renderOrderItems() {
   cart.forEach((item) => {
     orderItemsEl.innerHTML += `
         <div class="order-item">
-                <img src="../${item.imgSrc}" alt="${item.name}" class="order-item-img">
+                <img src="${item.img_src}" alt="${item.name}" class="order-item-img">
                 <p class="order-item-description"><span class="order-item-name">${item.name}:</span> ${item.description} <span class="order-item-qty"> <br>Qty: ${item.numberOfUnits}</span></p>
-                <p class="order-item-price">${(
-                  item.price * item.numberOfUnits
-                ).toLocaleString("lo-LA", {
-                  style: "currency",
-                  currency: "LAK",
-                })} LAK</p></div>`;
+                <p class="order-item-price">${
+                  (item.price * item.numberOfUnits).toLocaleString("lo-LA")
+                } LAK</p></div>`;
   });
   orderItemsTotalEl.innerHTML = totalItems;
-  orderTotalEl.innerHTML = totalPrice.toLocaleString("lo-LA");
-  paymentAmountEl.innerHTML = totalPrice.toLocaleString("lo-LA");
+  orderTotalEl.innerHTML = totalPrice.toLocaleString();
+  paymentAmountEl.innerHTML = totalPrice.toLocaleString();
 }
 
 //CHOOSE SHIPPING COMPANY
@@ -71,21 +68,23 @@ document.getElementById("imageUpload").addEventListener("change", (e) => {
 });
 
 // HANDLE FILE UPLOAD
-async function uploadFile(file) {
-  return new Promise((resolve, reject) => {
-    const fr = new FileReader();
-    fr.onload = (e) => {
-      const data = e.target.result.split(",");
-      const obj = {
-        fileName: file.name,
-        mimeType: data[0].match(/:(\w.+);/)[1],
-        data: data[1],
-      };
-      resolve(obj);
-    };
-    fr.onerror = reject;
-    fr.readAsDataURL(file);
-  });
+async function uploadFile(file, orderId) {
+  const fileExt = file.name.split(".").pop();
+
+  const filePath = `${orderId}.${fileExt}`;
+
+  const { data, error } = await db.storage
+    .from("order-slips")
+    .upload(filePath, file, {
+      contentType: file.type,
+      upsert: false,
+    });
+
+  if (error) {
+    throw error;
+  }
+
+  return data.path;
 }
 
 // Helper function to generate a random 8-character alphanumeric ID
@@ -96,66 +95,66 @@ function generateOrderID() {
   return `KL-${randomPart}`;
 }
 
-//build checkout data
 async function buildCheckoutData() {
+  const orderId = generateOrderID();
+
   const fileInput = document.getElementById("imageUpload");
   let fileData = null;
 
   if (fileInput.files.length > 0) {
-    fileData = await uploadFile(fileInput.files[0]);
+    fileData = await uploadFile(fileInput.files[0], orderId);
   }
 
-  // 1. GET YOUR CART ITEMS (Replace this with however you access your cart)
-  // Example structure: [{ name: "T-Shirt", qty: 2, price: 15.00 }, { name: "Hat", qty: 1, price: 10.00 }]
   const cartItems = cart;
 
-  // 2. FORMAT THE CART INTO A STRING
-  // Maps over each item to create "2x T-Shirt ($15.00)" and joins them with a line break
   const formattedOrderItems = cartItems
     .map((item) => {
-      // Adjust 'qty', 'name', and 'price' to match your actual cart object properties
-      return `x${item.numberOfUnits} ${item.name} - ₭${item.price.toLocaleString("lo-LA")} LAK`;
+      return `x${item.numberOfUnits} ${item.name} - ₭${item.price} LAK`;
     })
-    .join("\n"); // '\n' creates a line break inside the Google Sheet cell
+    .join("\n");
 
-  // 3. FORMAT THE IMG SRC INTO A STRING TO RENDER THEM IN THE EMAIL - GETTING THEM FROM RAW GITHUB CONTENT
-  const orderItemsImgSrc = cartItems
-    .map((item) => {
-      // Adjust 'qty', 'name', and 'price' to match your actual cart object properties
-      return `${item.imgSrc}`;
-    })
-    .join("\n"); // '\n' creates a line break inside the Google Sheet cell
+  const orderItemsImgSrc = cartItems.map((item) => item.img_src).join("\n");
 
-  // 4. PUT ITEM ID'S AND NUMBER OF UNITS INTO AN OBJECT TO SUBSTRACT FROM INVENTORY ONCE ORDER IS SHIPPED
   const orderItemIdsAndNumberOfUnits = cartItems.map((item) => ({
     id: item.id,
     numberOfUnits: item.numberOfUnits,
   }));
 
-  //BUILD OBJECT TO SEND IN POST REQUEST
   const data = {
     firstName: document.getElementById("firstName").value.trim().toUpperCase(),
     lastName: document.getElementById("lastName").value.trim().toUpperCase(),
     phone: document.getElementById("phone").value.trim(),
+
     shippingCompany: selectedShippingCompany,
+
     branch: document.getElementById("branch").value.trim().toUpperCase(),
+
     province: document.getElementById("laos-provinces").value.toUpperCase(),
+
     city: document.getElementById("city").value.toUpperCase(),
+
     village: document.getElementById("village").value.trim().toUpperCase(),
+
     fileData: fileData,
+
     orderItems: formattedOrderItems,
-    orderId: generateOrderID(),
-    orderTotal: totalPrice.toLocaleString("lo-LA"),
+
+    orderId: orderId,
+
+    orderTotal: totalPrice,
+
     orderTotalItems: totalItems,
+
     orderStatus: "pending",
+
     orderItemsImgSrc: orderItemsImgSrc,
+
     orderItemIdsAndNumberOfUnits: JSON.stringify(orderItemIdsAndNumberOfUnits),
-    hasDiscountCode: "false",
+
+    hasDiscountCode: false,
     discountCode: "",
-    action: "createOrder"
   };
 
-  // 5. STORE USER'S DATA IN LOCAL STORAGE, WILL USE IN ORDER DETAILS PAGE
   localStorage.setItem("USER", JSON.stringify(data));
 
   return data;
@@ -200,7 +199,7 @@ document.getElementById("checkoutBtn").addEventListener("click", async () => {
     return;
   }
 
-  postToAppsScript(checkoutData);
+  postOrder(checkoutData);
 });
 
 // SHOW AND HIDE ALERT MODAL
@@ -213,49 +212,100 @@ function showAndHideAlertModal(alertModalText) {
   return;
 }
 
-//POST REQUEST TO GOOGLE APPS SCRIPT
-function postToAppsScript(data) {
-  //Make the processing order modal appear
+async function postOrder(data) {
   processingOrderModalEl.style.opacity = "1";
 
   const timers = [
     setTimeout(() => {
       processingOrderTextEl.innerHTML = "Almost there";
     }, 5000),
+
     setTimeout(() => {
       processingOrderTextEl.innerHTML = "Getting closer";
     }, 10000),
   ];
 
-  fetch(APPS_SCRIPT_API_URL, {
-    method: "POST",
-    mode: "no-cors", // Tells the browser "Send this and don't worry about reading the response"
-    headers: {
-      "Content-Type": "text/plain;charset=utf-8",
-    },
-    body: JSON.stringify(data),
-  })
-    .then((res) => {
-      // With no-cors, we can't read the JSON payload (res is "opaque").
-      refreshMsg.style.display = "none";
-      processingMsg.innerHTML = "Order Success!";
+  try {
+    const order = {
+      order_id: data.orderId,
+      first_name: data.firstName,
+      last_name: data.lastName,
+      phone: data.phone,
+      shipping_company: data.shippingCompany,
+      branch: data.branch,
+      province: data.province,
+      city: data.city,
+      village: data.village,
+      fileData: data.fileData,
+      order_total: data.orderTotal,
+      order_total_items: data.orderTotalItems,
+      order_status: data.orderStatus,
+      has_discount_code: data.hasDiscountCode,
+      discount_code: data.discountCode,
+    };
 
-      localStorage.setItem("CART", "[]");
+    const { error } = await db.from("orders").insert([order]);
 
-      window.location.href = isLocalHost ? "/order-details" : "/online-store/order-details"
-    })
-    .catch((error) => {
-      console.error("Fetch error:", error);
-      refreshMsg.style.display = "none";
-      processingMsg.innerHTML = "An error occurred.";
+    if (error) {
+      throw error;
+    }
 
-      setTimeout(() => {
-        processingOrderModalEl.style.opacity = "0";
-      }, 1000);
-    })
-    .finally(() => {
-      timers.forEach(clearTimeout);
-    });
+    console.log("Order successfully created:");
+
+    //get order items
+    const orderItems = cart.map((item) => ({
+      order_id: data.orderId,
+      item_id: item.id,
+      item_name: item.name,
+      qty: item.numberOfUnits,
+      unit_price: item.price,
+    }));
+
+    const { error: itemsError } = await db
+      .from("order_items")
+      .insert(orderItems);
+
+    if (itemsError) {
+      throw itemsError;
+    }
+
+    // Send order email
+    const { data: emailResult, error: emailError } = await db.functions.invoke(
+      "send-order-email",
+      {
+        body: {
+          orderId: data.orderId,
+        },
+      },
+    );
+
+    if (emailError) {
+      throw emailError;
+    }
+
+    console.log("Order email sent:", emailResult);
+
+    //change styles and text
+    refreshMsg.style.display = "none";
+    processingMsg.innerHTML = "Order Success!";
+
+    localStorage.setItem("CART", "[]");
+
+    window.location.href = isLocalHost
+      ? "/order-details"
+      : "/online-store/order-details";
+  } catch (error) {
+    console.error("Order submission error:", error);
+
+    refreshMsg.style.display = "none";
+    processingMsg.innerHTML = "An error occurred.";
+
+    setTimeout(() => {
+      processingOrderModalEl.style.opacity = "0";
+    }, 1000);
+  } finally {
+    timers.forEach(clearTimeout);
+  }
 }
 
 function goBackToStore() {

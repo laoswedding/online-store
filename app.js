@@ -29,19 +29,11 @@ async function getInventory(retries = 2) {
   ];
 
   try {
-    const response = await fetch(`${SHEETS_DB_API_URL_INVENTORY}`, {
-      cache: "no-store",
-    });
+    const { data, error } = await db.from("items").select("*");
 
-    if (!response.ok) {
-      if (retries > 0) {
-        console.warn(`Retrying inventory fetch... (${retries} left)`);
-        return getInventory(retries - 1);
-      }
-      throw new Error(`HTTP error: ${response.status}`);
-    }
+    if (error) throw error;
 
-    products = (await response.json()).map((product) => ({
+    products = data.map((product) => ({
       ...product,
       id: Number(product.id),
       price: Number(product.price),
@@ -110,7 +102,7 @@ function renderProducts(productList = products) {
       <div class="item">
           <div class="item-container">
               <div class="item-img">
-                  <img src="${product.imgSrc}" alt="${product.name}" loading="lazy">
+                  <img src="${product.img_src}" alt="${product.name}" loading="lazy">
               </div>
               <div class="desc">
                   <h2 class="product-name">${product.name}</h2>
@@ -202,12 +194,10 @@ function renderSubtotal() {
 
   // Iterate through all matched elements and update their innerHTML
   totalItemsInCartEl.forEach((el) => {
-    if (totalItems === 0) {
-      el.style.display = "none";
-    } else {
-      el.style.display = "block";
-      el.innerHTML = totalItems;
-    }
+    const count = Math.max(0, parseInt(totalItems, 10) || 0);
+
+    el.hidden = count === 0;
+    el.textContent = count > 99 ? "99+" : count;
   });
 }
 
@@ -218,11 +208,11 @@ function renderCartItems() {
     cartItemsEl.innerHTML += `
         <div class="cart-item">
             <div class="item-info">
-                <img src="${item.imgSrc}" alt="${item.name}">
+                <img src="${item.img_src}" alt="${item.name}">
                 <h4>${item.name}</h4>
             </div>
             <div class="unit-price">
-                ${item.price.toLocaleString("lo-LA")} LAK
+                ${item.price} LAK
             </div>
             <div class="units">
                 <div class="btn minus" onclick="changeNumberOfUnits('minus', ${item.id})">-</div>

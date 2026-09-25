@@ -40,7 +40,7 @@ function renderOrderDetails() {
       const imgSrc = imgLines[i] || ""; // fallback in case arrays mismatch
       return `
       <div class="order-line">
-        ${imgSrc ? `<img src="../${imgSrc}" alt="" class="order-line-icon">` : ""}
+        ${imgSrc ? `<img src="${imgSrc}" alt="" class="order-line-icon">` : ""}
         <p>${line}</p>
       </div>
     `;
@@ -53,7 +53,7 @@ function renderOrderDetails() {
         <img src="img/logo-white.webp">
         <p class="receipt-center-text">ORDER RECEIPT</p>
         <p class="receipt-center-text">${year}-${month}-${day} ${hours}:${minutes}:${seconds}</p>
-        <p class="receipt-center-text">Order Status: <span class="pending">${user.orderStatus.toUpperCase()}</span></p>
+        <p class="receipt-center-text">Order Status: <span class="pending-order">${user.orderStatus.toUpperCase()}</span></p>
     </div>
     <div class="order-details-inner">
       <p class="detail-label">Name:</p>

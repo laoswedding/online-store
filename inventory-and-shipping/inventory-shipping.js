@@ -8,7 +8,7 @@ document
 
     if (!orderId) return;
 
-    const url = `${SHEETS_DB_API_URL_PARAM}/search?orderId=${encodeURIComponent(orderId)}`;
+    const url = `${SHEETS_DB_BASE_API_URL}/search?orderId=${encodeURIComponent(orderId)}`;
 
     resultDiv.textContent = "Loading...";
 
