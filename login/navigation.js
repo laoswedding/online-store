@@ -61,10 +61,8 @@ window.addEventListener("hashchange", () => {
 
 async function loadOrders() {
   try {
-    // orders = await api('listOrders', session.token);
-    //calling Sheetsdb rather than Apps Script
     orders = await api("listOrders");
-    console.log("this is the order", orders)
+
     ordersError = "";
   } catch (err) {
     if (isSessionError(err)) return expired();
