@@ -10,7 +10,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=Noto+Sans+Lao:wght@400;500;600;700&display=swap"
     rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -136,10 +136,13 @@
         <label class="field span2"><span data-i18n="form.description">Description</span>
           <textarea id="f-description" rows="4" maxlength="5000"></textarea>
         </label>
-        <label class="field span2"><span data-i18n="form.image">Image link or path</span>
+        <!-- <label class="field span2"><span data-i18n="form.image">Image link or path</span>
           <input id="f-img" maxlength="2000" placeholder="https://… or images/photo.jpg" autocomplete="off">
+        </label> -->
+        <label class="field span2"><span data-i18n="form.images">Photos (up to 5)</span>
+          <input id="f-img-file" type="file" accept="image/*">
         </label>
-        <div id="img-preview" class="preview span2" hidden></div>
+        <ul id="img-gallery" class="gallery span2"></ul>
         <label class="field span2"><span data-i18n="form.learn">Learn more link or path</span>
           <input id="f-learn" maxlength="2000" placeholder="https://… or page.html" autocomplete="off">
         </label>
@@ -201,7 +204,7 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <!-- SUPABASE -->
-   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../config.js"></script>
   <script src="supabase.js"></script>
   <script src="helpers.js"></script>
@@ -218,6 +221,7 @@
   <script src="shipAndCancel.js"></script>
   <script src="addEdit.js"></script>
   <script src="loadingRenderingItems.js"></script>
+  <script src="gallery.js"></script>
 
 </body>
 

@@ -76,7 +76,6 @@ const STRINGS = {
     "form.stock": "Stock",
     "form.category": "Category",
     "form.description": "Description",
-    "form.image": "Image link or path",
     "form.learn": "Learn more link or path",
     "form.previewAlt": "Preview of the image link",
     "form.previewBad": "This image couldn’t load. Check the link.",
@@ -92,7 +91,7 @@ const STRINGS = {
     "toast.saved": "Changes saved",
     "del.title": "Delete “{name}”?",
     "del.body":
-      "This removes it from the sheet for everyone and can’t be undone.",
+      "This removes it from the inventory and can’t be undone.",
     "del.keep": "Keep item",
     "del.confirm": "Delete item",
     "del.working": "Deleting…",
@@ -293,7 +292,6 @@ const STRINGS = {
     "form.stock": "ສະຕັອກ",
     "form.category": "ໝວດໝູ່",
     "form.description": "ລາຍລະອຽດ",
-    "form.image": "ລິ້ງ ຫຼື ທີ່ຢູ່ຮູບພາບ",
     "form.learn": "ລິ້ງ ຫຼື ທີ່ຢູ່ໜ້າລາຍລະອຽດ",
     "form.previewAlt": "ຕົວຢ່າງຮູບພາບ",
     "form.previewBad": "ໂຫຼດຮູບພາບນີ້ບໍ່ໄດ້. ກະລຸນາກວດລິ້ງ.",
@@ -529,11 +527,20 @@ let orders = []; // all rows from the Orders sheet (editors and admins only)
 let ordersError = "";
 let currentView = "inventory";
 
+//grab the element with the id or classname provided
 const $ = (s) => document.querySelector(s);
+
+//grab the role from the user profile and set it to the string for rendering/permissions
 const ROLE_LABEL = { viewer: "Viewer", editor: "Editor", admin: "Admin" };
+
+//editing permissions need a session, editor or admin role
 const canEdit = () =>
   !!session && (session.role === "editor" || session.role === "admin");
+
+//admin can only delete
 const canDelete = () => !!session && session.role === "admin";
+
+//stockQty
 const stockQty = (v) => {
   const n = Number(v);
   return v !== "" && v != null && isFinite(n) ? n : 0;
@@ -561,7 +568,11 @@ const linkUrl = (u) => resolveUrl(u, LINK_BASE_URL);
 // Builds DOM nodes without innerHTML, so user-entered text can never run as markup.
 function el(tag, props, ...children) {
   const node = document.createElement(tag);
+
+  //if there are properties, add them based on the conditions
   if (props) {
+
+    //look at the key: value pair for each item
     for (const [k, v] of Object.entries(props)) {
       if (k === "class") node.className = v;
       else if (k === "text") node.textContent = v;
@@ -570,6 +581,7 @@ function el(tag, props, ...children) {
         node.setAttribute(k, v === true ? "" : v);
     }
   }
+  //Loops over every extra argument passed after props, then appends it to the node
   for (const c of children) if (c != null) node.append(c);
   return node;
 }
@@ -586,23 +598,6 @@ const isSessionError = (err) =>
     messageOf(err),
   );
 const expired = () => showLogin("Your session expired. Sign in again.");
-
-// const moneyFmt = {};
-// function fmtMoney(n) {
-//   n = Number(n);
-//   if (!isFinite(n)) return '';
-//   const whole = Number.isInteger(n);
-//   const key = whole ? 'whole' : 'full';
-//   try {
-//     moneyFmt[key] = moneyFmt[key] || new Intl.NumberFormat(undefined, Object.assign(
-//       { style: 'currency', currency: CURRENCY },
-//       whole ? { minimumFractionDigits: 0, maximumFractionDigits: 0 } : {}
-//     ));
-//     return moneyFmt[key].format(n);
-//   } catch (e) {
-//     return whole ? String(n) : n.toFixed(2);
-//   }
-// }
 
 const moneyFmt = {};
 function fmtMoney(n) {

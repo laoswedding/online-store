@@ -6,7 +6,7 @@
     if (!canDelete()) return;
     deleteTarget = it;
     $('#delete-title').textContent = 'Delete “' + it.name + '”?';
-    $('#delete-body').textContent = 'This removes it from the sheet for everyone and can’t be undone.';
+    $('#delete-body').textContent = 'This removes it from the inventory and can’t be undone.';
     $('#delete-error').textContent = '';
     deleteDialog.showModal();
   }

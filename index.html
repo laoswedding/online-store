@@ -55,6 +55,32 @@
         </div>
         <div class="products-wrapper">
             <h1 class="filtered-product-header">All Products</h1>
+
+            <!-- category button conmponent -->
+            <div id="category-button-container"></div>
+
+            <!-- product filter component -->
+            <div id="product-filter">
+                <div id="controls">
+                    <input type="text" id="search" placeholder="Search name, description, category..."
+                        autocomplete="off">
+                    <select id="category-filter"></select>
+                    <select id="stock-filter">
+                        <option value="all">All stock</option>
+                        <option value="inStock">In stock</option>
+                        <option value="outOfStock">Out of stock</option>
+                    </select>
+                    <select id="sort-by">
+                        <option value="name-asc">Name (A-Z)</option>
+                        <option value="price-asc">Price (Low to High)</option>
+                        <option value="price-desc">Price (High to Low)</option>
+                        <option value="recent">Recently Added</option>
+                    </select>
+                </div>
+                <!-- <div id="results"></div> -->
+            </div>
+
+            <!-- products section -->
             <div class="products">
                 <!-- RENDER PRODUCTS HERE -->
             </div>
@@ -92,8 +118,8 @@
     <div class="cart-modal empty-cart">
         <p class="card-modal-text"><i class="fa-solid fa-triangle-exclamation"></i> Your Cart Is Empty</p></i>
     </div>
-     <!-- SUPABASE -->
-   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- <script src="./products.js"></script> -->
     <script src="./config.js"></script>
     <script src="./app.js"></script>

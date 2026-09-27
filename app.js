@@ -16,9 +16,16 @@ const loadingWrapperEl = document.querySelector(".loading-wrapper");
 const loadingTextEl = document.querySelector(".loading-text");
 const productsWrapperEl = document.querySelector(".products-wrapper");
 
+// ---- Elements ----
+const searchInput = document.getElementById("search");
+const categorySelect = document.getElementById("category-filter");
+const stockSelect = document.getElementById("stock-filter");
+const sortSelect = document.getElementById("sort-by");
+const resultsEl = document.getElementById("results");
+
 let products = [];
 
-async function getInventory(retries = 2) {
+async function getInventory() {
   const timers = [
     setTimeout(() => {
       loadingTextEl.innerHTML = "Almost there";
@@ -37,10 +44,16 @@ async function getInventory(retries = 2) {
       ...product,
       id: Number(product.id),
       price: Number(product.price),
-      instock: Number(product.instock),
+      instock: Number(product.in_stock),
     }));
 
     renderProducts();
+    populateCategories(products);
+
+    // Check if categories are empty using strictly equal (===)
+    if (categories.length === 0) {
+      getCategories(products);
+    }
     loadingWrapperEl.style.visibility = "hidden";
     productsWrapperEl.style.visibility = "visible";
   } catch (error) {
@@ -87,43 +100,154 @@ function filterProductsByCategory(category) {
   }
 }
 
+//RENDER PRODUCTS. V2
+//takes in the tag type, iterable properties object, and spreads the children
+function el(tag, props, ...children) {
+  //create the specified tag
+  const node = document.createElement(tag);
+
+  //if there is an iterable properties object, loop each value
+  if (props) {
+    for (const [k, v] of Object.entries(props)) {
+      //if value k is "class", then set it as the className
+      if (k === "class") node.className = v;
+      //if value k is "text", set text content to v
+      else if (k === "text") node.textContent = v;
+      //if value k starts with "on", set the event listener type to slice off 'on' and then the value v
+      else if (k.startsWith("on")) node.addEventListener(k.slice(2), v);
+      //if value v is not falsy nor null, set the v value to an empty string, or the value of v
+      else if (v !== false && v != null)
+        node.setAttribute(k, v === true ? "" : v);
+    }
+  }
+
+  //loop through the children and append them to the node
+  for (const c of children) if (c != null) node.append(c);
+
+  //return the node
+  return node;
+}
+
+//Get categories
+// Extract unique categories and add an 'All' option
+let categories = [];
+
+function getCategories() {
+  // 1. Guard clause: If buttons already exist, do nothing and exit
+  if (categories.length > 0) return;
+  console.lo;
+  // 2. Reference the global `products` array directly
+  categories = ["All", ...new Set(products.map((p) => p.category))];
+
+  const categoryButtonContainer = document.getElementById(
+    "category-button-container",
+  );
+
+  // 3. Dynamically create buttons once
+  categories.forEach((category) => {
+    const button = document.createElement("button");
+    button.textContent = category;
+    button.addEventListener("click", () => filterProducts(category));
+    categoryButtonContainer.appendChild(button);
+  });
+}
+
 // RENDER PRODUCTS
 function renderProducts(productList = products) {
-  // Iterate through all matched elements and update their innerHTML
   totalItemsInCartEl.forEach((el) => {
     el.style.display = "none";
   });
 
-  // Clear existing items before rendering new ones
-  productsEl.innerHTML = "";
-
-  productList.forEach((product) => {
-    productsEl.innerHTML += `
-      <div class="item">
-          <div class="item-container">
-              <div class="item-img">
-                  <img src="${product.img_src}" alt="${product.name}" loading="lazy">
-              </div>
-              <div class="desc">
-                  <h2 class="product-name">${product.name}</h2>
-                  <p class="product-description">
-                      ${product.description}
-                  </p>
-                  <h2 class="price">₭${product.price.toLocaleString("en-US")} LAK</h2>
-                  <div class="product-btns">
-                   <div class="add-to-cart" onclick="addToCart(${product.id})">
-                  Add To Cart
-                  </div>
-                  <a href="${product.learnMore}" class="learn-more">Learn More</a>
-                  </div>
-                 
-              </div>
-
-          </div>
-      </div>
-    `;
-  });
+  // Build all markup as a single string, then set innerHTML once
+  productsEl.innerHTML = productList.map(productToHTML).join("");
 }
+
+function productToHTML(product) {
+  return `
+    <div class="item">
+        <div class="item-container">
+            <div class="item-img">
+                <img src="${escapeHTML(product.img_src)}" alt="${escapeHTML(product.name)}" loading="lazy">
+            </div>
+            <div class="desc">
+                <h2 class="product-name">${escapeHTML(product.name)}</h2>
+                <p class="product-description">
+                    ${escapeHTML(product.description)}
+                </p>
+                <h2 class="price">₭${product.price.toLocaleString("en-US")} LAK</h2>
+                <div class="product-btns">
+                    <div class="add-to-cart" data-id="${product.id}">Add To Cart</div>
+                    <a href="${escapeHTML(product.learnMore)}" class="learn-more">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+  `;
+}
+
+function escapeHTML(str = "") {
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// Set up once, outside renderProducts — event delegation instead of inline onclick
+productsEl.addEventListener("click", (e) => {
+  const btn = e.target.closest(".add-to-cart");
+  if (!btn) return;
+  addToCart(Number(btn.dataset.id));
+});
+
+// Filter logic
+function filterProducts(category) {
+  if (category === "All") {
+    filteredProductHeaderEl.textContent = "All Products";
+    renderProducts(products);
+  } else {
+    const filtered = products.filter((p) => p.category === category);
+    filteredProductHeaderEl.textContent = category;
+    renderProducts(filtered);
+  }
+}
+
+// // RENDER PRODUCTS
+// function renderProducts(productList = products) {
+//   // Iterate through all matched elements and update their innerHTML
+//   totalItemsInCartEl.forEach((el) => {
+//     el.style.display = "none";
+//   });
+
+//   // Clear existing items before rendering new ones
+//   productsEl.innerHTML = "";
+
+//   productList.forEach((product) => {
+//     productsEl.innerHTML += `
+//       <div class="item">
+//           <div class="item-container">
+//               <div class="item-img">
+//                   <img src="${product.img_src}" alt="${product.name}" loading="lazy">
+//               </div>
+//               <div class="desc">
+//                   <h2 class="product-name">${product.name}</h2>
+//                   <p class="product-description">
+//                       ${product.description}
+//                   </p>
+//                   <h2 class="price">₭${product.price.toLocaleString("en-US")} LAK</h2>
+//                   <div class="product-btns">
+//                    <div class="add-to-cart" onclick="addToCart(${product.id})">
+//                   Add To Cart
+//                   </div>
+//                   <a href="${product.learnMore}" class="learn-more">Learn More</a>
+//                   </div>
+
+//               </div>
+
+//           </div>
+//       </div>
+//     `;
+//   });
+// }
+
 renderProducts();
 
 // CART ARRAY
@@ -275,3 +399,73 @@ function goToCancelOrderPage() {
     ? "/cancel-order"
     : "/online-store/cancel-order";
 }
+
+//
+
+// ---- Build category options from the fetched data ----
+function populateCategories(items) {
+  const categories = [...new Set(items.map((p) => p.category))].sort();
+  categorySelect.innerHTML =
+    '<option value="all">All categories</option>' +
+    categories.map((c) => `<option value="${c}">${c}</option>`).join("");
+}
+
+// ---- Filtering + sorting ----
+function getFilteredSorted() {
+  const term = searchInput.value.trim().toLowerCase();
+  const category = categorySelect.value;
+  const stock = stockSelect.value;
+
+  let filtered = products.filter((p) => {
+    const matchesSearch =
+      !term ||
+      (p.name && p.name.toLowerCase().includes(term)) ||
+      (p.description && p.description.toLowerCase().includes(term)) ||
+      (p.category && p.category.toLowerCase().includes(term));
+
+    const matchesCategory = category === "all" || p.category === category;
+
+    const matchesStock =
+      stock === "all" ||
+      (stock === "inStock" && p.instock > 0) ||
+      (stock === "outOfStock" && !(p.instock > 0));
+
+    return matchesSearch && matchesCategory && matchesStock;
+  });
+
+  switch (sortSelect.value) {
+    case "name-asc":
+      filtered.sort((a, b) => a.name.localeCompare(b.name));
+      break;
+    case "price-asc":
+      filtered.sort((a, b) => a.price - b.price);
+      break;
+    case "price-desc":
+      filtered.sort((a, b) => b.price - a.price);
+      break;
+    case "recent":
+      // Assumes each product has a "createdAt" (date string/timestamp) or "id" that increases over time.
+      filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      break;
+  }
+
+  return filtered;
+}
+
+// ---- Render ----
+function render() {
+  const items = getFilteredSorted();
+
+  if (items.length === 0) {
+    productsEl.innerHTML = '<p id="empty">No products match your filters.</p>';
+    return;
+  }
+
+  productsEl.innerHTML = items.map(productToHTML).join("");
+}
+
+// ---- Event listeners ----
+searchInput.addEventListener("input", render);
+categorySelect.addEventListener("change", render);
+stockSelect.addEventListener("change", render);
+sortSelect.addEventListener("change", render);

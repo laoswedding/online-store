@@ -1,6 +1,10 @@
 /* ---------- order data ---------- */
 
+//===========================================
+//============ORDER ITEMS CODE===============
+//===========================================
 const LOW_STOCK = 5; // items at or below this many units count as running low
+
 const STATUS_LABEL = {
   pending: "Pending",
   shipped: "Shipped",
@@ -9,7 +13,9 @@ const STATUS_LABEL = {
 const openOrderIds = new Set();
 
 // Anything that isn't marked shipped or cancelled in the sheet counts as pending.
+//PASS IN THE ORDER
 function orderStatus(o) {
+  //SET STRING S TO THE ORDER STATUS
   const s = String(o.orderStatus == null ? "" : o.orderStatus)
     .trim()
     .toLowerCase();
@@ -45,17 +51,28 @@ function orderLines(o) {
 }
 
 const itemById = (id) => items.find((i) => String(i.id) === String(id));
+
+//FILTER PENDING ORDERS
 const pendingOrders = () => orders.filter((o) => orderStatus(o) === "pending");
+
 const byDate = (dir) => (a, b) =>
   dir * ((orderDate(a) || 0) - (orderDate(b) || 0));
+
+//SET CUSTOMER NAME
 const customerName = (o) =>
   [o.firstName, o.lastName].filter(Boolean).join(" ") || "Unnamed customer";
+
+//SET CUSTOMER ADDRESS
 const destination = (o) =>
   [o.village, o.city, o.province].filter(Boolean).join(", ");
+
+//SET ORDER DATE
 const dateLabel = (o) => {
   const d = orderDate(o);
   return d ? d.toLocaleDateString(undefined, { dateStyle: "medium" }) : "";
 };
+
+//SET ORDER DATE TIME
 const dateTimeLabel = (o) => {
   const d = orderDate(o);
   return d
@@ -63,14 +80,25 @@ const dateTimeLabel = (o) => {
     : "";
 };
 
+//CHECK THE STOCK, IF IT ENOUGH TO FULFILL THE ORDER
 function stockCheck(o) {
   if (!items.length) return { ok: true, unknown: true, problems: [] };
+
+  //EMPTY ARRAY FOR PROBLEMS
   const problems = [];
+
   orderLines(o).forEach((line) => {
+    //GET THE NUMBER OF UNITS
     const units = Number(line.numberOfUnits) || 0;
+
+    //GET THE ITEM ID
     const it = itemById(line.id);
+
+    //IF ITEM ID DOES NOT EXIST, ITEM IS NOT IN INVENTORY
     if (!it) problems.push("item " + line.id + " isn’t in the inventory");
     else if (stockQty(it.inStock) < units)
+      //IF THE ITEM STOCK QUANTITY IS LESS THAN THE ORDER'S QTY
+      //NEEDS MORE MESSAGE IS RENDERED
       problems.push(
         it.name + " needs " + units + ", has " + stockQty(it.inStock),
       );
@@ -85,6 +113,7 @@ const emptyBlock = (title, body) =>
     el("h2", { text: title }),
     el("p", { text: body }),
   );
+
 const statusBadge = (s) =>
   el(
     "span",
@@ -114,7 +143,7 @@ function ordersProblem(container) {
 
 /* ---------- order details, shared by Orders and Shipping ---------- */
 
-//found in the orders tab - order is passed into the function
+//FOUND IN ORDERS TAB IN THE UI- order is passed into the function
 function orderDetail(o) {
   //use orderStatus helper to get the status
   const status = orderStatus(o);
@@ -122,13 +151,18 @@ function orderDetail(o) {
   //create a div that will serve as the outer container
   const box = el("div", { class: "detail-box" });
 
+  //BUILD CUSTOMER DIV DELEMENT
   const who = el(
     "div",
     null,
     el("h3", { text: "Customer" }),
     el("p", { text: customerName(o) }),
   );
+
+  //ASSIGN PHONE NUMBER VAR
   const phone = String(o.phone == null ? "" : o.phone).trim();
+
+  //APPEND PHONE NUMBER
   if (phone) {
     const tel = phone.replace(/[^\d+]/g, "");
     who.append(
@@ -137,13 +171,25 @@ function orderDetail(o) {
         : el("p", { text: phone }),
     );
   }
+
+  //ASSIGN DESTINATION VAR
   const dest = destination(o);
+
+  //APPEND DESTINATION
   if (dest) who.append(el("p", { text: dest }));
+
+  //ASSIGN SHIPPING COMPANY
   const via = [o.shippingCompany, o.branch ? o.branch + " branch" : ""]
     .filter(Boolean)
     .join(", ");
+
+  //APPEND SHIPPING COMPANY
   if (via) who.append(el("p", { class: "sub", text: "Ship via " + via }));
+
+  //ASSIGN PHOTO
   const photo = resolveUrl(o.photoUrl, "");
+
+  //APPEND PHOTO
   if (photo) {
     who.append(
       el(
@@ -159,6 +205,7 @@ function orderDetail(o) {
     );
   }
 
+  //BUILD A DIV WITH A H3 WITH THE TEXT ITEMS
   const what = el("div", null, el("h3", { text: "Items" }));
 
   //splits the names of the items at the comma
@@ -213,6 +260,7 @@ function orderDetail(o) {
     list.append(el("li", { text: "No item details were saved." }));
   what.append(list);
 
+  //APPEND STOCK CHECK LINE IF ORDER IS PENDING
   if (status === "pending") {
     const chk = stockCheck(o);
     what.append(
@@ -228,6 +276,7 @@ function orderDetail(o) {
   }
   box.append(who, what);
 
+  //RENDER SHIP AND CANCEL ORDER BUTTONS BASED ON USER PERMISSIONS
   if (canEdit() && status === "pending") {
     box.append(
       el(

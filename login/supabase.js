@@ -1,4 +1,8 @@
 // ============ Supabase adapter ============
+//===========================================
+//==============SESSION CODE=================
+//===========================================
+//when refreshing the page, if there is a valid session then enter the app otherwise you will login in again
 (async function restoreSession() {
   const { data } = await db.auth.getSession();
   if (!data.session) {
@@ -18,19 +22,35 @@
   enterApp();
 })();
 
+//for more sensitive requests, you will need a session check from the database prior to carrying out a task
 async function requireSession() {
   const { data } = await db.auth.getSession(); // also refreshes an expiring token
   if (!data.session) throw new Error("Session expired. Please sign in again.");
   return data.session;
 }
 
+// async function run(query) {
+//   const { data, error } = await query;
+//   if (error) throw new Error(error.message);
+//   return data;
+// }
+
 async function run(query) {
   const { data, error } = await query;
-  if (error) throw new Error(error.message);
+  if (error) {
+    console.error("Full Supabase error:", error);
+    throw new Error(error.message);
+  }
   return data;
 }
 
-// Database row -> the camelCase shape your UI already uses
+//===========================================
+//===============FORMAT CODE=================
+//===========================================
+//========JSON AND SQL COLUMN NAMES==========
+
+//converts the ITEM returned from the database
+//formats it into a json object, without all the underscores
 const itemFromDb = (r) => ({
   id: r.id,
   name: r.name,
@@ -44,6 +64,7 @@ const itemFromDb = (r) => ({
   updatedAt: r.updated_at,
 });
 
+//json object corresponding with the columns in the database
 const ITEM_COLUMNS = {
   name: "name",
   price: "price",
@@ -53,6 +74,8 @@ const ITEM_COLUMNS = {
   imgSrc: "img_src",
   learnMore: "learn_more",
 };
+
+//convert the json object into something that the database can read in terms of column names
 function itemToDb(obj) {
   const row = {};
   for (const [key, col] of Object.entries(ITEM_COLUMNS))
@@ -60,6 +83,8 @@ function itemToDb(obj) {
   return row;
 }
 
+//converts the ORDER returned from the database
+//formats it into a json object, without all the underscores
 const orderFromDb = (r) => {
   const lines = r.order_items || [];
   return {
@@ -110,6 +135,11 @@ async function withSlipUrls(orders) {
   );
 }
 
+//===========================================
+//==============HANDLER CODE=================
+//===========================================
+const MAX_ITEM_IMAGES = 5;
+
 const HANDLERS = {
   listItems: async () => {
     await requireSession();
@@ -140,6 +170,29 @@ const HANDLERS = {
   },
   deleteItem: async (_token, id) => {
     await requireSession();
+
+    // Look up this item's images first, since the cascade delete below removes
+    // the item_images rows before we'd have any other way to find their file paths.
+    const images = await run(
+      db.from("item_images").select("url").eq("item_id", id),
+    );
+
+    if (images.length) {
+      const paths = images.map((img) => extractStoragePath(img.url));
+      const { error: storageError } = await db.storage
+        .from("product-images")
+        .remove(paths);
+      if (storageError) {
+        console.error(
+          "Could not delete storage files for item",
+          id,
+          storageError,
+        );
+        // Continue anyway — better to remove the item than leave it stuck
+        // because of a storage cleanup failure.
+      }
+    }
+
     const rows = await run(db.from("items").delete().eq("id", id).select("id"));
     if (!rows.length) throw new Error("Item not found.");
     return true;
@@ -178,15 +231,93 @@ const HANDLERS = {
     if (error) throw new Error(error.message);
     return true;
   },
+
+  listItemImages: async (_token, itemId) => {
+    await requireSession();
+    const rows = await run(
+      db.from("item_images").select().eq("item_id", itemId).order("sort_order"),
+    );
+    return rows.map((r) => ({ id: r.id, url: r.url, sortOrder: r.sort_order }));
+  },
+
+  addItemImage: async (_token, itemId, url) => {
+    await requireSession();
+    const existing = await run(
+      db.from("item_images").select("id").eq("item_id", itemId),
+    );
+    if (existing.length >= MAX_ITEM_IMAGES) {
+      throw new Error(`An item can have at most ${MAX_ITEM_IMAGES} images.`);
+    }
+    const row = await run(
+      db
+        .from("item_images")
+        .insert({ item_id: itemId, url, sort_order: existing.length })
+        .select()
+        .single(),
+    );
+    return { id: row.id, url: row.url, sortOrder: row.sort_order };
+  },
+
+  deleteItemImage: async (_token, imageId) => {
+    await requireSession();
+
+    const row = await run(
+      db.from("item_images").select("url").eq("id", imageId).single(),
+    );
+    console.log("Row url:", row.url);
+
+    const path = extractStoragePath(row.url);
+    console.log("Extracted path:", path);
+
+    const { data, error: storageError } = await db.storage
+      .from("product-images")
+      .remove([path]);
+    console.log("Storage remove result:", data, storageError);
+
+    await run(db.from("item_images").delete().eq("id", imageId));
+    return { deleted: imageId };
+  },
+
+  reorderItemImages: async (_token, itemId, orderedIds) => {
+    await requireSession();
+    await Promise.all(
+      orderedIds.map((id, i) =>
+        run(
+          db
+            .from("item_images")
+            .update({ sort_order: i })
+            .eq("id", id)
+            .eq("item_id", itemId),
+        ),
+      ),
+    );
+    return { reordered: true };
+  },
 };
 
+//help to extract image storage path
+function extractStoragePath(publicUrl) {
+  const marker = "/product-images/";
+  const i = publicUrl.indexOf(marker);
+  return i === -1 ? publicUrl : publicUrl.slice(i + marker.length);
+}
+
+//===========================================
+//==============API CALL CODE================
+//===========================================
 async function api(action, ...args) {
+  //BASED ON THE ACTION, EXECUTE THE APPROPRIATE HANDLER
   const handler = HANDLERS[action];
   if (!handler) throw new Error("Unknown action: " + action);
   return handler(...args);
 }
 
+//===========================================
+//================SHOW LOGIN=================
+//===========================================
 function showLogin(message) {
+  //IF A SESSION IS NOT RETURN FROM THE DATABASE
+  //CLEAR OUT THE VARIABLES LISTED BELOW
   session = null;
   items = [];
   orders = [];
@@ -197,10 +328,29 @@ function showLogin(message) {
   if (location.hash)
     history.replaceState(null, "", location.pathname + location.search);
   document.querySelectorAll("dialog[open]").forEach((d) => d.close());
+
+  //HIDE THE APP
   $("#app-view").hidden = true;
+
+  //SHOW THE LOGIN PAGE
   $("#login-view").hidden = false;
   $("#login-error").textContent = message || "";
   ($("#login-email").value ? $("#login-password") : $("#login-email")).focus();
 }
 
-// const isSessionError = (err) => /session expired|jwt|not authenticated/i.test((err && err.message) || '');
+//PICTURE UPLOAD
+const IMAGE_BUCKET = "product-images";
+
+async function uploadItemImage(file, itemId) {
+  const ext = file.name.split(".").pop();
+  const path = `${itemId}/${Date.now()}.${ext}`;
+
+  const { error: uploadError } = await db.storage // was: supabase.storage
+    .from(IMAGE_BUCKET)
+    .upload(path, file, { cacheControl: "3600", upsert: false });
+  if (uploadError)
+    throw new Error("Image upload failed: " + uploadError.message);
+  console.error("Full upload error:", uploadError);
+  const { data } = db.storage.from(IMAGE_BUCKET).getPublicUrl(path); // was: supabase.storage
+  return data.publicUrl;
+}
