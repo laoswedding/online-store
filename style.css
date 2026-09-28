@@ -613,6 +613,10 @@ main {
     height: 85vh;
   }
 
+  .shopfront-video {
+    height: 90vh;
+  }
+
   .product-row-link {
     width: 40%;
     margin-bottom: 1rem;
