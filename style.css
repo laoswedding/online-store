@@ -156,7 +156,6 @@ main {
 
 .product-block-img {
   width: 50%;
-  object-fit: contain;
   display: block;
 }
 
