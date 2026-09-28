@@ -619,6 +619,14 @@ main {
     margin-bottom: 1rem;
   }
 
+  .product-block {
+    flex-direction: column;
+  }
+
+  .product-block-img {
+    width: 100%;
+  }
+
   .total-items-in-cart {
     background-color: var(--order-total);
     width: 20px;
