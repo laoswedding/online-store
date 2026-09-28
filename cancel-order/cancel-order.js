@@ -24,7 +24,7 @@ document
       if (data[0].length === 0) {
         resultDiv.textContent = "No order found with that ID.";
       } else {
-        console.log(data[0]);
+        // console.log(data[0]);
         // data is an array of matching rows
         const itemLines = data[0].orderItems
           .split("\n")

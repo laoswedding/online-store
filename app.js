@@ -51,9 +51,9 @@ async function getInventory() {
     populateCategories(products);
 
     // Check if categories are empty using strictly equal (===)
-    if (categories.length === 0) {
-      getCategories(products);
-    }
+    // if (categories.length === 0) {
+    //   getCategories(products);
+    // }
     loadingWrapperEl.style.visibility = "hidden";
     productsWrapperEl.style.visibility = "visible";
   } catch (error) {
@@ -132,25 +132,25 @@ function el(tag, props, ...children) {
 // Extract unique categories and add an 'All' option
 let categories = [];
 
-function getCategories() {
-  // 1. Guard clause: If buttons already exist, do nothing and exit
-  if (categories.length > 0) return;
-  console.lo;
-  // 2. Reference the global `products` array directly
-  categories = ["All", ...new Set(products.map((p) => p.category))];
+// function getCategories() {
+//   // 1. Guard clause: If buttons already exist, do nothing and exit
+//   if (categories.length > 0) return;
+//   console.lo;
+//   // 2. Reference the global `products` array directly
+//   categories = ["All", ...new Set(products.map((p) => p.category))];
 
-  const categoryButtonContainer = document.getElementById(
-    "category-button-container",
-  );
+//   const categoryButtonContainer = document.getElementById(
+//     "category-button-container",
+//   );
 
-  // 3. Dynamically create buttons once
-  categories.forEach((category) => {
-    const button = document.createElement("button");
-    button.textContent = category;
-    button.addEventListener("click", () => filterProducts(category));
-    categoryButtonContainer.appendChild(button);
-  });
-}
+//   // 3. Dynamically create buttons once
+//   categories.forEach((category) => {
+//     const button = document.createElement("button");
+//     button.textContent = category;
+//     button.addEventListener("click", () => filterProducts(category));
+//     categoryButtonContainer.appendChild(button);
+//   });
+// }
 
 // RENDER PRODUCTS
 function renderProducts(productList = products) {

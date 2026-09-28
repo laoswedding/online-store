@@ -40,11 +40,11 @@ $("#login-form").addEventListener("submit", async (e) => {
       token: data.session.access_token,
       role: profile?.role || "viewer",
     };
-    console.log(profile);
-    console.log(data);
-    console.log("USER ID:", data.session.user.id);
-    console.log("PROFILE:", profile);
-    console.log("PROFILE ERROR:", profileError);
+    // console.log(profile);
+    // console.log(data);
+    // console.log("USER ID:", data.session.user.id);
+    // console.log("PROFILE:", profile);
+    // console.log("PROFILE ERROR:", profileError);
     $("#login-password").value = "";
     enterApp();
   } catch (err) {
@@ -53,6 +53,11 @@ $("#login-form").addEventListener("submit", async (e) => {
     btn.disabled = false;
     btn.textContent = "Sign in";
   }
+});
+
+// Login screen
+$("#login-show").addEventListener("change", (e) => {
+  $("#login-password").type = e.target.checked ? "text" : "password";
 });
 
 $("#signout-btn").addEventListener("click", async () => {
