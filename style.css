@@ -126,6 +126,10 @@ main {
   flex-wrap: wrap;
 }
 
+.category-row.thirds > .product-row-link {
+  width: 30%;
+}
+
 .product-row-link {
   width: 22%;
   display: flex;
@@ -610,14 +614,15 @@ main {
   }
 
   header {
-    height: 85vh;
+    height: 90vh;
   }
 
   .shopfront-video {
     height: 90vh;
   }
 
-  .product-row-link {
+  .product-row-link,
+  .category-row.thirds > .product-row-link {
     width: 40%;
     margin-bottom: 1rem;
   }
