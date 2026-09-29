@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="search-wrapper">
+        <div class="search-input">
+            <form id="search-form" class="search-input">
+                <input type="text" name="search" id="search" placeholder="Type in product name, description, etc."
+                    required autocomplete="off">
+                <button type="submit" class="search-submit-btn">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+        </div>
+        <div class="search-row">
+            <div class="search-row-img-wrapper">
+                <img src="img/front/handbags.webp" alt="" class="search-row-img">
+                <p class="search-row-img-text">Handbags</p>
+            </div>
+            <div class="search-row-img-wrapper">
+                <img src="img/front/bucket.webp" alt="" class="search-row-img">
+                <p class="search-row-img-text">Bucket Bags</p>
+            </div>
+            <div class="search-row-img-wrapper">
+                <img src="img/front/crossbody.webp" alt="" class="search-row-img">
+                <p class="search-row-img-text">Crossbody Bags</p>
+            </div>
+            <div class="search-row-img-wrapper">
+                <img src="img/front/naga.webp" alt="" class="search-row-img">
+                <p class="search-row-img-text">Naga Collection</p>
+            </div>
+            <div class="search-row-img-wrapper">
+                <img src="img/front/clutch.webp" alt="" class="search-row-img">
+                <p class="search-row-img-text">Clutch Bag</p>
+            </div>
+            <div class="search-row-img-wrapper">
+                <img src="img/front/tote.webp" alt="" class="search-row-img">
+                <p class="search-row-img-text">Tote Bag</p>
+            </div>
+        </div>
+    </div>
+
+
+    <nav class="blurred-background">
+        <div class="logo-container">
+            <!-- Combined into a single class attribute -->
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <div class="logo-container-left">
+                <a href="/"> <img src="img/logo.png" alt="KL Logo"></a>
+            </div>
+            <div class="logo-container-btns">
+                <a class="cart-mobile" onclick="goToCartPage()"><i class="fa-solid fa-cart-shopping"></i><span
+                        class="total-items-in-cart"></span></a>
+                <div class="hamburger" id="hamburger">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+        <div class="links-container">
+            <span class="nav-link active" onclick="filterProducts('All Products', this)">All</span>
+            <span class="nav-link" onclick="filterProducts('Handbags', this)">Handbags</span>
+            <span class="nav-link" onclick="filterProducts('Crossbody', this)">Crossbody</span>
+            <span class="nav-link" onclick="filterProducts('Home Decor', this)">Home Decor</span>
+            <span class="nav-link" onclick="filterProducts('Accessories', this)">Accessories</span>
+            <span class="nav-link" onclick="goToCancelOrderPage()">Cancel Order</span>
+        </div>
+        <!-- <div class="btn-container">
+            <a class="nav-link btn-style" onclick="showCart()">
+                <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
+                <span class="total-items-in-cart"></span>
+            </a>
+        </div> -->
+    </nav>
+
+    <!-- Slide-Down Search Overlay Container -->
+    <div class="search-wrapper">
+        <div class="search-wrapper-content">
+            <form id="search-form" class="search-input">
+                <input type="text" name="search" id="search" placeholder="Type product name, description, etc..."
+                    required>
+                <button type="submit" class="search-submit-btn">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="container">
+        <section class="search-header">
+            <h1>Search Results</h1>
+            <p class="search-query-display">
+                Showing results for: <span id="current-query-text">"..."</span>
+            </p>
+        </section>
+
+        <!-- Product Grid Output (Populated by search.js) -->
+        <section class="products-container" id="search-results-grid">
+            <!-- Dynamic search result cards will render here -->
+        </section>
+    </main>
+
+    <!-- Scripts -->
+    <!-- SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../config.js"></script>
+    <script src="search.js"></script> <!-- Handles search filtering & DOM rendering -->
+</body>
+
+</html>

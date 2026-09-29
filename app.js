@@ -1,6 +1,7 @@
 // SELECT ELEMENTS
 const productsEl = document.querySelector(".products");
 const cartItemsEl = document.querySelector(".cart-items");
+
 const subtotalEl = document.querySelector(".subtotal");
 const totalItemsInCartEl = document.querySelectorAll(".total-items-in-cart");
 const cartEl = document.querySelector(".cart");
@@ -24,6 +25,51 @@ const sortSelect = document.getElementById("sort-by");
 const resultsEl = document.getElementById("results");
 
 let products = [];
+
+document.addEventListener("DOMContentLoaded", () => {
+  const searchIcon = document.querySelector(".search-icon");
+  const searchWrapper = document.querySelector(".search-wrapper");
+  // const closeBtn = document.querySelector(".close-search");
+
+  // Open search wrapper
+  if (searchIcon && searchWrapper) {
+    searchIcon.addEventListener("click", () => {
+      // .toggle() returns true if 'active' was added, false if removed
+      const isOpen = searchWrapper.classList.toggle("active");
+
+      if (isOpen) {
+        // Icon when open (FontAwesome 6 uses 'fa-xmark' or 'fa-magnifying-glass-minus')
+        searchIcon.className = "fa-solid fa-xmark search-icon";
+      } else {
+        // Icon when closed
+        searchIcon.className = "fa-solid fa-magnifying-glass search-icon";
+      }
+    });
+  }
+
+  // Close when pressing 'Escape' key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && searchWrapper) {
+      searchWrapper.classList.remove("active");
+    }
+  });
+
+  //load search form and input elements
+  const searchForm = document.getElementById("search-form");
+  const searchInput = document.getElementById("search");
+
+  if (searchForm) {
+    searchForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const query = searchInput.value.trim();
+      if (!query) return;
+
+      const base = isLocalHost ? "/search/" : "/online-store/search/";
+      window.location.href = `${base}?q=${encodeURIComponent(query)}`;
+    });
+  }
+});
 
 async function getInventory() {
   const timers = [
@@ -49,7 +95,7 @@ async function getInventory() {
 
     renderProducts();
     populateCategories(products);
-
+    console.log(products);
     // Check if categories are empty using strictly equal (===)
     // if (categories.length === 0) {
     //   getCategories(products);
@@ -67,11 +113,11 @@ async function getInventory() {
 getInventory();
 
 //SHOW CART
-function showCart() {
-  cartEl.classList.toggle("active");
-  const isActive = cartEl.classList.contains("active");
-  document.documentElement.style.overflowY = isActive ? "hidden" : "";
-}
+// function showCart() {
+//   cartEl.classList.toggle("active");
+//   const isActive = cartEl.classList.contains("active");
+//   document.documentElement.style.overflowY = isActive ? "hidden" : "";
+// }
 
 //FILTER PRODUCTS
 function filterProducts(category, clickedEl) {
@@ -258,7 +304,62 @@ try {
   console.warn("Corrupted CART data, resetting.", e);
   cart = [];
 }
-updateCart();
+// updateCart();
+
+//RENDER CART ITEMS
+// function renderCartItems() {
+//   cartItemsEl.innerHTML = ""; // clear cart element
+//   cart.forEach((item) => {
+//     cartItemsEl.innerHTML += `
+//         <div class="cart-item">
+//             <div class="item-info">
+//                 <img src="${item.img_src}" alt="${item.name}">
+//                 <h4>${item.name}</h4>
+//             </div>
+//             <div class="unit-price">
+//                 ${item.price} LAK
+//             </div>
+//             <div class="units">
+//                 <div class="btn minus" onclick="changeNumberOfUnits('minus', ${item.id})">-</div>
+//                 <div class="number">${item.numberOfUnits}</div>
+//                 <div class="btn plus" onclick="changeNumberOfUnits('plus', ${item.id})">+</div>
+//             </div>
+//             <div class="remove">
+//                <div onclick="removeItemFromCart(${item.id})"><i class="fa-solid fa-trash"></i></div>
+//             </div>
+//         </div>
+//       `;
+//   });
+// }
+
+// renderCartItems();
+
+//CALCULATE AND RENDER SUBTOTAL
+// function renderSubtotal() {
+//   let totalPrice = 0,
+//     totalItems = 0;
+
+//   cart.forEach((item) => {
+//     totalPrice += item.price * item.numberOfUnits;
+//     totalItems += item.numberOfUnits;
+//   });
+
+//   subtotalEl.innerHTML = `Subtotal (${totalItems} items): ${totalPrice.toLocaleString(
+//     "lo-LA",
+//     {
+//       minimumFractionDigits: 2,
+//       maximumFractionDigits: 2,
+//     },
+//   )} LAK`;
+
+//   // Iterate through all matched elements and update their innerHTML
+//   totalItemsInCartEl.forEach((el) => {
+//     const count = Math.max(0, parseInt(totalItems, 10) || 0);
+
+//     el.hidden = count === 0;
+//     el.textContent = count > 99 ? "99+" : count;
+//   });
+// }
 
 // SHOW AND HIDE MODAL
 function showAndHideModal(modalElement) {
@@ -270,114 +371,36 @@ function showAndHideModal(modalElement) {
 }
 
 // ADD TO CART
-function addToCart(id) {
-  // check if product already exist in cart
-  if (cart.some((item) => item.id === id)) {
-    changeNumberOfUnits("plus", id);
+// function addToCart(id) {
+//   // check if product already exist in cart
+//   if (cart.some((item) => item.id === id)) {
+//     changeNumberOfUnits("plus", id);
 
-    showAndHideModal(itemPlusOneEl);
-  } else {
-    const item = products.find((product) => product.id === id);
-    cart.push({
-      ...item,
-      numberOfUnits: 1,
-    });
+//     showAndHideModal(itemPlusOneEl);
+//   } else {
+//     const item = products.find((product) => product.id === id);
+//     cart.push({
+//       ...item,
+//       numberOfUnits: 1,
+//     });
 
-    showAndHideModal(itemAddedEl);
-  }
+//     showAndHideModal(itemAddedEl);
+//   }
 
-  updateCart();
-}
+//   updateCart();
+// }
 
 //UPDATE CART
-function updateCart() {
-  renderCartItems();
-  renderSubtotal();
+// function updateCart() {
+//   renderCartItems();
+//   renderSubtotal();
 
-  // SAVE CART TO LOCAL STORAGE
-  localStorage.setItem("CART", JSON.stringify(cart));
-}
+//   // SAVE CART TO LOCAL STORAGE
+//   localStorage.setItem("CART", JSON.stringify(cart));
+// }
 
-//CALCULATE AND RENDER SUBTOTAL
-function renderSubtotal() {
-  let totalPrice = 0,
-    totalItems = 0;
-
-  cart.forEach((item) => {
-    totalPrice += item.price * item.numberOfUnits;
-    totalItems += item.numberOfUnits;
-  });
-
-  subtotalEl.innerHTML = `Subtotal (${totalItems} items): ${totalPrice.toLocaleString(
-    "lo-LA",
-    {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    },
-  )} LAK`;
-
-  // Iterate through all matched elements and update their innerHTML
-  totalItemsInCartEl.forEach((el) => {
-    const count = Math.max(0, parseInt(totalItems, 10) || 0);
-
-    el.hidden = count === 0;
-    el.textContent = count > 99 ? "99+" : count;
-  });
-}
-
-//RENDER CART ITEMS
-function renderCartItems() {
-  cartItemsEl.innerHTML = ""; // clear cart element
-  cart.forEach((item) => {
-    cartItemsEl.innerHTML += `
-        <div class="cart-item">
-            <div class="item-info">
-                <img src="${item.img_src}" alt="${item.name}">
-                <h4>${item.name}</h4>
-            </div>
-            <div class="unit-price">
-                ${item.price} LAK
-            </div>
-            <div class="units">
-                <div class="btn minus" onclick="changeNumberOfUnits('minus', ${item.id})">-</div>
-                <div class="number">${item.numberOfUnits}</div>
-                <div class="btn plus" onclick="changeNumberOfUnits('plus', ${item.id})">+</div>           
-            </div>
-            <div class="remove">
-               <div onclick="removeItemFromCart(${item.id})"><i class="fa-solid fa-trash"></i></div>
-            </div>
-        </div>
-      `;
-  });
-}
-
-//REMOVE ITEM FROM CART
-function removeItemFromCart(id) {
-  cart = cart.filter((item) => item.id !== id);
-  showAndHideModal(itemRemovedEl);
-  updateCart();
-}
-
-//CHANGE NUMBER OF UNITS FOR AN ITEM
-function changeNumberOfUnits(action, id) {
-  cart = cart.map((item) => {
-    let numberOfUnits = item.numberOfUnits;
-
-    if (item.id === id) {
-      if (action === "minus" && numberOfUnits > 1) {
-        numberOfUnits--;
-      } else if (action === "plus" && numberOfUnits < item.inStock) {
-        numberOfUnits++;
-      }
-    }
-
-    return {
-      ...item,
-      numberOfUnits,
-    };
-  });
-
-  updateCart();
+function goToCartPage() {
+  window.location.href = isLocalHost ? "/cart" : "/online-store/cart";
 }
 
 //GO TO CHECKOUT PAGE

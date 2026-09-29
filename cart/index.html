@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="#">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart | KEEPS.LOUDDER </title>
+    <link rel="shortcut icon" href="../img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../nav-style.css">
+    <link rel="stylesheet" href="cart.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script src="https://kit.fontawesome.com/8efc22d7af.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <nav class="blurred-background">
+        <div class="logo-container">
+            <div class="logo-container-left">
+                <a href="/"> <img src="../img/logo.png" alt="KL Logo"></a>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <div class="cart-wrapper">
+            <h1>Cart</h1>
+            <div class="cart-items"></div>
+            <p class="subtotal"></p>
+            <p class="go-back-to-store" onclick="goBackToStore()">← Continue shopping</p>
+        </div>
+    </main>
+    <!-- SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../config.js"></script>
+    <script src="cart.js"></script>
+</body>
+
+</html>

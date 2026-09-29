@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="shortcut icon" href="#">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Store | Keeps Loudder </title>
+    <title>Online Store | KEEPS.LOUDDER </title>
     <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="nav-style.css">
@@ -15,13 +15,54 @@
 </head>
 
 <body>
+    <div class="search-wrapper">
+        <div class="search-input">
+            <form id="search-form" class="search-input">
+                <input type="text" name="search" id="search" placeholder="Type in product name, description, etc."
+                    required autocomplete="off">
+                <button type="submit" class="search-submit-btn">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+        </div>
+        <div class="search-row">
+            <div class="search-row-img-wrapper">
+                <img src="img/front/handbags.webp" alt="" class="search-row-img">
+                <p class="search-row-img-text">Handbags</p>
+            </div>
+            <div class="search-row-img-wrapper">
+                <img src="img/front/bucket.webp" alt="" class="search-row-img">
+                <p class="search-row-img-text">Bucket Bags</p>
+            </div>
+            <div class="search-row-img-wrapper">
+                <img src="img/front/crossbody.webp" alt="" class="search-row-img">
+                <p class="search-row-img-text">Crossbody Bags</p>
+            </div>
+            <div class="search-row-img-wrapper">
+                <img src="img/front/naga.webp" alt="" class="search-row-img">
+                <p class="search-row-img-text">Naga Collection</p>
+            </div>
+            <div class="search-row-img-wrapper">
+                <img src="img/front/clutch.webp" alt="" class="search-row-img">
+                <p class="search-row-img-text">Clutch Bag</p>
+            </div>
+            <div class="search-row-img-wrapper">
+                <img src="img/front/tote.webp" alt="" class="search-row-img">
+                <p class="search-row-img-text">Tote Bag</p>
+            </div>
+        </div>
+    </div>
+
+
     <nav class="blurred-background">
         <div class="logo-container">
+            <!-- Combined into a single class attribute -->
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
             <div class="logo-container-left">
                 <a href="/"> <img src="img/logo.png" alt="KL Logo"></a>
             </div>
             <div class="logo-container-btns">
-                <a class="cart-mobile" onClick="showCart()"><i class="fa-solid fa-cart-shopping"></i><span
+                <a class="cart-mobile" onclick="goToCartPage()"><i class="fa-solid fa-cart-shopping"></i><span
                         class="total-items-in-cart"></span></a>
                 <div class="hamburger" id="hamburger">
                     <div></div>
@@ -127,38 +168,6 @@
             </div>
         </div>
     </main>
-    <!-- CART CONTAINER -->
-    <div class="cart">
-        <div class="cart-header">
-            <div class="column1">Item</div>
-            <div class="column2">Unit Price</div>
-            <div class="column3">Quantity</div>
-            <div class="column4">Remove</div>
-        </div>
-        <div class="cart-items">
-            <!-- RENDER CART ITEMS HERE -->
-        </div>
-        <div class="cart-footer">
-            <div class="subtotal">
-                Subtotal (0 items): 0 LAK
-            </div>
-            <a class="checkout" onclick="goToCheckout()">
-                Proceed to checkout
-            </a>
-        </div>
-    </div>
-    <div class="cart-modal item-added">
-        <p class="card-modal-text">New Item Added</p><i class="fa-solid fa-plus"></i>
-    </div>
-    <div class="cart-modal item-plus-one">
-        <p class="card-modal-text">Cart Item +1</p>
-    </div>
-    <div class="cart-modal item-removed">
-        <p class="card-modal-text">Item Removed</p><i class="fa-solid fa-xmark"></i>
-    </div>
-    <div class="cart-modal empty-cart">
-        <p class="card-modal-text"><i class="fa-solid fa-triangle-exclamation"></i> Your Cart Is Empty</p></i>
-    </div>
     <!-- SUPABASE -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- <script src="./products.js"></script> -->

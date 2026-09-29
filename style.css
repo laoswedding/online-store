@@ -405,158 +405,6 @@ main {
   text-align: center;
   cursor: pointer;
 }
-/* CART */
-.cart {
-  position: fixed;
-  top: 90px;
-  right: 0;
-  height: calc(100dvh - 90px);
-  width: 45%;
-  background-color: rgb(64, 64, 64);
-  color: #fff;
-  padding: 0;
-  visibility: hidden;
-  opacity: 0;
-  transform: translateX(20px); /* small, just for a nice slide-in feel */
-  transition:
-    transform 0.3s ease-in-out,
-    opacity 0.3s ease-in-out,
-    visibility 0.3s;
-  display: flex;
-  flex-direction: column;
-}
-
-.cart.active {
-  visibility: visible;
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* cart header */
-.cart-header {
-  display: flex;
-  justify-content: space-around;
-  padding: 10px 0;
-}
-/* cart items */
-.cart-items {
-  overflow-y: scroll;
-  overflow-x: hidden;
-  flex: 1;
-  min-height: 0;
-}
-
-/* cart item */
-.cart-item {
-  display: flex;
-  justify-content: start;
-  width: 100%;
-}
-
-.column1 {
-  width: 40%;
-  text-align: center;
-}
-
-.column2,
-.column3,
-.column4 {
-  width: 20%;
-  text-align: center;
-}
-
-/* item info */
-.item-info {
-  display: flex;
-  align-items: center;
-  border-radius: 0 10px 10px 0;
-  padding: 10px;
-  gap: 10px;
-  font-size: 0.8rem;
-  width: 40%;
-}
-
-.cart-item .item-info img {
-  width: 30%;
-  border-radius: 1rem;
-}
-
-/* unit price */
-.cart-item .unit-price {
-  font-size: 1.2rem;
-}
-
-.cart-item .units .number {
-  margin: 0 10px;
-  font-size: 1.2rem;
-}
-
-.cart-item .units .btn {
-  width: 30px;
-  height: 30px;
-  background-color: rgb(58, 193, 255);
-  border-radius: 50%;
-  font-weight: bold;
-  cursor: pointer;
-  -webkit-user-select: none; /* Chrome all / Safari all */
-  -moz-user-select: none; /* Firefox all */
-  -ms-user-select: none; /* IE 10+ */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.btn.minus,
-.btn.plus {
-  font-size: 2rem;
-}
-
-.unit-price,
-.units,
-.remove {
-  width: 20% !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* cart footer */
-.cart-footer {
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  border-left: 1px solid rgb(var(--right-side-bg-color));
-}
-.cart-footer div,
-.cart-footer a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 15px 0;
-  font-size: 1.3rem;
-}
-.cart-footer .subtotal {
-  background-color: white;
-  color: #000;
-}
-.cart-footer .checkout {
-  background-color: rgb(22, 165, 67);
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-}
-
-.cart-footer a:hover {
-  filter: brightness(85%);
-}
-
-.fa-trash {
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-}
-.fa-trash:hover {
-  color: rgb(217, 93, 93);
-}
 
 /* MODAL STYLES */
 .cart-modal {
@@ -576,6 +424,7 @@ main {
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.5s ease-out;
+  padding: 0.5rem 1rem;
 }
 
 .item-added,
@@ -589,6 +438,8 @@ main {
 
 .empty-cart {
   background-color: rgb(255, 111, 111);
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
 }
 
 .total-items-in-cart {
@@ -602,6 +453,76 @@ main {
   color: #000;
   font-size: 1rem;
   text-align: center;
+}
+
+/* SEARCH WRAPPER */
+.search-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #fff;
+  z-index: 1000; /* Ensures it renders over page content */
+
+  /* Move off-screen above the top of the viewport */
+  transform: translateY(-100%);
+
+  /* Animate position changes smoothly */
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Add this class via JavaScript to trigger the slide-down */
+.search-wrapper.active {
+  transform: translateY(0);
+}
+
+.search-input {
+  margin-top: 100px;
+  width: 70%;
+  display: flex;
+}
+
+#search-form {
+  width: 100%;
+}
+
+#search-form input {
+  font-size: 1.6rem;
+  padding: 0.5rem 1rem;
+  width: 100%;
+  border-top-left-radius: 2rem;
+  border-bottom-left-radius: 2rem;
+  border: 1px solid black;
+}
+
+.search-submit-btn {
+  width: 40px;
+  border: 1px solid black;
+  border-top-right-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+}
+
+.search-row {
+  width: 100%;
+  display: flex;
+}
+
+.search-row-img-text {
+  text-align: center;
+}
+
+.search-row-wrapper {
+  width: 15%;
+}
+
+.search-row-img {
+  width: 100%;
 }
 
 @media (max-width: 768px) {
