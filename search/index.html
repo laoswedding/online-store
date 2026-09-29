@@ -3,14 +3,16 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="#">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Results</title>
-
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-    <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="style.css">
+    <title>Search | KEEPS.LOUDDER </title>
+    <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../nav-style.css">
+    <link rel="stylesheet" href="search.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script src="https://kit.fontawesome.com/8efc22d7af.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -26,27 +28,27 @@
         </div>
         <div class="search-row">
             <div class="search-row-img-wrapper">
-                <img src="img/front/handbags.webp" alt="" class="search-row-img">
+                <img src="../img/front/handbags.webp" alt="" class="search-row-img">
                 <p class="search-row-img-text">Handbags</p>
             </div>
             <div class="search-row-img-wrapper">
-                <img src="img/front/bucket.webp" alt="" class="search-row-img">
+                <img src="../img/front/bucket.webp" alt="" class="search-row-img">
                 <p class="search-row-img-text">Bucket Bags</p>
             </div>
             <div class="search-row-img-wrapper">
-                <img src="img/front/crossbody.webp" alt="" class="search-row-img">
+                <img src="../img/front/crossbody.webp" alt="" class="search-row-img">
                 <p class="search-row-img-text">Crossbody Bags</p>
             </div>
             <div class="search-row-img-wrapper">
-                <img src="img/front/naga.webp" alt="" class="search-row-img">
+                <img src="../img/front/naga.webp" alt="" class="search-row-img">
                 <p class="search-row-img-text">Naga Collection</p>
             </div>
             <div class="search-row-img-wrapper">
-                <img src="img/front/clutch.webp" alt="" class="search-row-img">
+                <img src="../img/front/clutch.webp" alt="" class="search-row-img">
                 <p class="search-row-img-text">Clutch Bag</p>
             </div>
             <div class="search-row-img-wrapper">
-                <img src="img/front/tote.webp" alt="" class="search-row-img">
+                <img src="../img/front/tote.webp" alt="" class="search-row-img">
                 <p class="search-row-img-text">Tote Bag</p>
             </div>
         </div>
@@ -58,7 +60,7 @@
             <!-- Combined into a single class attribute -->
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
             <div class="logo-container-left">
-                <a href="/"> <img src="img/logo.png" alt="KL Logo"></a>
+                <a href="/"> <img src="../img/logo.png" alt="KL Logo"></a>
             </div>
             <div class="logo-container-btns">
                 <a class="cart-mobile" onclick="goToCartPage()"><i class="fa-solid fa-cart-shopping"></i><span
@@ -85,9 +87,8 @@
             </a>
         </div> -->
     </nav>
-
     <!-- Slide-Down Search Overlay Container -->
-    <div class="search-wrapper">
+    <!-- <div class="search-wrapper">
         <div class="search-wrapper-content">
             <form id="search-form" class="search-input">
                 <input type="text" name="search" id="search" placeholder="Type product name, description, etc..."
@@ -97,10 +98,28 @@
                 </button>
             </form>
         </div>
-    </div>
+    </div> -->
 
     <!-- Main Content Area -->
     <main class="container">
+        <div id="product-filter">
+            <div id="controls">
+                <input type="text" id="search-filter" placeholder="Search name, description, category..." autocomplete="off">
+                <select id="category-filter"></select>
+                <select id="stock-filter">
+                    <option value="all">All stock</option>
+                    <option value="inStock">In stock</option>
+                    <option value="outOfStock">Out of stock</option>
+                </select>
+                <select id="sort-by">
+                    <option value="name-asc">Name (A-Z)</option>
+                    <option value="price-asc">Price (Low to High)</option>
+                    <option value="price-desc">Price (High to Low)</option>
+                    <option value="recent">Recently Added</option>
+                </select>
+            </div>
+            <!-- <div id="results"></div> -->
+        </div>
         <section class="search-header">
             <h1>Search Results</h1>
             <p class="search-query-display">
