@@ -195,7 +195,7 @@
   background-color: var(--motif-color);
   border: none;
   cursor: pointer;
-    border-radius: 2rem;
+  border-radius: 2rem;
 }
 
 .qr-download-btn:hover,
@@ -261,6 +261,18 @@
 }
 .processing-order-modal .dot:nth-child(3) {
   animation-delay: 0.4s;
+}
+
+@keyframes dotWave {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-4px); /* Slight vertical pulse */
+  }
 }
 
 #orderForm {
