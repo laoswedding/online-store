@@ -33,6 +33,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     ? (totalItemsInCartEl.textContent = "")
     : (totalItemsInCartEl.textContent = cart.length);
 
+  //Load if filtered from nav bar
+  if (localStorage.getItem("CATEGORY") !== "") {
+    getFilteredSorted();
+  }
+
   // Load the catalog from localStorage
   try {
     products = JSON.parse(localStorage.getItem("PRODUCTS")) || [];
@@ -95,13 +100,39 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // --- Filter / sort listeners: replace the markup with filtered `products` ---
-  if (searchFilter) searchFilter.addEventListener("input", render);
+  if (searchFilter) {
+    searchFilter.addEventListener("input", () => {
+      // Input cleared -> reset category back to "all"
+      if (!searchFilter.value.trim() && categorySelect) {
+        categorySelect.value = "all";
+      }
+      
+      render();
+    });
+  }
   if (categorySelect) categorySelect.addEventListener("change", render);
   if (stockSelect) stockSelect.addEventListener("change", render);
   if (sortSelect) sortSelect.addEventListener("change", render);
 
+  // Apply a category chosen from the nav bar (one-time)
+  const navCategory = (localStorage.getItem("CATEGORY") || "")
+    .trim()
+    .toLowerCase();
+  if (navCategory && categorySelect) {
+    const match = [...categorySelect.options].find(
+      (o) => o.value.trim().toLowerCase() === navCategory,
+    );
+    if (match) categorySelect.value = match.value;
+    localStorage.removeItem("CATEGORY");
+  }
+
   // Initial view: search results from Supabase
   await fetchSearchResults(searchQuery);
+
+  // If a nav category was applied, show the filtered catalog instead
+  if (categorySelect && categorySelect.value.toLowerCase() !== "all") {
+    render();
+  }
 });
 
 // ---------------------------------------------------------------------------

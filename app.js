@@ -26,6 +26,9 @@ try {
   cart = [];
 }
 
+//INITIALIZE CATEGORY
+let category = localStorage.setItem("CATEGORY", "");
+
 //LOAD DOM CONTENT
 document.addEventListener("DOMContentLoaded", () => {
   const totalItemsInCartEl = document.querySelector(".total-items-in-cart");
