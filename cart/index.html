@@ -16,25 +16,23 @@
 </head>
 
 <body>
-    <nav class="blurred-background">
-        <div class="logo-container">
-            <div class="logo-container-left">
-                <a href="/"> <img src="../img/logo.png" alt="KL Logo"></a>
-            </div>
-        </div>
+    <nav class="basic-nav">
+        <a href="/"> <img src="../img/logo.png" alt="KL Logo"></a>
     </nav>
     <main>
         <div class="cart-wrapper">
             <h1>Cart</h1>
             <div class="cart-items"></div>
             <p class="subtotal"></p>
-            <p class="go-back-to-store" onclick="goBackToStore()">← Continue shopping</p>
+            <p class="proceed-to-checkout-btn" onclick="navigate('checkout')" hidden>Proceed to checkout</p>
+            <p class="go-back-to-store" onclick="navigate('search')">← Continue shopping</p>
         </div>
     </main>
     <!-- SUPABASE -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../config.js"></script>
     <script src="cart.js"></script>
+    <script src="../navigation.js"></script>
 </body>
 
 </html>

@@ -1,5 +1,5 @@
 :root {
-  --order-total: rgb(58, 193, 255);
+  --motif-color: rgb(58, 193, 255);
 }
 
 .checkout-wrapper {
@@ -11,17 +11,18 @@
   flex-direction: column;
   gap: 2rem;
   padding-bottom: 2rem;
+  margin-top: 90px;
 }
 
 .checkout-wrapper h1 {
-  font-size: 4rem;
+  font-size: 3rem;
   padding-top: 2rem;
 }
 
 .checkout-form {
   background-color: #f6f6f6;
   box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.347),
+    0 2px 6px rgba(0, 0, 0, 0.347),
     0 1px 3px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
@@ -29,6 +30,7 @@
   padding: 1rem;
   width: 30%;
   font-size: 1.4rem;
+  border-radius: 1rem;
 }
 
 .checkout-form-inner {
@@ -70,7 +72,7 @@
 
 .shipping-company-container:hover {
   filter: brightness(85%);
-  box-shadow: 0 0 0 2px var(--order-total); /* Highlight without resizing box */
+  box-shadow: 0 0 0 2px var(--motif-color); /* Highlight without resizing box */
 }
 
 .shipping-company-container img {
@@ -88,8 +90,9 @@
   padding: 1rem;
   width: 30%;
   box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.347),
+    0 2px 6px rgba(0, 0, 0, 0.347),
     0 1px 3px rgba(0, 0, 0, 0.05);
+  border-radius: 1rem;
 }
 
 .order-summary h2 {
@@ -152,7 +155,7 @@
 
 .order-total {
   font-size: 1.5rem;
-  color: var(--order-total);
+  color: var(--motif-color);
 }
 
 .qr-scan,
@@ -176,7 +179,7 @@
 }
 
 .payment-amount {
-  color: var(--order-total);
+  color: var(--motif-color);
   font-size: 2rem;
 }
 
@@ -189,9 +192,10 @@
   padding: 0.5rem 1rem;
   font-size: 1.3rem;
   color: #fff;
-  background-color: var(--order-total);
+  background-color: var(--motif-color);
   border: none;
   cursor: pointer;
+    border-radius: 2rem;
 }
 
 .qr-download-btn:hover,

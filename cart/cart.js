@@ -1,11 +1,10 @@
 // 1. GLOBAL STATE & SELECTORS
 let cart = JSON.parse(localStorage.getItem("CART")) || [];
-
 let cartItemsEl;
 let subtotalEl;
 let itemRemovedEl;
 let totalItemsInCartEl;
-
+const proceedToCheckoutBtn = document.querySelector(".proceed-to-checkout-btn");
 // 2. INITIALIZE ON DOM LOAD
 document.addEventListener("DOMContentLoaded", () => {
   cartItemsEl = document.querySelector(".cart-items");
@@ -13,6 +12,9 @@ document.addEventListener("DOMContentLoaded", () => {
   itemRemovedEl = document.querySelector(".item-removed-modal");
   totalItemsInCartEl = document.querySelectorAll(".total-items-in-cart");
 
+  cart.length == 0
+    ? proceedToCheckoutBtn.hidden
+    : (proceedToCheckoutBtn.hidden = false);
   // Sync state and render on page startup
   updateCart();
 });
@@ -131,11 +133,10 @@ function changeNumberOfUnits(action, id) {
 
 // 7. CENTRALIZED UPDATE & PERSISTENCE
 function updateCart() {
+  if (cart.length == 0) {
+    proceedToCheckoutBtn.style.display = "none";
+  }
   renderCartItems();
   renderSubtotal();
   localStorage.setItem("CART", JSON.stringify(cart));
-}
-
-function goBackToStore() {
-  window.location.href = isLocalHost ? "/" : "/online-store";
 }

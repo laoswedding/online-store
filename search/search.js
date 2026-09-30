@@ -27,6 +27,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   const categorySelect = document.getElementById("category-filter");
   const stockSelect = document.getElementById("stock-filter");
   const sortSelect = document.getElementById("sort-by");
+  const totalItemsInCartEl = document.querySelector(".total-items-in-cart");
+
+  cart.length == 0
+    ? (totalItemsInCartEl.textContent = "")
+    : (totalItemsInCartEl.textContent = cart.length);
 
   // Load the catalog from localStorage
   try {
@@ -198,7 +203,10 @@ function populateCategories(items, selectElement) {
       .join("");
 
   // Keep the user's selection if it still exists
-  if (previous && [...selectElement.options].some((o) => o.value === previous)) {
+  if (
+    previous &&
+    [...selectElement.options].some((o) => o.value === previous)
+  ) {
     selectElement.value = previous;
   }
 }
@@ -213,11 +221,39 @@ function getFilteredSorted() {
   const sortSelect = document.getElementById("sort-by");
 
   const term = searchFilterEl ? searchFilterEl.value.trim().toLowerCase() : "";
-  const category = categorySelect ? categorySelect.value.toLowerCase() : "all";
+  const category = categorySelect
+    ? categorySelect.value.trim().toLowerCase()
+    : "all";
   const stock = stockSelect ? stockSelect.value : "all";
 
-  // If localStorage was empty, fall back to the search results
+  const searchQuery = getUrlQuery();
+
+  // Is everything back at its default? (empty box, all selects on first option)
+  const isDefaultState =
+    !term &&
+    category === "all" &&
+    stock === "all" &&
+    (!sortSelect || sortSelect.selectedIndex === 0);
+
+  // Default state -> show the original ?q= search results.
+  // Anything else -> filter the full products catalog.
+  if (isDefaultState) {
+    const queryTextEl = document.getElementById("current-query-text");
+    if (queryTextEl) {
+      queryTextEl.textContent = searchQuery
+        ? `"${searchQuery}"`
+        : "All Products";
+    }
+    return [...lastSearchResults];
+  }
+
   const source = products.length ? products : lastSearchResults;
+
+  // Label only. No fetching in here.
+  const queryTextEl = document.getElementById("current-query-text");
+  if (queryTextEl) {
+    queryTextEl.textContent = term ? `"${term}"` : "All Products";
+  }
 
   const filtered = source.filter((p) => {
     const matchesSearch =
@@ -226,7 +262,9 @@ function getFilteredSorted() {
       (p.description && p.description.toLowerCase().includes(term)) ||
       (p.category && p.category.toLowerCase().includes(term));
 
-    const pCategory = p.category ? p.category.toLowerCase() : "";
+    const pCategory = String(p.category ?? "")
+      .trim()
+      .toLowerCase();
     const matchesCategory = category === "all" || pCategory === category;
 
     const stockCount = p.instock ?? p.inStock ?? p.stock ?? 0;
@@ -261,6 +299,11 @@ function getFilteredSorted() {
   return filtered;
 }
 
+function getUrlQuery() {
+  const urlParams = new URLSearchParams(window.location.search);
+  return (urlParams.get("q") || urlParams.get("search") || "").trim();
+}
+
 // ---------------------------------------------------------------------------
 // Rendering
 // ---------------------------------------------------------------------------
@@ -275,6 +318,9 @@ function productToHTML(item) {
         <h3 class="product-name">${esc(item.name || "Unnamed Product")}</h3>
         <p class="product-description">${esc(item.description || "")}</p>
         <p class="product-price">₭${price.toLocaleString("lo-LA")} LAK</p>
+        <div class="add-to-cart" onclick="addToCart(${item.id})">
+        Add To Cart
+        </div>
       </div>
     </div>
   `;

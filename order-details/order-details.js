@@ -40,7 +40,7 @@ function renderOrderDetails() {
       const imgSrc = imgLines[i] || ""; // fallback in case arrays mismatch
       return `
       <div class="order-line">
-        ${imgSrc ? `<img src="${imgSrc}" alt="" class="order-line-icon">` : ""}
+        ${imgSrc ? `<img src="${imgSrc}" alt="" class="order-line-icon" crossorigin="anonymous">` : ""}
         <p>${line}</p>
       </div>
     `;
@@ -107,6 +107,7 @@ function renderOrderDetails() {
 //CLEAR USER OBJECT IN STORE
 function clearUserObjectInStore() {
   localStorage.setItem("USER", null);
+  localStorage.setItem("PRDOUCTS", null);
   goBackToStore();
 }
 
@@ -124,6 +125,8 @@ document
     const canvas = await html2canvas(receipt, {
       scale: 2,
       backgroundColor: "#ffffff",
+      useCORS: true,       // <--- Crucial: Allows html2canvas to fetch cross-origin images
+      allowTaint: false,   // <--- Prevents canvas tainting issues
     });
 
     const link = document.createElement("a");

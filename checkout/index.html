@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="shortcut icon" href="#">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout | Keeps Loudder </title>
+    <title>Checkout | KEEPS.LOUDDER </title>
     <link rel="shortcut icon" href="../img/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../nav-style.css">
@@ -16,12 +16,8 @@
 </head>
 
 <body>
-    <nav class="blurred-background">
-        <div class="logo-container">
-            <div class="logo-container-left">
-                <a href="/"> <img src="../img/logo.png" alt="KL Logo"></a>
-            </div>
-        </div>
+    <nav class="basic-nav">
+        <a href="/"> <img src="../img/logo.png" alt="KL Logo"></a>
     </nav>
     <main>
         <div class="checkout-wrapper">
@@ -130,7 +126,7 @@
             </div>
             <!-- PLACE ORDER -->
             <button class="checkoutBtn" id="checkoutBtn">Place Order</button>
-            <p class="go-back-to-store" onclick="goBackToStore()">← Continue shopping</p>
+            <p class="go-back-to-store" onclick="navigate('search')">← Continue shopping</p>
             <!-- PLACE ORDER MODAL -->
             <div class="processing-order-modal">
                 <div class="processing-msg">
@@ -151,6 +147,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../config.js"></script>
     <script src="checkout.js"></script>
+    <script src="../navigation.js"></script>
 </body>
 
 </html>

@@ -18,6 +18,8 @@ const refreshMsg = document.querySelector(".refresh-msg");
 
 //RENDER ORDER SUMMARY
 document.addEventListener("DOMContentLoaded", () => {
+  localStorage.setItem("USER", null);
+
   if (cart.length === 0) {
     goBackToStore();
   } else {
@@ -38,9 +40,9 @@ function renderOrderItems() {
         <div class="order-item">
                 <img src="${item.img_src}" alt="${item.name}" class="order-item-img">
                 <p class="order-item-description"><span class="order-item-name">${item.name}:</span> ${item.description} <span class="order-item-qty"> <br>Qty: ${item.numberOfUnits}</span></p>
-                <p class="order-item-price">${
-                  (item.price * item.numberOfUnits).toLocaleString("lo-LA")
-                } LAK</p></div>`;
+                <p class="order-item-price">${(
+                  item.price * item.numberOfUnits
+                ).toLocaleString("lo-LA")} LAK</p></div>`;
   });
   orderItemsTotalEl.innerHTML = totalItems;
   orderTotalEl.innerHTML = totalPrice.toLocaleString();

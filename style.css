@@ -5,7 +5,7 @@
   --bg-color: #fff;
   --link-color: #000;
   --link-size: 1.1rem;
-  --order-total: rgb(58, 193, 255);
+  --motif-color: rgb(58, 193, 255);
 }
 
 /* General CSS */
@@ -163,90 +163,6 @@ main {
   display: block;
 }
 
-/* LOADING WRAPPER */
-.loading-wrapper {
-  width: 100%;
-  height: calc(100vh - 90px);
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 4rem;
-  /* background-image: url("img/loading-bkgd.webp");
-  background-size: cover;
-  background-position: center; */
-  color: #000;
-}
-
-.loading-group {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: 10000;
-  transform: translate(-50%, -50%);
-}
-
-/* "your image" loading circle */
-.puck {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  background-image: url(img/favicon.png);
-  background-position: center;
-  background-size: contain;
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.347),
-    0 1px 3px rgba(0, 0, 0, 0.05);
-}
-/* 3. pulse / breathe */
-.pulse .puck {
-  animation: pulse 1.3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.35);
-    opacity: 0.55;
-  }
-}
-
-.loading-wrapper .dot {
-  display: inline-block;
-  opacity: 0.2;
-  transform: translateY(0);
-  animation: dotWave 1.2s infinite ease-in-out;
-}
-
-/* Stagger the timing for each dot */
-.loading-wrapper .dot:nth-child(1) {
-  animation-delay: 0s;
-}
-.loading-wrapper .dot:nth-child(2) {
-  animation-delay: 0.2s;
-}
-.loading-wrapper .dot:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes dotWave {
-  0%,
-  100% {
-    opacity: 0.2;
-    transform: translateY(0);
-  }
-  50% {
-    opacity: 1;
-    transform: translateY(-4px); /* Slight vertical pulse */
-  }
-}
-
 /* SHOPFRONT VIDEO */
 .shopfront-video {
   width: 100%;
@@ -396,16 +312,6 @@ main {
   margin-right: 2rem;
 }
 
-.add-to-cart {
-  background-color: rgb(58, 193, 255);
-  color: #fff;
-  width: 50%;
-  padding: 0.5rem;
-  font-size: 1.1rem;
-  text-align: center;
-  cursor: pointer;
-}
-
 /* MODAL STYLES */
 .cart-modal {
   display: flex;
@@ -419,35 +325,35 @@ main {
   z-index: 9999;
   font-size: 1.4rem;
   padding: 1rem;
-  border-radius: 1rem;
+  border-radius: 2rem;
   color: #fff;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.5s ease-out;
   padding: 0.5rem 1rem;
+  background-color: rgb(232, 234, 232);
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.347),
+    0 1px 3px rgba(0, 0, 0, 0.05);
+    color: #000;
 }
 
 .item-added,
-.item-plus-one {
-  background-color: rgb(123, 194, 123);
-}
-
+.item-plus-one,
 .item-removed {
-  background-color: rgb(255, 111, 111);
-}
-
-.empty-cart {
-  background-color: rgb(255, 111, 111);
-  padding: 0.5rem 1rem;
-  border-radius: 2rem;
+  background-color: rgb(232, 234, 232);
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.347),
+    0 1px 3px rgba(0, 0, 0, 0.05);
+    color: #000;
 }
 
 .total-items-in-cart {
-  background-color: var(--order-total);
+  background-color: var(--motif-color);
   width: 20px;
   position: absolute;
   border-radius: 30px;
-  top: 25px;
+  top: 20px;
   right: 0;
   transform: translateX(-250%);
   color: #000;
@@ -499,6 +405,7 @@ main {
   border-top-left-radius: 2rem;
   border-bottom-left-radius: 2rem;
   border: 1px solid black;
+  border-right: none;
 }
 
 .search-submit-btn {
@@ -506,6 +413,21 @@ main {
   border: 1px solid black;
   border-top-right-radius: 2rem;
   border-bottom-right-radius: 2rem;
+}
+
+.trending-searches {
+  display: flex;
+  width: 60%;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.trend-title {
+  font-weight: 900;
+}
+
+.trend {
+  color: #999;
 }
 
 .search-row {
@@ -557,7 +479,7 @@ main {
   }
 
   .total-items-in-cart {
-    background-color: var(--order-total);
+    background-color: var(--motif-color);
     width: 20px;
     position: absolute;
     border-radius: 30px;
@@ -566,12 +488,6 @@ main {
     transform: translateX(-100%);
     color: #e6e6e6;
     font-size: 1rem;
-  }
-
-  .loading-wrapper {
-    font-size: 2rem;
-    padding: 1rem;
-    text-align: center;
   }
 
   .products {

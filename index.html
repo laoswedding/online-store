@@ -15,15 +15,23 @@
 </head>
 
 <body>
+
     <div class="search-wrapper">
         <div class="search-input">
             <form id="search-form" class="search-input">
                 <input type="text" name="search" id="search" placeholder="Type in product name, description, etc."
-                    required autocomplete="off">
+                    required autocomplete="off" autofocus>
                 <button type="submit" class="search-submit-btn">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
             </form>
+        </div>
+        <div class="trending-searches">
+            <p class="trending-title">Trending searches:</p>
+            <p class="trend">crossbody</p>
+            <p class="trend">handbag</p>
+            <p class="trend">tote bag</p>
+            <p class="trend">piat bag</p>
         </div>
         <div class="search-row">
             <div class="search-row-img-wrapper">
@@ -56,13 +64,12 @@
 
     <nav class="blurred-background">
         <div class="logo-container">
-            <!-- Combined into a single class attribute -->
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
             <div class="logo-container-left">
                 <a href="/"> <img src="img/logo.png" alt="KL Logo"></a>
             </div>
             <div class="logo-container-btns">
-                <a class="cart-mobile" onclick="goToCartPage()"><i class="fa-solid fa-cart-shopping"></i><span
+                <a class="cart-mobile" onclick="navigate('cart')"><i class="fa-solid fa-cart-shopping"></i><span
                         class="total-items-in-cart"></span></a>
                 <div class="hamburger" id="hamburger">
                     <div></div>
@@ -77,14 +84,8 @@
             <span class="nav-link" onclick="filterProducts('Crossbody', this)">Crossbody</span>
             <span class="nav-link" onclick="filterProducts('Home Decor', this)">Home Decor</span>
             <span class="nav-link" onclick="filterProducts('Accessories', this)">Accessories</span>
-            <span class="nav-link" onclick="goToCancelOrderPage()">Cancel Order</span>
+            <span class="nav-link" onclick="navigate('cancel-order')">Cancel Order</span>
         </div>
-        <!-- <div class="btn-container">
-            <a class="nav-link btn-style" onclick="showCart()">
-                <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
-                <span class="total-items-in-cart"></span>
-            </a>
-        </div> -->
     </nav>
     <header>
         <video src="video/shopfront.mp4" autoplay muted loop playsinline class="shopfront-video"></video>
@@ -128,13 +129,6 @@
                         class="product-row-img"><span class="product-row-text">Special Orders</span></a>
             </div>
         </div>
-        <div class="loading-wrapper">
-            <!-- <div class="loading-group"><span class="loading-text">Loading</span><span class="dot">.</span><span
-                    class="dot">.</span><span class="dot">.</span></div> -->
-            <div class="loading-group pulse">
-                <div class="puck"></div>
-            </div>
-        </div>
     </main>
     <!-- SUPABASE -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -142,6 +136,7 @@
     <script src="./config.js"></script>
     <script src="./app.js"></script>
     <script src="./nav.js"></script>
+    <script src="./navigation.js"></script>
 </body>
 
 </html>

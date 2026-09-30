@@ -1,5 +1,5 @@
 :root {
-  --order-total: rgb(58, 193, 255);
+  --motif-color: rgb(58, 193, 255);
 }
 
 .order-wrapper {
@@ -11,10 +11,11 @@
   flex-direction: column;
   gap: 2rem;
   padding-bottom: 2rem;
+  margin-top: 90px;
 }
 
 .order-wrapper h1 {
-  font-size: 4rem;
+  font-size: 3rem;
   padding-top: 2rem;
   text-align: center;
 }
@@ -29,6 +30,7 @@
   box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.347),
     0 1px 3px rgba(0, 0, 0, 0.05);
+    border-radius: 1rem;
 }
 
 .order-details-inner {
@@ -69,16 +71,17 @@
   padding: 0.5rem 1rem;
   font-size: 1.3rem;
   color: #fff;
-  background-color: var(--order-total);
+  background-color: var(--motif-color);
   border: none;
   cursor: pointer;
   text-align: center;
   transition: all 0.3s ease-in-out;
+  border-radius: 2rem;
 }
 
 .download-receipt {
   color: #000;
-  background-color: #f6f6f6;
+  background-color: #dfdede;
 }
 
 .back-to-store-btn:hover,

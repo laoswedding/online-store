@@ -16,6 +16,9 @@
 </head>
 
 <body>
+    <!-- ================================= -->
+    <!-- =========HIDDEN SEARCH=========== -->
+    <!-- ================================= -->
     <div class="search-wrapper">
         <div class="search-input">
             <form id="search-form" class="search-input">
@@ -25,6 +28,13 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
             </form>
+        </div>
+        <div class="trending-searches">
+            <p class="trending-title">Trending searches:</p>
+            <p class="trend">crossbody</p>
+            <p class="trend">handbag</p>
+            <p class="trend">tote bag</p>
+            <p class="trend">piat bag</p>
         </div>
         <div class="search-row">
             <div class="search-row-img-wrapper">
@@ -53,17 +63,17 @@
             </div>
         </div>
     </div>
-
-
+    <!-- =========================== -->
+    <!-- =========NAV BAR=========== -->
+    <!-- =========================== -->
     <nav class="blurred-background">
         <div class="logo-container">
-            <!-- Combined into a single class attribute -->
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
             <div class="logo-container-left">
                 <a href="/"> <img src="../img/logo.png" alt="KL Logo"></a>
             </div>
             <div class="logo-container-btns">
-                <a class="cart-mobile" onclick="goToCartPage()"><i class="fa-solid fa-cart-shopping"></i><span
+                <a class="cart-mobile" onclick="navigate('cart')"><i class="fa-solid fa-cart-shopping"></i><span
                         class="total-items-in-cart"></span></a>
                 <div class="hamburger" id="hamburger">
                     <div></div>
@@ -80,31 +90,17 @@
             <span class="nav-link" onclick="filterProducts('Accessories', this)">Accessories</span>
             <span class="nav-link" onclick="goToCancelOrderPage()">Cancel Order</span>
         </div>
-        <!-- <div class="btn-container">
-            <a class="nav-link btn-style" onclick="showCart()">
-                <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
-                <span class="total-items-in-cart"></span>
-            </a>
-        </div> -->
     </nav>
-    <!-- Slide-Down Search Overlay Container -->
-    <!-- <div class="search-wrapper">
-        <div class="search-wrapper-content">
-            <form id="search-form" class="search-input">
-                <input type="text" name="search" id="search" placeholder="Type product name, description, etc..."
-                    required>
-                <button type="submit" class="search-submit-btn">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-            </form>
-        </div>
-    </div> -->
-
-    <!-- Main Content Area -->
+    <!-- ===================================== -->
+    <!-- =========PRODUCT CONTAINER=========== -->
+    <!-- ===================================== -->
     <main class="container">
+        <!-- PRODUCT FILTER -->
         <div id="product-filter">
+            <p class="product-filter-title">Product Filter</p>
             <div id="controls">
-                <input type="text" id="search-filter" placeholder="Search name, description, category..." autocomplete="off">
+                <input type="text" id="search-filter" placeholder="Search name, description, category..."
+                    autocomplete="off">
                 <select id="category-filter"></select>
                 <select id="stock-filter">
                     <option value="all">All stock</option>
@@ -118,8 +114,8 @@
                     <option value="recent">Recently Added</option>
                 </select>
             </div>
-            <!-- <div id="results"></div> -->
         </div>
+        <!-- SEARCH HEADER -->
         <section class="search-header">
             <h1>Search Results</h1>
             <p class="search-query-display">
@@ -127,17 +123,24 @@
             </p>
         </section>
 
-        <!-- Product Grid Output (Populated by search.js) -->
+        <!-- PRODUCT CONTAINER - WHERE ITEMS ARE RENDERED -->
         <section class="products-container" id="search-results-grid">
             <!-- Dynamic search result cards will render here -->
         </section>
+        <div class="cart-modal item-added">
+            <p class="card-modal-text">Item Added</p><i class="fa-solid fa-plus"></i>
+        </div>
+        <div class="cart-modal item-plus-one">
+            <p class="card-modal-text">Item Qty</p><i class="fa-solid fa-plus"></i>
+        </div>
     </main>
-
-    <!-- Scripts -->
     <!-- SUPABASE -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../config.js"></script>
-    <script src="search.js"></script> <!-- Handles search filtering & DOM rendering -->
+    <script src="../nav.js"></script>
+    <script src="../navigation.js"></script>
+    <script src="search.js"></script>
+    <script src="../cartItem.js"></script>
 </body>
 
 </html>

@@ -1,23 +1,14 @@
 // SELECT ELEMENTS
-const productsEl = document.querySelector(".products");
-const cartItemsEl = document.querySelector(".cart-items");
-
-const subtotalEl = document.querySelector(".subtotal");
-const totalItemsInCartEl = document.querySelectorAll(".total-items-in-cart");
-const cartEl = document.querySelector(".cart");
+// const productsEl = document.querySelector(".products");
+// const cartItemsEl = document.querySelector(".cart-items");
+// const subtotalEl = document.querySelector(".subtotal");
+// const cartEl = document.querySelector(".cart");
 const bodyEl = document.body;
 const filteredProductHeaderEl = document.querySelector(
   ".filtered-product-header",
 );
-const itemAddedEl = document.querySelector(".item-added");
-const itemRemovedEl = document.querySelector(".item-removed");
-const emptyCartEl = document.querySelector(".empty-cart");
-const itemPlusOneEl = document.querySelector(".item-plus-one");
-const loadingWrapperEl = document.querySelector(".loading-wrapper");
-const loadingTextEl = document.querySelector(".loading-text");
-const productsWrapperEl = document.querySelector(".products-wrapper");
 
-// PRODUCTS ARRAY
+// INITIALIZE PRODUCTS ARRAY FROM HOMEPAGE
 let products;
 try {
   products = JSON.parse(localStorage.getItem("PRODUCTS")) || [];
@@ -26,10 +17,24 @@ try {
   products = [];
 }
 
+//INITIALIZE CART ARRAY
+let cart;
+try {
+  cart = JSON.parse(localStorage.getItem("CART")) || [];
+} catch (e) {
+  console.warn("Corrupted CART data, resetting.", e);
+  cart = [];
+}
+
+//LOAD DOM CONTENT
 document.addEventListener("DOMContentLoaded", () => {
+  const totalItemsInCartEl = document.querySelector(".total-items-in-cart");
+  cart.length == 0
+    ? (totalItemsInCartEl.textContent = "")
+    : (totalItemsInCartEl.textContent = cart.length);
+
   const searchIcon = document.querySelector(".search-icon");
   const searchWrapper = document.querySelector(".search-wrapper");
-  // const closeBtn = document.querySelector(".close-search");
 
   // Open search wrapper
   if (searchIcon && searchWrapper) {
@@ -54,7 +59,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  //load search form and input elements
+  //LOAD SEARCH FORM INSIDE THE SEARCH WRAPPER
+  //ID SEARCH FORM IS FOR THE FORM INSIDE THE SEARCH WRAPPER
+  //NOT TO BE CONFUSED WITH ID "search-filter" WHICH IS FOR FILTER CONTROLS ON SEARCH PAGE
   const searchForm = document.getElementById("search-form");
   const searchInput = document.getElementById("search");
 
@@ -72,36 +79,22 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function getInventory() {
-  // const timers = [
-  //   setTimeout(() => {
-  //     loadingTextEl.innerHTML = "Almost there";
-  //   }, 5000),
-  //   setTimeout(() => {
-  //     loadingTextEl.innerHTML = "Getting closer";
-  //   }, 10000),
-  // ];
-
   try {
+    //CALL SUPABASE
     const { data, error } = await db.from("items").select("*");
 
     if (error) throw error;
 
+    //MAP THE DATA INTO THE PRODUCTS ARRAY
     products = data.map((product) => ({
       ...product,
       id: Number(product.id),
       price: Number(product.price),
       instock: Number(product.in_stock),
     }));
+
+    //SET IN LOCAL STOAGE
     localStorage.setItem("PRODUCTS", JSON.stringify(products));
-    // renderProducts();
-    // populateCategories(products);
-    console.log(products);
-    // Check if categories are empty using strictly equal (===)
-    // if (categories.length === 0) {
-    //   getCategories(products);
-    // }
-    loadingWrapperEl.style.visibility = "hidden";
-    // productsWrapperEl.style.visibility = "visible";
   } catch (error) {
     console.error("Error loading inventory:", error);
     loadingWrapperEl.textContent = "Oh no! There was an error.";
@@ -109,13 +102,6 @@ async function getInventory() {
 }
 
 getInventory();
-
-//SHOW CART
-// function showCart() {
-//   cartEl.classList.toggle("active");
-//   const isActive = cartEl.classList.contains("active");
-//   document.documentElement.style.overflowY = isActive ? "hidden" : "";
-// }
 
 //FILTER PRODUCTS
 function filterProducts(category, clickedEl) {
@@ -148,256 +134,8 @@ function filterProductsByCategory(category) {
 // Extract unique categories and add an 'All' option
 let categories = [];
 
-// function getCategories() {
-//   // 1. Guard clause: If buttons already exist, do nothing and exit
-//   if (categories.length > 0) return;
-//   console.lo;
-//   // 2. Reference the global `products` array directly
-//   categories = ["All", ...new Set(products.map((p) => p.category))];
-
-//   const categoryButtonContainer = document.getElementById(
-//     "category-button-container",
-//   );
-
-//   // 3. Dynamically create buttons once
-//   categories.forEach((category) => {
-//     const button = document.createElement("button");
-//     button.textContent = category;
-//     button.addEventListener("click", () => filterProducts(category));
-//     categoryButtonContainer.appendChild(button);
-//   });
-// }
-
-// RENDER PRODUCTS
-// function renderProducts(productList = products) {
-//   totalItemsInCartEl.forEach((el) => {
-//     el.style.display = "none";
-//   });
-
-//   // Build all markup as a single string, then set innerHTML once
-//   productsEl.innerHTML = productList.map(productToHTML).join("");
-// }
-
-// function productToHTML(product) {
-//   return `
-//     <div class="item">
-//         <div class="item-container">
-//             <div class="item-img">
-//                 <img src="${escapeHTML(product.img_src)}" alt="${escapeHTML(product.name)}" loading="lazy">
-//             </div>
-//             <div class="desc">
-//                 <h2 class="product-name">${escapeHTML(product.name)}</h2>
-//                 <p class="product-description">
-//                     ${escapeHTML(product.description)}
-//                 </p>
-//                 <h2 class="price">₭${product.price.toLocaleString("en-US")} LAK</h2>
-//                 <div class="product-btns">
-//                     <div class="add-to-cart" data-id="${product.id}">Add To Cart</div>
-//                     <a href="${escapeHTML(product.learnMore)}" class="learn-more">Learn More</a>
-//                 </div>
-//             </div>
-//         </div>
-//     </div>
-//   `;
-// }
-
 function escapeHTML(str = "") {
   const div = document.createElement("div");
   div.textContent = str;
   return div.innerHTML;
 }
-
-// Set up once, outside renderProducts — event delegation instead of inline onclick
-productsEl.addEventListener("click", (e) => {
-  const btn = e.target.closest(".add-to-cart");
-  if (!btn) return;
-  addToCart(Number(btn.dataset.id));
-});
-
-// Filter logic
-function filterProducts(category) {
-  if (category === "All") {
-    filteredProductHeaderEl.textContent = "All Products";
-    renderProducts(products);
-  } else {
-    const filtered = products.filter((p) => p.category === category);
-    filteredProductHeaderEl.textContent = category;
-    renderProducts(filtered);
-  }
-}
-
-// // RENDER PRODUCTS
-// function renderProducts(productList = products) {
-//   // Iterate through all matched elements and update their innerHTML
-//   totalItemsInCartEl.forEach((el) => {
-//     el.style.display = "none";
-//   });
-
-//   // Clear existing items before rendering new ones
-//   productsEl.innerHTML = "";
-
-//   productList.forEach((product) => {
-//     productsEl.innerHTML += `
-//       <div class="item">
-//           <div class="item-container">
-//               <div class="item-img">
-//                   <img src="${product.img_src}" alt="${product.name}" loading="lazy">
-//               </div>
-//               <div class="desc">
-//                   <h2 class="product-name">${product.name}</h2>
-//                   <p class="product-description">
-//                       ${product.description}
-//                   </p>
-//                   <h2 class="price">₭${product.price.toLocaleString("en-US")} LAK</h2>
-//                   <div class="product-btns">
-//                    <div class="add-to-cart" onclick="addToCart(${product.id})">
-//                   Add To Cart
-//                   </div>
-//                   <a href="${product.learnMore}" class="learn-more">Learn More</a>
-//                   </div>
-
-//               </div>
-
-//           </div>
-//       </div>
-//     `;
-//   });
-// }
-
-renderProducts();
-
-// CART ARRAY
-let cart;
-try {
-  cart = JSON.parse(localStorage.getItem("CART")) || [];
-} catch (e) {
-  console.warn("Corrupted CART data, resetting.", e);
-  cart = [];
-}
-// updateCart();
-
-//RENDER CART ITEMS
-// function renderCartItems() {
-//   cartItemsEl.innerHTML = ""; // clear cart element
-//   cart.forEach((item) => {
-//     cartItemsEl.innerHTML += `
-//         <div class="cart-item">
-//             <div class="item-info">
-//                 <img src="${item.img_src}" alt="${item.name}">
-//                 <h4>${item.name}</h4>
-//             </div>
-//             <div class="unit-price">
-//                 ${item.price} LAK
-//             </div>
-//             <div class="units">
-//                 <div class="btn minus" onclick="changeNumberOfUnits('minus', ${item.id})">-</div>
-//                 <div class="number">${item.numberOfUnits}</div>
-//                 <div class="btn plus" onclick="changeNumberOfUnits('plus', ${item.id})">+</div>
-//             </div>
-//             <div class="remove">
-//                <div onclick="removeItemFromCart(${item.id})"><i class="fa-solid fa-trash"></i></div>
-//             </div>
-//         </div>
-//       `;
-//   });
-// }
-
-// renderCartItems();
-
-//CALCULATE AND RENDER SUBTOTAL
-// function renderSubtotal() {
-//   let totalPrice = 0,
-//     totalItems = 0;
-
-//   cart.forEach((item) => {
-//     totalPrice += item.price * item.numberOfUnits;
-//     totalItems += item.numberOfUnits;
-//   });
-
-//   subtotalEl.innerHTML = `Subtotal (${totalItems} items): ${totalPrice.toLocaleString(
-//     "lo-LA",
-//     {
-//       minimumFractionDigits: 2,
-//       maximumFractionDigits: 2,
-//     },
-//   )} LAK`;
-
-//   // Iterate through all matched elements and update their innerHTML
-//   totalItemsInCartEl.forEach((el) => {
-//     const count = Math.max(0, parseInt(totalItems, 10) || 0);
-
-//     el.hidden = count === 0;
-//     el.textContent = count > 99 ? "99+" : count;
-//   });
-// }
-
-// SHOW AND HIDE MODAL
-function showAndHideModal(modalElement) {
-  modalElement.style.opacity = "1";
-
-  setTimeout(() => {
-    modalElement.style.opacity = "0";
-  }, 2000);
-}
-
-// ADD TO CART
-// function addToCart(id) {
-//   // check if product already exist in cart
-//   if (cart.some((item) => item.id === id)) {
-//     changeNumberOfUnits("plus", id);
-
-//     showAndHideModal(itemPlusOneEl);
-//   } else {
-//     const item = products.find((product) => product.id === id);
-//     cart.push({
-//       ...item,
-//       numberOfUnits: 1,
-//     });
-
-//     showAndHideModal(itemAddedEl);
-//   }
-
-//   updateCart();
-// }
-
-//UPDATE CART
-// function updateCart() {
-//   renderCartItems();
-//   renderSubtotal();
-
-//   // SAVE CART TO LOCAL STORAGE
-//   localStorage.setItem("CART", JSON.stringify(cart));
-// }
-
-function goToCartPage() {
-  window.location.href = isLocalHost ? "/cart" : "/online-store/cart";
-}
-
-//GO TO CHECKOUT PAGE
-function goToCheckout() {
-  // Use cart.length for Arrays, or cart.size for Set/Map
-  const isCartEmpty = Array.isArray(cart) ? cart.length === 0 : cart.size === 0;
-
-  if (isCartEmpty) {
-    showAndHideModal(emptyCartEl);
-  } else {
-    isLocalHost
-      ? (window.location.href = "/checkout")
-      : (window.location.href = "/online-store/checkout");
-  }
-}
-
-function goToCancelOrderPage() {
-  window.location.href = isLocalHost
-    ? "/cancel-order"
-    : "/online-store/cancel-order";
-}
-
-//
-
-
-
-
-
-
-
